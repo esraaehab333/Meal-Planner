@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Meal Planner</string>
+    <string name="splash_subtitle">Your personalized kitchen assistant for healthy living</string>
+    <string name="splash_name_app">FreshPlan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
