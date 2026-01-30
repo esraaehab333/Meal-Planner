@@ -42,7 +42,7 @@ public class SplashFragment extends Fragment {
         subTitle.animate().alpha(1f).setDuration(800).setStartDelay(1000).start();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_splashFragment_to_placeholder);
+                    .navigate(R.id.action_splashFragment_to_onboarding1Fregment);
         }, 2500);
 
         return view;
