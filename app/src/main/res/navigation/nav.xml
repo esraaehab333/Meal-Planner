@@ -11,8 +11,8 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splashFragment_to_placeholder"
-            app:destination="@id/loginFregment" />
+            android:id="@+id/action_splashFragment_to_onboarding1Fregment"
+            app:destination="@id/onboarding1Fregment" />
     </fragment>
     <fragment
         android:id="@+id/loginFregment"
@@ -30,6 +30,33 @@
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFregment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding1Fregment"
+        android:name="com.example.mealplanner.onboarding.Onboarding1Fragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding1" >
+        <action
+            android:id="@+id/action_onboarding1Fregment_to_onboarding2Fregment"
+            app:destination="@id/onboarding2Fregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding2Fregment"
+        android:name="com.example.mealplanner.onboarding.Onboarding2Fragment"
+        android:label="fragment_onboarding2"
+        tools:layout="@layout/fragment_onboarding2" >
+        <action
+            android:id="@+id/action_onboarding2Fregment_to_onboarding3Fregment"
+            app:destination="@id/onboarding3Fregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding3Fregment"
+        android:name="com.example.mealplanner.onboarding.Onboarding3Fragment"
+        android:label="fragment_onboarding3"
+        tools:layout="@layout/fragment_onboarding3" >
+        <action
+            android:id="@+id/action_onboarding3Fregment_to_loginFregment"
             app:destination="@id/loginFregment" />
     </fragment>
 </navigation>
