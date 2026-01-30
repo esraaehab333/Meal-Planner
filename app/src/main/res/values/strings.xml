@@ -16,6 +16,16 @@
     <string name="facebook">Facebook</string>
     <string name="continue_guest">Continue as Guest</string>
     <string name="no_account">Don\'t have an account?</string>
+    <string name="create_account">Create Account</string>
+    <string name="join_us">Join Us</string>
+    <string name="signup_subtitle">Start your premium meal planning journey today.</string>
+    <string name="username">Username</string>
+    <string name="choose_username">Choose a username</string>
+    <string name="create_password">Create a password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="repeat_password">Repeat your password</string>
+    <string name="sign_up_with">or sign up with</string>
+    <string name="already_have_account">Already have an account?</string>
     <string name="offline_sync_enabled">Offline sync enabled</string>
     <string name="back">Back</string>
     <string name="app_logo">Application Logo</string>
