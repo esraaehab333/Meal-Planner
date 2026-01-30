@@ -14,5 +14,9 @@
             android:id="@+id/action_splashFragment_to_placeholder"
             app:destination="@id/placeholder" />
     </fragment>
-    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/placeholder"
+        android:name="com.example.mealplanner.LoginFragment"
+        android:label="fragment_label"
+        tools:layout="@layout/fragment_login" />
 </navigation>
