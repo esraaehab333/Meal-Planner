@@ -26,6 +26,14 @@
     <string name="repeat_password">Repeat your password</string>
     <string name="sign_up_with">or sign up with</string>
     <string name="already_have_account">Already have an account?</string>
+    <string name="discover_new_flavors">Discover New Flavors</string>
+    <string name="discover_new_flavor_subtitle">Explore recipes from different cultures and enjoy flavors from around the world, all in one place.</string>
+    <string name="plan_your_week">Plan Your Week</string>
+    <string name="plan_your_week_subtitle">Organize your meals for the whole week and plan every day with ease and balance.</string>
+    <string name="cooking_anywhere">Cooking Anywhere</string>
+    <string name="cooking_anywhere_subtitle">Access recipes, ingredients, and steps anytime — even without internet.</string>
+    <string name="get_started">Get Started</string>>
+    <string name="skip_button">Skip</string>
     <string name="offline_sync_enabled">Offline sync enabled</string>
     <string name="back">Back</string>
     <string name="app_logo">Application Logo</string>
