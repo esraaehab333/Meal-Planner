@@ -34,8 +34,8 @@
     <string name="cooking_anywhere_subtitle">Access recipes, ingredients, and steps anytime — even without internet.</string>
     <string name="get_started">Get Started</string>>
     <string name="skip_button">Skip</string>
-    <string name="offline_sync_enabled">Offline sync enabled</string>
     <string name="back">Back</string>
+    <string name="next">Next</string>
     <string name="app_logo">Application Logo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
