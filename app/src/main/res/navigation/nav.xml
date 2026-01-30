@@ -27,5 +27,9 @@
         android:id="@+id/registerFregment"
         android:name="com.example.mealplanner.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFregment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
 </navigation>
