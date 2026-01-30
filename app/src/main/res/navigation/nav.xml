@@ -12,7 +12,20 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_placeholder"
-            app:destination="@id/placeholder" />
+            app:destination="@id/loginFregment" />
     </fragment>
-    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/loginFregment"
+        android:name="com.example.mealplanner.LoginFragment"
+        android:label="fragment_label"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFregment_to_registerFregment"
+            app:destination="@id/registerFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFregment"
+        android:name="com.example.mealplanner.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
 </navigation>
