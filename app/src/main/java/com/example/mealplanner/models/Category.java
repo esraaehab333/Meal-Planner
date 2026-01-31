@@ -1,0 +1,40 @@
+package com.example.mealplanner.models;
+
+public class Category {
+    private String category_id;
+    private String category_name;
+    public Category() {
+    }
+
+    public Category(String category_id, String category_name, String category_imag) {
+        this.category_id = category_id;
+        this.category_name = category_name;
+        this.category_imag = category_imag;
+    }
+
+    public String getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(String category_id) {
+        this.category_id = category_id;
+    }
+
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
+    public String getCategory_imag() {
+        return category_imag;
+    }
+
+    public void setCategory_imag(String category_imag) {
+        this.category_imag = category_imag;
+    }
+
+    private String category_imag;
+}

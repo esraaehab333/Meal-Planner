@@ -9,11 +9,12 @@
     tools:context=".HomeFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:id="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
         app:layout_constraintStart_toStartOf="@id/guideline4"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,9 +29,9 @@
             app:boxCornerRadiusBottomStart="25dp"
             app:boxCornerRadiusTopEnd="25dp"
             app:boxCornerRadiusTopStart="25dp"
+            app:boxStrokeColor="@color/strock_search_color"
             app:boxStrokeWidth="1dp"
             app:boxStrokeWidthFocused="1dp"
-            app:boxStrokeColor="@color/strock_search_color"
             app:hintEnabled="false"
             app:startIconDrawable="@drawable/ic_search"
             app:startIconTint="@color/gray">
@@ -39,9 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/search_bar_home"
-                android:textColorHint="@color/gray"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
+                android:textColorHint="@color/gray"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +81,7 @@
         android:id="@+id/cardView3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="15dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="@+id/guideline5"
@@ -203,7 +204,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
@@ -234,16 +235,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoriesRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="110dp"
         android:clipToPadding="false"
-        android:orientation="horizontal"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        android:overScrollMode="never"
+        app:layout_constraintStart_toStartOf="@id/guideline4"
+        app:layout_constraintEnd_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout5"
         tools:listitem="@layout/home_category_item_list" />
 
     <androidx.constraintlayout.widget.Guideline

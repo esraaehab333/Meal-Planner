@@ -15,6 +15,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.fragment_home);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.homeFragment, new HomeFragment())
+                .commit();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homeFragment), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
