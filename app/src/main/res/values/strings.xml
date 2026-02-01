@@ -36,6 +36,17 @@
     <string name="skip_button">Skip</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
+    <string name="search_bar_home">Search for recipes </string>
+    <string name="recommended_text">Recommended meal</string>
+    <string name="meal_of_day">Meal Of The Day </string>
+    <string name="view_recipe">View Recipe</string>
+    <string name="categories">Categories</string>
+    <string name="see_all">See all</string>
+    <string name="popular_meals">Popular Meals</string>
+    <string name="meal_day_name">Creamy Avocado\nPasta</string>
+    <string name="time">15 min</string>
+    <string name="diffecalty">Easy</string>
+    <string name="category_name">Beef</string>
     <string name="app_logo">Application Logo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
