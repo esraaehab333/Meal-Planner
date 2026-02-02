@@ -47,6 +47,10 @@
     <string name="time">15 min</string>
     <string name="diffecalty">Easy</string>
     <string name="category_name">Beef</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="account">Account</string>
     <string name="app_logo">Application Logo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
