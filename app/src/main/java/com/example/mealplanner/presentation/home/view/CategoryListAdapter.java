@@ -1,6 +1,5 @@
-package com.example.mealplanner;
+package com.example.mealplanner.presentation.home.view;
 
-import android.icu.util.ULocale;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.mealplanner.R;
 import com.example.mealplanner.models.Category;
 
 import java.util.ArrayList;

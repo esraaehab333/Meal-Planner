@@ -6,7 +6,7 @@
     android:id="@+id/loginFregment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginFragment"
+    tools:context=".presentation.auth.view.LoginFragment"
     android:background="@color/color_background">
 
     <com.google.android.material.card.MaterialCardView

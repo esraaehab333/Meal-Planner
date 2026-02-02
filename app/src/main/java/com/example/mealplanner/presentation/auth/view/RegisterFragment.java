@@ -1,4 +1,4 @@
-package com.example.mealplanner;
+package com.example.mealplanner.presentation.auth.view;
 
 import android.os.Bundle;
 
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mealplanner.R;
 import com.google.android.material.button.MaterialButton;
 
 public class RegisterFragment extends Fragment {

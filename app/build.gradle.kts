@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services") version "4.4.2"
 }
 
 android {
@@ -33,6 +32,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -49,4 +49,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    val room_version = "2.8.4"
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
 }

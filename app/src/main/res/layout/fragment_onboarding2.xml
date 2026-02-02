@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="24dp"
     android:background="@color/color_background"
-    tools:context=".onboarding.Onboarding2Fragment">
+    tools:context=".presentation.onboarding.view.Onboarding2Fragment">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_skip"
