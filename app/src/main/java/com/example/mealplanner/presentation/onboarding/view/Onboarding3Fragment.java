@@ -1,6 +1,4 @@
-package com.example.mealplanner.onboarding;
-
-import static android.view.View.GONE;
+package com.example.mealplanner.presentation.onboarding.view;
 
 import android.os.Bundle;
 

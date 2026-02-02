@@ -1,6 +1,4 @@
-package com.example.mealplanner.onboarding;
-
-import static android.view.View.GONE;
+package com.example.mealplanner.presentation.onboarding.view;
 
 import android.os.Bundle;
 
@@ -14,24 +12,24 @@ import android.view.ViewGroup;
 import com.example.mealplanner.R;
 import com.google.android.material.button.MaterialButton;
 
-public class Onboarding2Fragment extends Fragment {
+public class Onboarding1Fragment extends Fragment {
     MaterialButton skipBtn , backBtn, nextBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_onboarding2, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_onboarding1, container, false);
         skipBtn = view.findViewById(R.id.btn_skip);
         backBtn = view.findViewById(R.id.backBtn);
         nextBtn = view.findViewById(R.id.nextBtn);
         skipBtn.setOnClickListener(v->{
-            Navigation.findNavController(v).navigate(R.id.action_onboarding2Fregment_to_loginFregment);
+            Navigation.findNavController(v).navigate(R.id.action_onboarding1Fregment_to_loginFregment);
         });
         nextBtn.setOnClickListener(v->{
-            Navigation.findNavController(v).navigate(R.id.action_onboarding2Fregment_to_onboarding3Fregment);
+            Navigation.findNavController(v).navigate(R.id.action_onboarding1Fregment_to_onboarding2Fregment);
         });
-        backBtn.setOnClickListener(v->{
-            Navigation.findNavController(v).navigate(R.id.action_onboarding2Fregment_to_onboarding1Fregment);
-        });
+        backBtn.setText("");
+        backBtn.setClickable(false);
         return view;
     }
 }

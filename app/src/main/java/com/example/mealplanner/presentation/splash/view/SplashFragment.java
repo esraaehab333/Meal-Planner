@@ -1,4 +1,4 @@
-package com.example.mealplanner;
+package com.example.mealplanner.presentation.splash.view;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.mealplanner.R;
 
 public class SplashFragment extends Fragment {
 

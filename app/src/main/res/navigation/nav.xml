@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.mealplanner.SplashFragment"
+        android:name="com.example.mealplanner.presentation.splash.view.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFregment"
-        android:name="com.example.mealplanner.LoginFragment"
+        android:name="com.example.mealplanner.presentation.auth.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFregment"
-        android:name="com.example.mealplanner.RegisterFragment"
+        android:name="com.example.mealplanner.presentation.auth.view.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding1Fregment"
-        android:name="com.example.mealplanner.onboarding.Onboarding1Fragment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding1Fragment"
         android:label="fragment_onboarding1"
         tools:layout="@layout/fragment_onboarding1">
         <action
@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding2Fregment"
-        android:name="com.example.mealplanner.onboarding.Onboarding2Fragment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding2Fragment"
         android:label="fragment_onboarding2"
         tools:layout="@layout/fragment_onboarding2">
         <action
@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding3Fregment"
-        android:name="com.example.mealplanner.onboarding.Onboarding3Fragment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding3Fragment"
         android:label="fragment_onboarding3"
         tools:layout="@layout/fragment_onboarding3">
         <action
