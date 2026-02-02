@@ -3,6 +3,7 @@ package com.example.mealplanner.models;
 public class Category {
     private String category_id;
     private String category_name;
+
     public Category() {
     }
 
