@@ -70,6 +70,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/recommended_text"
         android:textAlignment="textStart"
+        android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -242,6 +243,33 @@
         app:layout_constraintEnd_toEndOf="@id/guideline5"
         app:layout_constraintTop_toBottomOf="@id/linearLayout5"
         tools:listitem="@layout/home_category_item_list" />
+
+    <View
+        android:id="@+id/bottom_shadow"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:background="@drawable/shape_bottom_shadow"
+        app:layout_constraintBottom_toTopOf="@id/navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/shape_bottom_navigation_bar_color"
+        app:itemGravity="center"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@color/bottom_bar_selector"
+        app:itemPaddingBottom="8dp"
+        app:itemPaddingTop="8dp"
+        app:itemTextColor="@color/bottom_bar_selector"
+        app:labelVisibilityMode="labeled"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/bottom_navigation_icon" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
