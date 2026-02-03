@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mealplanner.R;
+import com.example.mealplanner.datasource.meal.remote.MealNetworkResponse;
+import com.example.mealplanner.datasource.meal.remote.MealRemoteDataSource;
 import com.example.mealplanner.models.Category;
 
 import java.util.ArrayList;
@@ -37,22 +39,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadCategories() {
-        List<Category> categories = new ArrayList<>();
-        categories.add(new Category("1","Breakfast",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg"));
-        categories.add(new Category("2","Lunch",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg"));
-        categories.add(new Category("3","Dinner",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg"));
-        categories.add(new Category("4","Dessert",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg")); categories.add(new Category("1","Breakfast",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg"));
-        categories.add(new Category("2","Lunch",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg"));
-        categories.add(new Category("3","Dinner",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg"));
-        categories.add(new Category("4","Dessert",
-                "https://media.self.com/photos/622912847b959736301bfb91/3:2/w_2118,h_1412,c_limit/GettyImages-1301412050.jpg"));
-        adapter.setCategoryList(categories);
+        MealRemoteDataSource remoteDataSource = new MealRemoteDataSource();
+        remoteDataSource.getCategoryList(new MealNetworkResponse() {
+            @Override
+            public void onSuccess(List<Category> categories) {
+                adapter.setCategoryList(categories);
+            }
+            @Override
+            public void onFailure(String errorMsg) {}
+            @Override
+            public void noInternet() {}
+        });
     }
+
 }

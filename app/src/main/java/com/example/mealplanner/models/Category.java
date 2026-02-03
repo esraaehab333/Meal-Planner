@@ -1,41 +1,37 @@
 package com.example.mealplanner.models;
 
 public class Category {
-    private String category_id;
-    private String category_name;
+    private String idCategory;
+    private String strCategory;
+    private String strCategoryThumb;
 
-    public Category() {
+    public Category(String idCategory, String strCategory, String strCategoryThumb) {
+        this.idCategory = idCategory;
+        this.strCategory = strCategory;
+        this.strCategoryThumb = strCategoryThumb;
     }
 
-    public Category(String category_id, String category_name, String category_imag) {
-        this.category_id = category_id;
-        this.category_name = category_name;
-        this.category_imag = category_imag;
+    public String getIdCategory() {
+        return idCategory;
     }
 
-    public String getCategory_id() {
-        return category_id;
+    public void setIdCategory(String idCategory) {
+        this.idCategory = idCategory;
     }
 
-    public void setCategory_id(String category_id) {
-        this.category_id = category_id;
+    public String getStrCategory() {
+        return strCategory;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public void setStrCategory(String strCategory) {
+        this.strCategory = strCategory;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public String getStrCategoryThumb() {
+        return strCategoryThumb;
     }
 
-    public String getCategory_imag() {
-        return category_imag;
+    public void setStrCategoryThumb(String strCategoryThumb) {
+        this.strCategoryThumb = strCategoryThumb;
     }
-
-    public void setCategory_imag(String category_imag) {
-        this.category_imag = category_imag;
-    }
-
-    private String category_imag;
 }

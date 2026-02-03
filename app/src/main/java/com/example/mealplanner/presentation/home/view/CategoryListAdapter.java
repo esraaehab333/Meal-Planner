@@ -57,9 +57,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
 
         public void bind(Category category) {
-            categoryName.setText(category.getCategory_name());
+            categoryName.setText(category.getStrCategory());
             Glide.with(itemView)
-                    .load(category.getCategory_imag())
+                    .load(category.getStrCategoryThumb())
                     .into(categoryImage);
 
         }

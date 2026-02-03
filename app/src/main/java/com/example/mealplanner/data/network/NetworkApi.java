@@ -7,7 +7,7 @@ public class NetworkApi{
 
     private MealService mealService;
     private Retrofit retrofit;
-    public static String baseUrl ="www.themealdb.com/api/json/v1/1/";
+    public static String baseUrl ="https://www.themealdb.com/api/json/v1/1/";
     public NetworkApi(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
