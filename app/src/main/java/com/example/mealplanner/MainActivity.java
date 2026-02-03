@@ -1,30 +1,32 @@
 package com.example.mealplanner;
 
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.example.mealplanner.presentation.home.view.HomeFragment;
+import com.example.mealplanner.presentation.splash.view.SplashFragment;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase BEFORE anything else
+        try {
+            FirebaseApp.initializeApp(this);
+        } catch (IllegalStateException e) {
+            // Already initialized
+        }
+
         EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_home);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.homeFragment, new HomeFragment())
-                .commit();
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homeFragment), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        setContentView(R.layout.activity_main);
+
+        if (savedInstanceState == null) {  // ← Prevent duplicate fragments on rotation
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.splashFragment, new SplashFragment())
+                    .commit();
+        }
     }
 }

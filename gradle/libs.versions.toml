@@ -13,6 +13,7 @@ navigationUi = "2.9.6"
 recyclerview = "1.4.0"
 retrofit = "3.0.0"
 glide = "5.0.5"
+googleServices = "4.4.2"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -32,4 +33,4 @@ retrofit = {group = "com.squareup.retrofit2" , name="retrofit", version.ref ="re
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
