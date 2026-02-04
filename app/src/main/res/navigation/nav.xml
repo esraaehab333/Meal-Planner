@@ -7,25 +7,96 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.mealplanner.SplashFragment"
+        android:name="com.example.mealplanner.presentation.splash.view.SplashFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_splashFragment_to_placeholder"
-            app:destination="@id/loginFregment" />
+            android:id="@+id/action_splashFragment_to_onboarding1Fregment"
+            app:destination="@id/onboarding1Fregment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFregment"
-        android:name="com.example.mealplanner.LoginFragment"
-        android:label="fragment_label"
-        tools:layout="@layout/fragment_login" >
+        android:name="com.example.mealplanner.presentation.auth.view.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFregment_to_registerFregment"
             app:destination="@id/registerFregment" />
+        <action
+            android:id="@+id/action_loginFregment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFregment"
-        android:name="com.example.mealplanner.RegisterFragment"
+        android:name="com.example.mealplanner.presentation.auth.view.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFregment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding1Fregment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding1Fragment"
+        android:label="fragment_onboarding1"
+        tools:layout="@layout/fragment_onboarding1">
+        <action
+            android:id="@+id/action_onboarding1Fregment_to_onboarding2Fregment"
+            app:destination="@id/onboarding2Fregment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_onboarding1Fregment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding2Fregment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding2Fragment"
+        android:label="fragment_onboarding2"
+        tools:layout="@layout/fragment_onboarding2">
+        <action
+            android:id="@+id/action_onboarding2Fregment_to_onboarding3Fregment"
+            app:destination="@id/onboarding3Fregment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_onboarding2Fregment_to_onboarding1Fregment"
+            app:destination="@id/onboarding1Fregment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_onboarding2Fregment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding3Fregment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding3Fragment"
+        android:label="fragment_onboarding3"
+        tools:layout="@layout/fragment_onboarding3">
+        <action
+            android:id="@+id/action_onboarding3Fregment_to_onboarding2Fregment"
+            app:destination="@id/onboarding2Fregment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_onboarding3Fregment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mealplanner.presentation.home.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+
 </navigation>

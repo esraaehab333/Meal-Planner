@@ -6,7 +6,7 @@
     android:id="@+id/loginFregment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginFragment"
+    tools:context=".presentation.auth.view.LoginFragment"
     android:background="@color/color_background">
 
     <com.google.android.material.card.MaterialCardView
@@ -83,6 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/textEmailTextView">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_email"
@@ -123,6 +124,7 @@
         app:layout_constraintTop_toBottomOf="@id/textPasswordTextView">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -257,18 +259,25 @@
             android:textStyle="normal"
             android:textSize="14sp" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/signUpTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
             android:text="@string/sign_up"
             android:textColor="@color/color_primary"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            app:backgroundTint="@android:color/transparent"
+            app:strokeWidth="0dp"
+            app:rippleColor="?attr/colorControlHighlight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+
 
     </LinearLayout>
 

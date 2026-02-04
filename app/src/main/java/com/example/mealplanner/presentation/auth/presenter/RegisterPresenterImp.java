@@ -1,0 +1,53 @@
+package com.example.mealplanner.presentation.auth.presenter;
+
+import android.app.Application;
+
+import com.example.mealplanner.datasource.auth.remote.AuthNetworkResponse;
+import com.example.mealplanner.datasource.auth.remote.AuthRemoteDataSource;
+import com.example.mealplanner.presentation.auth.presenter.RegisterPresenter;
+import com.example.mealplanner.presentation.auth.view.AuthView;
+
+public class RegisterPresenterImp implements RegisterPresenter {
+
+    private AuthView authView;
+    private AuthRemoteDataSource remoteDataSource;
+    public RegisterPresenterImp(AuthView authView) {
+        this.authView = authView;
+        this.remoteDataSource = new AuthRemoteDataSource();
+    }
+
+    @Override
+    public void register(String email, String username,String password) {
+        if(!isValidEmail(email)){
+            authView.onError("Invalid email");
+            return;
+        }
+
+        if(!isValidPassword(password)){
+            authView.onError("Password must be at least 6 characters");
+            return;
+        }
+
+        authView.showLoading();
+        remoteDataSource.register(email,username,password, new AuthNetworkResponse() {
+            @Override
+            public void onSuccess() {
+                authView.hideLoading();
+                authView.onSuccess("Registration successful");
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                authView.hideLoading();
+                authView.onError(errorMessage);
+            }
+        });
+    }
+
+    private boolean isValidEmail(String email){
+        return email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    private boolean isValidPassword(String password){
+        return password != null && password.length() >= 6;
+    }
+}

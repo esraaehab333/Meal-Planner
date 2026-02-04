@@ -1,8 +1,9 @@
-package com.example.mealplanner;
+package com.example.mealplanner.presentation.splash.view;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.mealplanner.R;
 
 public class SplashFragment extends Fragment {
     LottieAnimationView lottieSplash;
@@ -21,8 +23,10 @@ public class SplashFragment extends Fragment {
         lottieSplash = view.findViewById(R.id.lottieSplash);
         lottieSplash.playAnimation();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_splashFragment_to_placeholder);
+            if (Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.splashFragment) {
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_splashFragment_to_onboarding1Fregment);
+            }
         }, 4500);
         return view;
     }

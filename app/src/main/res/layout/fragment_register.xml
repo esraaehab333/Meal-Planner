@@ -6,7 +6,7 @@
     android:id="@+id/createAccountLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterFragment"
+    tools:context=".presentation.auth.view.RegisterFragment"
     android:background="@color/color_background">
 
     <com.google.android.material.card.MaterialCardView
@@ -340,18 +340,25 @@
             android:textStyle="normal"
             android:textSize="14sp" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/signInTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
             android:text="@string/sign_in"
             android:textColor="@color/color_primary"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:backgroundTint="@android:color/transparent"
+            app:strokeWidth="0dp"
+            app:rippleColor="?attr/colorControlHighlight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"/>
 
     </LinearLayout>
 
