@@ -4,8 +4,8 @@ import com.example.mealplanner.models.Category;
 
 import java.util.List;
 // this is the callBack we use to update the ui
-public interface MealNetworkResponse {
-    void onSuccess(List<Category> categoryList);
+public interface MealNetworkResponse<T> {
+    void onSuccess(List<T> List);
     void noInternet();
     void onFailure(String errorMessage);
 }

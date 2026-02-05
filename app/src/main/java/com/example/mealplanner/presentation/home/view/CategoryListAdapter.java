@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.R;
 import com.example.mealplanner.models.Category;
 
@@ -17,14 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
+
     private List<Category> categoryList;
-    public CategoryListAdapter(){
+
+    public CategoryListAdapter() {
         this.categoryList = new ArrayList<>();
     }
-
     public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
-        notifyDataSetChanged();
+        if (categoryList != null) {
+            this.categoryList = categoryList;
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull
@@ -46,22 +50,24 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return categoryList == null ? 0 : categoryList.size();
     }
 
-
-    class CategoryViewHolder extends RecyclerView.ViewHolder{
-        private ImageView categoryImage;
-        private TextView categoryName;
+    class CategoryViewHolder extends RecyclerView.ViewHolder {
+        private TextView tvCategoryName;
+        private ImageView imgCategory;
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            categoryImage = itemView.findViewById(R.id.categoryIcon);
-            categoryName = itemView.findViewById(R.id.categoryName);
+            tvCategoryName = itemView.findViewById(R.id.categoryName);
+            imgCategory = itemView.findViewById(R.id.categoryIcon);
         }
-
         public void bind(Category category) {
-            categoryName.setText(category.getStrCategory());
-            Glide.with(itemView)
-                    .load(category.getStrCategoryThumb())
-                    .into(categoryImage);
-
+            if (category.getStrCategory() != null) {
+                tvCategoryName.setText(category.getStrCategory());
+            }
+            if (category.getStrCategoryThumb() != null) {
+                Glide.with(itemView.getContext())
+                        .load(category.getStrCategoryThumb())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imgCategory);
+            }
         }
     }
 }

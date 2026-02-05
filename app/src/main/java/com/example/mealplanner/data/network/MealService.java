@@ -12,6 +12,11 @@ import retrofit2.http.Query;
 
 public interface MealService {
 
+    // get popular meals
+    // www.themealdb.com/api/json/v1/1/search.php?s=
+    @GET("search.php")
+    Call<MealResponse> getPopularMeals(@Query("s") String empty);
+
     // get meal by name
     // www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata
     @GET("search.php")
