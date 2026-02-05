@@ -70,4 +70,30 @@ public class HomePresenterImp implements HomePresenter {
         });
     }
 
+    @Override
+    public void getMealOfDay() {
+        remoteDataSource.getMealOfDay(new MealNetworkResponse<Meal>() {
+            @Override
+            public void onSuccess(List<Meal> dataList) {
+                if (view != null) {
+                    view.onGetMealOfDaySuccess((List) dataList);
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                if (view != null) {
+                    view.onFailure(errorMessage);
+                }
+            }
+
+            @Override
+            public void noInternet() {
+                if (view != null) {
+                    view.onNoInternet();
+                }
+            }
+        });
+    }
+
 }

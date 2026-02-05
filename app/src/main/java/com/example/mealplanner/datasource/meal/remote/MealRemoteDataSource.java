@@ -77,4 +77,30 @@ public class MealRemoteDataSource {
         );
     }
 
+    public void getMealOfDay(MealNetworkResponse mealCallBack){
+        mealService.getRandomMeal().enqueue(
+                new Callback<MealResponse>() {
+                    @Override
+                    public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                        if(response.code() == 200 && response.body() != null){
+                            MealResponse mealResponse = response.body();
+                            List<Meal> mealList = mealResponse.getMeals();
+                            mealCallBack.onSuccess(mealList);
+                        } else {
+                            mealCallBack.onFailure("Server error");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MealResponse> call, Throwable t) {
+                        if(t instanceof IOException){
+                            mealCallBack.noInternet();
+                        }
+                        else{
+                            mealCallBack.onFailure("Conversion error!");
+                        }
+                    }
+                }
+        );
+    }
 }

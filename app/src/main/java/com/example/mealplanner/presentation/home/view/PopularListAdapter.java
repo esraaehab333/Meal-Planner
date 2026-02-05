@@ -83,9 +83,8 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
                 }
                 areaCategory.append(meal.getStrCategory().toUpperCase());
             }
-            // TAG
             if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
-                tvTag.setText(meal.getStrTags().toUpperCase());
+                tvTag.setText(meal.getStrTags());
                 tvTag.setVisibility(View.VISIBLE);
             } else {
                 tvTag.setVisibility(View.GONE);

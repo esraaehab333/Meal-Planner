@@ -8,6 +8,7 @@ import java.util.List;
 public interface HomeView {
     void onGetCategorySuccess(List<Category> categories);
     void onGetPopularSuccess(List<Meal> meals);
+    void onGetMealOfDaySuccess(List<Meal> meals);
     void onFailure(String errorMessage);
     void onNoInternet();
 }

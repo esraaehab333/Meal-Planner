@@ -174,6 +174,7 @@
                             app:tint="@color/white" />
 
                         <TextView
+                            android:id="@+id/mealCategory"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
@@ -194,6 +195,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
+                            android:id="@+id/mealArea"
                             android:text="@string/diffecalty"
                             android:textColor="@android:color/white"
                             android:textSize="14sp" />
