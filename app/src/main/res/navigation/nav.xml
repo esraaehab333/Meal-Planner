@@ -98,5 +98,11 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
     </fragment>
+    <fragment
+        android:id="@+id/mealFragment"
+        android:name="com.example.mealplanner.presentation.home.view.MealFragment"
+        android:label="fragment_meal"
+        tools:layout="@layout/fragment_meal"/>
+
 
 </navigation>
