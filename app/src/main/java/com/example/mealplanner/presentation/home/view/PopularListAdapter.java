@@ -75,13 +75,13 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
             StringBuilder areaCategory = new StringBuilder();
 
             if (meal.getStrArea() != null) {
-                areaCategory.append(meal.getStrArea().toUpperCase());
+                areaCategory.append(meal.getStrArea());
             }
             if (meal.getStrCategory() != null) {
                 if (areaCategory.length() > 0) {
                     areaCategory.append(" • ");
                 }
-                areaCategory.append(meal.getStrCategory().toUpperCase());
+                areaCategory.append(meal.getStrCategory());
             }
             if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
                 tvTag.setText(meal.getStrTags());

@@ -39,6 +39,39 @@ public class LoginPresenterImp implements LoginPresenter {
             }
         });
     }
+    @Override
+    public void loginWithGoogle(String idToken) {
+        authView.showLoading();
+        remoteDataSource.loginWithGoogle(idToken, new AuthNetworkResponse() {
+            @Override
+            public void onSuccess() {
+                authView.hideLoading();
+                authView.onSuccess("Google Login Successful");
+            }
+            @Override
+            public void onFailure(String errorMessage) {
+                authView.hideLoading();
+                authView.onError(errorMessage);
+            }
+        });
+    }
+
+    @Override
+    public void loginWithFacebook(String accessToken) {
+        authView.showLoading();
+        remoteDataSource.loginWithFacebook(accessToken, new AuthNetworkResponse() {
+            @Override
+            public void onSuccess() {
+                authView.hideLoading();
+                authView.onSuccess("Facebook Login Successful");
+            }
+            @Override
+            public void onFailure(String errorMessage) {
+                authView.hideLoading();
+                authView.onError(errorMessage);
+            }
+        });
+    }
     private boolean isValidEmail(String email){
         return email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
