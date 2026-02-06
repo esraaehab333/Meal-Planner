@@ -15,6 +15,9 @@
             app:destination="@id/onboarding1Fregment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFregment"
@@ -97,6 +100,14 @@
         android:name="com.example.mealplanner.presentation.home.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_placeholder"
+            app:destination="@id/searchFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.mealplanner.presentation.home.view.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search"/>
 
 </navigation>
