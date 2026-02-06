@@ -123,5 +123,10 @@
         android:name="com.example.mealplanner.presentation.home.view.AccountFragment"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
+        android:id="@+id/mealFragment"
+        android:name="com.example.mealplanner.presentation.home.view.MealFragment"
+        android:label="fragment_meal"
+        tools:layout="@layout/fragment_meal"/>
+
 
 </navigation>
