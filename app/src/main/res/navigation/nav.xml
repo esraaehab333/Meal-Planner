@@ -109,5 +109,34 @@
         android:name="com.example.mealplanner.presentation.home.view.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search"/>
+            android:id="@+id/action_homeFragment_to_searchTestFragment"
+            app:destination="@id/searchTestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchTestFragment"
+        android:name="com.example.mealplanner.presentation.home.view.SearchTestFragment"
+        android:label="SearchTest"
+        tools:layout="@layout/fragment_search_test" />
+    <fragment
+        android:id="@+id/plannerFragment"
+        android:name="com.example.mealplanner.presentation.home.view.PlannerFragment"
+        android:label="Planner"
+        tools:layout="@layout/fragment_planner" />
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.mealplanner.presentation.home.view.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.mealplanner.presentation.home.view.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
+        android:id="@+id/mealFragment"
+        android:name="com.example.mealplanner.presentation.home.view.MealFragment"
+        android:label="fragment_meal"
+        tools:layout="@layout/fragment_meal"/>
 
 </navigation>

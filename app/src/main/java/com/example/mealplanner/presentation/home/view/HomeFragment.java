@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +33,9 @@ public class HomeFragment extends Fragment implements HomeView {
     private TextView mealOfDayName;
     private TextView mealOfDayCategory;
     private TextView mealOfDayArea;
-
+    private EditText searchEditText;
     private CategoryListAdapter categoryAdapter;
     private PopularListAdapter popularAdapter;
-
     private HomePresenter presenter;
 
     @Nullable
@@ -44,15 +44,17 @@ public class HomeFragment extends Fragment implements HomeView {
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initViews(view);
         setupRecyclerViews();
         initPresenter();
         loadData();
+        searchEditText.setOnClickListener(view1 -> {
+            androidx.navigation.Navigation.findNavController(view1)
+                    .navigate(R.id.action_homeFragment_to_searchTestFragment);
+        });
     }
 
     private void initViews(View view) {
@@ -62,8 +64,8 @@ public class HomeFragment extends Fragment implements HomeView {
         mealOfDayName=view.findViewById(R.id.mealTitle);
         mealOfDayCategory=view.findViewById(R.id.mealCategory);
         mealOfDayArea=view.findViewById(R.id.mealArea);
+        searchEditText=view.findViewById(R.id.searchEditText);
     }
-
     private void setupRecyclerViews() {
         categoryAdapter = new CategoryListAdapter();
         categoriesRecyclerView.setLayoutManager(
