@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment implements HomeView {
         loadData();
         searchEditText.setOnClickListener(view1 -> {
             androidx.navigation.Navigation.findNavController(view1)
-                    .navigate(R.id.action_homeFragment_to_searchTestFragment);
+                    .navigate(R.id.action_homeFragment_to_searchFragment);
         });
     }
 
