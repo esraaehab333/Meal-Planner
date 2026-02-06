@@ -14,13 +14,12 @@ public class LoginPresenterImp implements LoginPresenter {
     }
     @Override
     public void login(String email, String password) {
-        if(!isValidEmail(email)){
-            authView.onError("Invalid email");
+        if (email.isEmpty()) {
+            authView.onError("VALIDATION_EMAIL_EMPTY");
             return;
         }
-
-        if(!isValidPassword(password)){
-            authView.onError("Password must be at least 6 characters");
+        if (password.isEmpty()) {
+            authView.onError("VALIDATION_PASSWORD_EMPTY");
             return;
         }
 
@@ -29,7 +28,7 @@ public class LoginPresenterImp implements LoginPresenter {
             @Override
             public void onSuccess() {
                 authView.hideLoading();
-                authView.onSuccess("Login successful");
+                authView.onSuccess("Welcome back!");
             }
 
             @Override
@@ -41,6 +40,11 @@ public class LoginPresenterImp implements LoginPresenter {
     }
     @Override
     public void loginWithGoogle(String idToken) {
+        if (idToken == null || idToken.isEmpty()) {
+            authView.onError("Google authentication failed: Missing Token");
+            return;
+        }
+
         authView.showLoading();
         remoteDataSource.loginWithGoogle(idToken, new AuthNetworkResponse() {
             @Override
@@ -48,6 +52,7 @@ public class LoginPresenterImp implements LoginPresenter {
                 authView.hideLoading();
                 authView.onSuccess("Google Login Successful");
             }
+
             @Override
             public void onFailure(String errorMessage) {
                 authView.hideLoading();
@@ -58,6 +63,11 @@ public class LoginPresenterImp implements LoginPresenter {
 
     @Override
     public void loginWithFacebook(String accessToken) {
+        if (accessToken == null || accessToken.isEmpty()) {
+            authView.onError("Facebook authentication failed: Missing Token");
+            return;
+        }
+
         authView.showLoading();
         remoteDataSource.loginWithFacebook(accessToken, new AuthNetworkResponse() {
             @Override
@@ -65,6 +75,7 @@ public class LoginPresenterImp implements LoginPresenter {
                 authView.hideLoading();
                 authView.onSuccess("Facebook Login Successful");
             }
+
             @Override
             public void onFailure(String errorMessage) {
                 authView.hideLoading();
@@ -72,10 +83,11 @@ public class LoginPresenterImp implements LoginPresenter {
             }
         });
     }
-    private boolean isValidEmail(String email){
+    private boolean isValidEmail(String email) {
         return email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-    private boolean isValidPassword(String password){
+
+    private boolean isValidPassword(String password) {
         return password != null && password.length() >= 6;
     }
 }
