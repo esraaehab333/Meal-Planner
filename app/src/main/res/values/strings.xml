@@ -48,8 +48,8 @@
     <string name="diffecalty">Easy</string>
     <string name="category_name">Beef</string>
     <string name="home">Home</string>
-    <string name="search">Search</string>
-    <string name="favorite">Favorite</string>
+    <string name="planner">Planner</string>
+    <string name="favorite">Saved</string>
     <string name="account">Account</string>
     <string name="tag_string">TAG</string>
     <string name="area_category">Area • Category</string>
