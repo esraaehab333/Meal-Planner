@@ -25,7 +25,7 @@ public class SplashFragment extends Fragment {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.splashFragment) {
                 Navigation.findNavController(requireView())
-                        .navigate(R.id.action_splashFragment_to_searchFragment);
+                        .navigate(R.id.action_splashFragment_to_onboarding1Fregment);
             }
         }, 4500);
         return view;

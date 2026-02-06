@@ -15,9 +15,6 @@
             app:destination="@id/onboarding1Fregment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_splashFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFregment"
@@ -101,22 +98,15 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_placeholder"
+            android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.mealplanner.presentation.home.view.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search"/>
-            android:id="@+id/action_homeFragment_to_searchTestFragment"
-            app:destination="@id/searchTestFragment" />
+        tools:layout="@layout/fragment_search">
     </fragment>
-    <fragment
-        android:id="@+id/searchTestFragment"
-        android:name="com.example.mealplanner.presentation.home.view.SearchTestFragment"
-        android:label="SearchTest"
-        tools:layout="@layout/fragment_search_test" />
     <fragment
         android:id="@+id/plannerFragment"
         android:name="com.example.mealplanner.presentation.home.view.PlannerFragment"
@@ -134,6 +124,7 @@
         android:name="com.example.mealplanner.presentation.home.view.AccountFragment"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
+    <fragment
         android:id="@+id/mealFragment"
         android:name="com.example.mealplanner.presentation.home.view.MealFragment"
         android:label="fragment_meal"
