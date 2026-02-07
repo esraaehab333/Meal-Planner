@@ -11,7 +11,7 @@ import androidx.navigation.Navigation;
 
 import com.example.mealplanner.R;
 import com.example.mealplanner.presentation.auth.presenter.RegisterPresenterImp;
-import com.example.mealplanner.util.CustomSnackbar;
+import com.example.mealplanner.utils.CustomSnackbar;
 import com.example.mealplanner.utils.AuthValidator;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;

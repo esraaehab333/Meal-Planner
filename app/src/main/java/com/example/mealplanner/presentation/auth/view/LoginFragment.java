@@ -14,7 +14,7 @@ import androidx.navigation.Navigation;
 
 import com.example.mealplanner.R;
 import com.example.mealplanner.presentation.auth.presenter.LoginPresenterImp;
-import com.example.mealplanner.util.CustomSnackbar;
+import com.example.mealplanner.utils.CustomSnackbar;
 import com.example.mealplanner.utils.AuthValidator;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;

@@ -100,6 +100,12 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -128,6 +134,18 @@
         android:id="@+id/mealFragment"
         android:name="com.example.mealplanner.presentation.home.view.MealFragment"
         android:label="fragment_meal"
-        tools:layout="@layout/fragment_meal"/>
-
+        tools:layout="@layout/fragment_meal">
+        <argument
+            android:name="meal"
+            app:argType="com.example.mealplanner.models.Meal" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.mealplanner.presentation.home.view.CategoryFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_category" >
+        <argument
+            android:name="category"
+            app:argType="com.example.mealplanner.models.Category" />
+    </fragment>
 </navigation>

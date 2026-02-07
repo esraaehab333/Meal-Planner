@@ -20,9 +20,11 @@ import java.util.List;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
 
     private List<Category> categoryList;
+    private OnCatecoryClick listener;
 
-    public CategoryListAdapter() {
+    public CategoryListAdapter(OnCatecoryClick listener) {
         this.categoryList = new ArrayList<>();
+        this.listener = listener;
     }
     public void setCategoryList(List<Category> categoryList) {
         if (categoryList != null) {
@@ -67,6 +69,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                         .load(category.getStrCategoryThumb())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(imgCategory);
+                imgCategory.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.OnCatecoryClick(category);
+                    }
+                });
             }
         }
     }
