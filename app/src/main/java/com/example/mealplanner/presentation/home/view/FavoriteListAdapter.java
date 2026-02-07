@@ -19,15 +19,14 @@ import com.example.mealplanner.models.Meal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.PopularViewHolder> {
-
+public class FavoriteListAdapter  extends RecyclerView.Adapter<FavoriteListAdapter.FavoriteViewHolder> {
     private List<Meal> mealList ;
-    private OnMealClick listener;
-    public PopularListAdapter(OnMealClick listener) {
-        this.mealList = new ArrayList<>();
+    private OnFavoriteClick listener;
+    public FavoriteListAdapter(OnFavoriteClick listener){
+        mealList = new ArrayList<>();
         this.listener = listener;
     }
-    public void setMealList(List<Meal> mealList) {
+    public void setMealList(List<Meal>mealList){
         if (mealList != null) {
             this.mealList = mealList;
             notifyDataSetChanged();
@@ -36,14 +35,14 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
 
     @NonNull
     @Override
-    public PopularViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.home_meal_item_list, parent, false);
-        return new PopularViewHolder(view);
+        return new FavoriteViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PopularViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
         holder.bind(mealList.get(position));
     }
 
@@ -52,13 +51,13 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
         return mealList == null ? 0 : mealList.size();
     }
 
-    class PopularViewHolder extends RecyclerView.ViewHolder {
+    class FavoriteViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvMealName, tvTag, tvAreaCategory;
         ImageView imgMeal;
         Button btnViewRecipe;
         ImageButton btnFavorite;
-        public PopularViewHolder(@NonNull View itemView) {
+        public FavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMealName = itemView.findViewById(R.id.tvMealName);
             tvTag = itemView.findViewById(R.id.tvTag);
@@ -106,7 +105,7 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
                     .into(imgMeal);
             btnViewRecipe.setOnClickListener(v -> {
                 if (listener != null && meal.getIdMeal() != null) {
-                    listener.onMealClick(meal);
+                    listener.onClick(meal);
                 }
             });
         }

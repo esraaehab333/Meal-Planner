@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.mealplanner.R;
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
+import com.example.mealplanner.presentation.auth.presenter.LoginPresenterImp;
 import com.example.mealplanner.presentation.auth.presenter.RegisterPresenterImp;
 import com.example.mealplanner.utils.CustomSnackbar;
 import com.example.mealplanner.utils.AuthValidator;
@@ -26,6 +29,7 @@ public class RegisterFragment extends Fragment implements AuthView {
 
     private AppCompatButton signUpBtn;
     private MaterialButton signInBtn;
+    private SharedPreferanceDao sharedPref;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +37,9 @@ public class RegisterFragment extends Fragment implements AuthView {
 
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         initViews(view);
-        presenter = new RegisterPresenterImp(this);
+        sharedPref = new SharedPreferanceLocalDataSource(getContext());
+        presenter = new RegisterPresenterImp(this, sharedPref);
+
 
         signInBtn.setOnClickListener(v ->
                 Navigation.findNavController(v)

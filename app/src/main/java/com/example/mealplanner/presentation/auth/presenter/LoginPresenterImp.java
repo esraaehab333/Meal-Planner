@@ -1,5 +1,6 @@
 package com.example.mealplanner.presentation.auth.presenter;
 
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
 import com.example.mealplanner.datasource.auth.remote.AuthNetworkResponse;
 import com.example.mealplanner.datasource.auth.remote.AuthRemoteDataSource;
 import com.example.mealplanner.presentation.auth.view.AuthView;
@@ -8,8 +9,10 @@ public class LoginPresenterImp implements LoginPresenter {
 
     private AuthView authView;
     private AuthRemoteDataSource remoteDataSource;
-    public LoginPresenterImp(AuthView authView) {
+    private SharedPreferanceDao sharedPrefDao;
+    public LoginPresenterImp(AuthView authView,SharedPreferanceDao sharedPrefDao) {
         this.authView = authView;
+        this.sharedPrefDao = sharedPrefDao;
         this.remoteDataSource = new AuthRemoteDataSource();
     }
     @Override
@@ -26,7 +29,8 @@ public class LoginPresenterImp implements LoginPresenter {
         authView.showLoading();
         remoteDataSource.login(email, password, new AuthNetworkResponse() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(String userId) {
+                sharedPrefDao.saveUserId(userId);
                 authView.hideLoading();
                 authView.onSuccess("Welcome back!");
             }
@@ -48,7 +52,8 @@ public class LoginPresenterImp implements LoginPresenter {
         authView.showLoading();
         remoteDataSource.loginWithGoogle(idToken, new AuthNetworkResponse() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(String userId) {
+                sharedPrefDao.saveUserId(userId);
                 authView.hideLoading();
                 authView.onSuccess("Google Login Successful");
             }
@@ -71,7 +76,8 @@ public class LoginPresenterImp implements LoginPresenter {
         authView.showLoading();
         remoteDataSource.loginWithFacebook(accessToken, new AuthNetworkResponse() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(String userId) {
+                sharedPrefDao.saveUserId(userId);
                 authView.hideLoading();
                 authView.onSuccess("Facebook Login Successful");
             }

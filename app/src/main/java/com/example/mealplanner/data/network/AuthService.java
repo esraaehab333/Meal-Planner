@@ -28,7 +28,8 @@ public class AuthService {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        callback.onSuccess();
+                        String uid = firebaseAuth.getCurrentUser().getUid();
+                        callback.onSuccess(uid);
                     } else {
                         callback.onFailure(getErrorMessage(task.getException()));
                     }
@@ -70,7 +71,7 @@ public class AuthService {
         user.put("uid", uid);
         firebaseStore.collection("users").document(uid)
                 .set(user)
-                .addOnSuccessListener(result -> callback.onSuccess())
+                .addOnSuccessListener(result -> callback.onSuccess(uid))
                 .addOnFailureListener(e -> callback.onFailure("Firestore Error: " + e.getMessage()));
     }
 
@@ -78,7 +79,10 @@ public class AuthService {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) callback.onSuccess();
+                    if (task.isSuccessful()) {
+                        String uid = firebaseAuth.getCurrentUser().getUid();
+                        callback.onSuccess(uid);
+                    }
                     else callback.onFailure(getErrorMessage(task.getException()));
                 });
     }
@@ -87,7 +91,10 @@ public class AuthService {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) callback.onSuccess();
+                    if (task.isSuccessful()) {
+                        String uid = firebaseAuth.getCurrentUser().getUid();
+                        callback.onSuccess(uid);
+                    }
                     else callback.onFailure(getErrorMessage(task.getException()));
                 });
     }

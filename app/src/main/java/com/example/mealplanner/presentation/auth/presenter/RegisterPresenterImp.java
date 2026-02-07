@@ -1,5 +1,6 @@
 package com.example.mealplanner.presentation.auth.presenter;
 
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
 import com.example.mealplanner.datasource.auth.remote.AuthNetworkResponse;
 import com.example.mealplanner.datasource.auth.remote.AuthRemoteDataSource;
 import com.example.mealplanner.presentation.auth.view.AuthView;
@@ -8,8 +9,10 @@ public class RegisterPresenterImp implements RegisterPresenter {
 
     private AuthView authView;
     private AuthRemoteDataSource remoteDataSource;
-    public RegisterPresenterImp(AuthView authView) {
+    private SharedPreferanceDao sharedPrefDao;
+    public RegisterPresenterImp(AuthView authView, SharedPreferanceDao sharedPrefDao) {
         this.authView = authView;
+        this.sharedPrefDao = sharedPrefDao;
         this.remoteDataSource = new AuthRemoteDataSource();
     }
 
@@ -33,7 +36,8 @@ public class RegisterPresenterImp implements RegisterPresenter {
         authView.showLoading();
         remoteDataSource.register(email, username, password, new AuthNetworkResponse() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(String uid) {
+                sharedPrefDao.saveUserId(uid);
                 authView.hideLoading();
                 authView.onSuccess("Registration successful");
             }
