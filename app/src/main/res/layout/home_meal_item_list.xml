@@ -67,7 +67,6 @@
                 android:textColor="@color/white"
                 app:cornerRadius="20dp" />
         </LinearLayout>
-
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -78,9 +77,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:background="@drawable/shape_image_rounded"
                 android:clipToOutline="true"
                 android:src="@drawable/img_meal_test"/>
+
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_margin="12dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/shape_white_rounded"
+                android:src="@drawable/ic_fulled_heart"
+                android:scaleType="centerInside"
+                android:padding="6dp"
+                android:contentDescription="@string/favorite"
+                android:clickable="true"
+                android:focusable="true"/>
 
             <View
                 android:layout_width="match_parent"

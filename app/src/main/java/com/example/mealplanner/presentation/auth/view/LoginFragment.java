@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.mealplanner.R;
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
 import com.example.mealplanner.presentation.auth.presenter.LoginPresenterImp;
 import com.example.mealplanner.utils.CustomSnackbar;
 import com.example.mealplanner.utils.AuthValidator;
@@ -30,6 +32,7 @@ public class LoginFragment extends Fragment implements AuthView {
     private MaterialButton signUpBtn, googleBtn;
 
     private LoginPresenterImp presenter;
+    private SharedPreferanceDao sharedPref;
     private GoogleSignInClient googleClient;
     private ActivityResultLauncher<Intent> googleLauncher;
 
@@ -71,7 +74,8 @@ public class LoginFragment extends Fragment implements AuthView {
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         initViews(view);
-        presenter = new LoginPresenterImp(this);
+        sharedPref = new SharedPreferanceLocalDataSource(getContext());
+        presenter = new LoginPresenterImp(this, sharedPref);
 
         loginBtn.setOnClickListener(v -> {
             if (validateInputs()) {
