@@ -10,11 +10,10 @@ public class AuthRemoteDataSource {
     }
 
     public void login(String email, String password, AuthNetworkResponse callback) {
-        // نعدل الـ anonymous class هنا لتستقبل الـ userId
         authService.login(email, password, new AuthNetworkResponse() {
             @Override
             public void onSuccess(String userId) {
-                callback.onSuccess(userId); // تمرير الـ ID للـ Presenter
+                callback.onSuccess(userId);
             }
 
             @Override
