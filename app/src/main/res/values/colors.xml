@@ -11,4 +11,7 @@
     <color name="color_background">#FFF9F7</color>
     <color name="color_surface">#F5F5F5</color>
     <color name="color_error">#B3261E</color>
+    <color name="snackbar_error">#D32F2F</color>
+    <color name="snackbar_success">#2E7D32</color>
+
 </resources>

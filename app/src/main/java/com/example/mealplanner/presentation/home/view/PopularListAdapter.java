@@ -20,8 +20,12 @@ import java.util.List;
 
 public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.PopularViewHolder> {
 
-    private List<Meal> mealList = new ArrayList<>();
-
+    private List<Meal> mealList ;
+    private OnMealClick listener;
+    public PopularListAdapter(OnMealClick listener) {
+        this.mealList = new ArrayList<>();
+        this.listener = listener;
+    }
     public void setMealList(List<Meal> mealList) {
         if (mealList != null) {
             this.mealList = mealList;
@@ -97,6 +101,12 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
                     .placeholder(R.drawable.img_meal_test)
                     .error(R.drawable.img_meal_test)
                     .into(imgMeal);
+            btnViewRecipe.setOnClickListener(v -> {
+                if (listener != null && meal.getIdMeal() != null) {
+                    listener.onMealClick(meal);
+                }
+            });
+
         }
     }
 }

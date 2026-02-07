@@ -35,7 +35,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/join_us"
         android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +48,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/signup_subtitle"
         android:textAlignment="center"
+        android:textSize="14sp"
         android:textColor="@color/color_secondary_darker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +61,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/username"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline4"
         app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
@@ -77,6 +78,7 @@
         app:boxStrokeColor="@color/strock_color"
         app:boxBackgroundColor="@android:color/white"
         app:boxStrokeWidth="1dp"
+        app:errorIconDrawable="@null"
         app:boxStrokeWidthFocused="1.5dp"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
@@ -88,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/choose_username"
+            android:textSize="14sp"
             android:textColorHint="@color/color_secondary" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +101,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/email"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline4"
         app:layout_constraintTop_toBottomOf="@id/usernameTextInputLayout" />
@@ -115,6 +118,7 @@
         app:boxCornerRadiusTopStart="15dp"
         app:boxStrokeColor="@color/strock_color"
         app:boxStrokeWidth="1dp"
+        app:errorIconDrawable="@null"
         app:boxStrokeWidthFocused="1.5dp"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
@@ -127,6 +131,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="@string/enter_email"
+            android:textSize="14sp"
             android:textColorHint="@color/color_secondary" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,7 +142,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/password"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline4"
         app:layout_constraintTop_toBottomOf="@id/emailTextInputLayout" />
@@ -156,6 +161,7 @@
         app:boxStrokeColor="@color/strock_color"
         app:endIconTint="@color/color_secondary_darker"
         app:boxStrokeWidth="1dp"
+        app:errorIconDrawable="@null"
         app:boxStrokeWidthFocused="1.5dp"
         app:hintEnabled="false"
         app:endIconMode="password_toggle"
@@ -169,6 +175,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="@string/create_password"
+            android:textSize="14sp"
             android:textColorHint="@color/color_secondary" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,7 +186,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/confirm_password"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline4"
         app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout" />
@@ -198,6 +205,7 @@
         app:boxStrokeColor="@color/strock_color"
         app:endIconTint="@color/color_secondary_darker"
         app:boxStrokeWidth="1dp"
+        app:errorIconDrawable="@null"
         app:boxStrokeWidthFocused="1.5dp"
         app:hintEnabled="false"
         app:endIconMode="password_toggle"
@@ -210,6 +218,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:textSize="14sp"
             android:hint="@string/repeat_password"
             android:textColorHint="@color/color_secondary" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -225,6 +234,7 @@
         android:paddingBottom="18dp"
         android:shadowColor="@color/color_primary"
         android:text="@string/sign_up"
+        android:textSize="14sp"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
@@ -232,114 +242,22 @@
         app:layout_constraintTop_toBottomOf="@id/confirmPasswordTextInputLayout" />
 
     <LinearLayout
-        android:id="@+id/dividerLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@id/guideline5"
-        app:layout_constraintStart_toStartOf="@id/guideline4"
-        app:layout_constraintTop_toBottomOf="@id/signUpButton">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/color_secondary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:text="@string/sign_up_with"
-            android:textColor="@color/color_secondary"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/color_secondary" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/socialButtonsLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@id/guideline5"
-        app:layout_constraintStart_toStartOf="@id/guideline4"
-        app:layout_constraintTop_toBottomOf="@id/dividerLayout">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/googleButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif"
-            android:padding="12dp"
-            android:shadowColor="@color/color_primary"
-            android:text="@string/google"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="@android:color/white"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/ic_google"
-            app:iconGravity="textStart"
-            app:iconPadding="5dp"
-            app:iconTint="@null"
-            app:strokeColor="@color/color_secondary"
-            app:strokeWidth="1dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/facebookButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif"
-            android:padding="12dp"
-            android:shadowColor="@color/color_primary"
-            android:text="@string/facebook"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="@android:color/white"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/ic_facebook"
-            app:iconGravity="textStart"
-            app:iconPadding="5dp"
-            app:iconTint="@null"
-            app:strokeColor="@color/color_secondary"
-            app:strokeWidth="1dp" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/signInPromptLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/socialButtonsLayout">
+        app:layout_constraintTop_toBottomOf="@+id/signUpButton">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/already_have_account"
             android:textColor="@color/black"
-            android:textStyle="normal"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="normal" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/signInTextView"
@@ -347,19 +265,19 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="@string/sign_in"
             android:textColor="@color/color_primary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:backgroundTint="@android:color/transparent"
-            app:strokeWidth="0dp"
             app:rippleColor="?attr/colorControlHighlight"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            app:strokeWidth="0dp" />
 
     </LinearLayout>
 

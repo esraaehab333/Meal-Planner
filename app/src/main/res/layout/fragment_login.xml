@@ -35,7 +35,7 @@
         android:layout_marginTop="36dp"
         android:text="@string/welcome_back"
         android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +48,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/sign_in_subtitle"
         android:textAlignment="center"
+        android:textSize="14sp"
         android:textColor="@color/color_secondary_darker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +61,7 @@
         android:layout_marginTop="30dp"
         android:text="@string/email"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline4"
         app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
@@ -77,6 +78,7 @@
         app:boxStrokeColor="@color/strock_color"
         app:boxBackgroundColor="@android:color/white"
         app:boxStrokeWidth="1dp"
+        app:errorIconDrawable="@null"
         app:boxStrokeWidthFocused="1.5dp"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
@@ -88,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_email"
+            android:textSize="14sp"
             android:textColorHint="@color/color_secondary" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +101,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/password"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline4"
         app:layout_constraintTop_toBottomOf="@id/emailTextInputLayout" />
@@ -119,6 +122,7 @@
         app:boxStrokeWidth="1dp"
         app:boxStrokeWidthFocused="1.5dp"
         app:hintEnabled="false"
+        app:errorIconDrawable="@null"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
         app:layout_constraintStart_toStartOf="@id/guideline4"
@@ -129,6 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:textSize="14sp"
             android:hint="@string/enter_password"
             android:textColorHint="@color/color_secondary" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -145,6 +150,7 @@
         android:shadowColor="@color/color_primary"
         android:text="@string/sign_in"
         android:textAllCaps="false"
+        android:textSize="14sp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
         app:layout_constraintStart_toStartOf="@id/guideline4"
@@ -174,7 +180,7 @@
             android:paddingEnd="12dp"
             android:text="@string/or_continue_with"
             android:textColor="@color/color_secondary"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <View
             android:layout_width="0dp"

@@ -11,4 +11,6 @@ public interface AuthView {
     void onSuccess(String message);
 
     void onError(String errorMessage);
+    void setEmailError(String error);
+    void setPasswordError(String error);
 }

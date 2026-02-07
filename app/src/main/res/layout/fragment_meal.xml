@@ -94,6 +94,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/mealCategory"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="Chicken"
@@ -108,7 +109,7 @@
                     android:textColor="@color/gray" />
 
                 <TextView
-
+                    android:id="@+id/mealCountry"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="Japanese"
@@ -117,6 +118,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/mealTag"
                 android:layout_marginTop="6dp"
                 android:text="Spicy"
                 android:layout_height="wrap_content"
