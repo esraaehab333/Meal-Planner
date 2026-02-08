@@ -1,5 +1,6 @@
 package com.example.mealplanner.presentation.home.view;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSo
 import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
 import com.example.mealplanner.models.FavoriteEntity;
 import com.example.mealplanner.models.Meal;
+import com.example.mealplanner.utils.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,14 +45,20 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick {
 
         sharedPref = new SharedPreferanceLocalDataSource(requireContext());
         String currentUserId = sharedPref.getUserId();
-        if (currentUserId != null) {
-            favoriteLocalDataSource = new FavoriteLocalDataSource(requireContext(), currentUserId);
-            favoriteLocalDataSource.getFavoriteMeals()
-                    .observe(getViewLifecycleOwner(), favoriteEntities -> {
-                        adapter.setMealList(mapFavoritesToMeals(favoriteEntities));
-                    });
-        } else {
-            //navigate to login screen
+
+        if ("GUEST".equals(currentUserId)) {
+            CustomDialog.showGuestDialog(this);
+        }
+        else {
+            if (currentUserId != null) {
+                favoriteLocalDataSource = new FavoriteLocalDataSource(requireContext(), currentUserId);
+                favoriteLocalDataSource.getFavoriteMeals()
+                        .observe(getViewLifecycleOwner(), favoriteEntities -> {
+                            adapter.setMealList(mapFavoritesToMeals(favoriteEntities));
+                        });
+            } else {
+                //navigate to login screen
+            }
         }
         return view;
     }

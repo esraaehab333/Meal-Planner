@@ -4,4 +4,5 @@ public interface LoginPresenter {
     void login(String email, String password);
     void loginWithGoogle(String idToken);
     void loginWithFacebook(String accessToken);
+    void loginAsGuest();
 }

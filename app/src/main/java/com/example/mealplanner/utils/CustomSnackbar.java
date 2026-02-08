@@ -20,7 +20,7 @@ public class CustomSnackbar {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         View snackView = snackbar.getView();
         snackView.setBackgroundResource(R.drawable.shape_snack_bar_rounded);
-
+        snackView.setBackgroundColor(bgColor);
         TextView text = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
         text.setTextColor(view.getResources().getColor(android.R.color.white));
         text.setMaxLines(3);

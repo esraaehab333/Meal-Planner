@@ -15,6 +15,12 @@
             app:destination="@id/onboarding1Fregment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFregment"
@@ -131,6 +137,9 @@
         <action
             android:id="@+id/action_favoritesFragment_to_mealFragment"
             app:destination="@id/mealFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_registerFregment"
+            app:destination="@id/registerFregment" />
     </fragment>
 
     <fragment
