@@ -1,13 +1,17 @@
+// MealFragment.java (Fixed Version)
 package com.example.mealplanner.presentation.home.view;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,14 +19,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.R;
+import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
 import com.example.mealplanner.models.Ingredient;
 import com.example.mealplanner.models.Instruction;
 import com.example.mealplanner.models.Meal;
+import com.example.mealplanner.models.PlanEntity;
 import com.example.mealplanner.presentation.home.presenter.MealPresenter;
 import com.example.mealplanner.presentation.home.presenter.MealPresenterImp;
+import com.example.mealplanner.presentation.home.presenter.PlannerPresenter;
+import com.example.mealplanner.presentation.home.presenter.PlannerPresenterImp;
+import com.example.mealplanner.utils.CustomSnackbar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MealFragment extends Fragment implements MealView {
 
@@ -33,7 +44,9 @@ public class MealFragment extends Fragment implements MealView {
     InstructionAdapter instructionAdapter;
 
     private ImageButton favoriteBtn, backBtn;
+    private Button btnSetMealForDay;
     private MealPresenter presenter;
+    private PlannerPresenter plannerPresenter;
     private boolean isFavorite = false;
     private Meal currentMeal;
 
@@ -49,11 +62,12 @@ public class MealFragment extends Fragment implements MealView {
             }
         }
         if (currentMeal == null) {
-            Toast.makeText(requireContext(), "Meal data not found", Toast.LENGTH_SHORT).show();
+            CustomSnackbar.showError(requireView(), "Meal data not found");
             requireActivity().onBackPressed();
             return view;
         }
         presenter = new MealPresenterImp(this, requireContext());
+        initializePlannerPresenter();
         initViews(view);
         setupRecyclerViews();
         setupButtons();
@@ -62,11 +76,42 @@ public class MealFragment extends Fragment implements MealView {
         return view;
     }
 
+    private void initializePlannerPresenter() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MealPlannerPrefs", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", "");
+        PlanLocalDataSource localDataSource = new PlanLocalDataSource(requireContext(), userId);
+        plannerPresenter = new PlannerPresenterImp(new PlannerView() {
+            @Override
+            public void showPlannedMeals(List<PlanEntity> meals) {
+            }
+            @Override
+            public void showSuccessMessage(String message) {
+                if (isAdded() && getContext() != null) {
+                    CustomSnackbar.showError(requireView(),  message);
+                }
+            }
+            @Override
+            public void showErrorMessage(String message) {
+                if (isAdded() && getContext() != null) {
+                    CustomSnackbar.showError(requireView(), message);
+                }
+            }
+            @Override
+            public void showLoading() {
+            }
+            @Override
+            public void hideLoading() {
+            }
+        }, localDataSource, userId);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (presenter != null) {
             presenter.onDestroy();
+        }
+        if (plannerPresenter != null) {
+            plannerPresenter.onDestroy();
         }
     }
 
@@ -80,6 +125,7 @@ public class MealFragment extends Fragment implements MealView {
         mealCountry = view.findViewById(R.id.mealCountry);
         favoriteBtn = view.findViewById(R.id.btn_favorite);
         backBtn = view.findViewById(R.id.btn_back);
+        btnSetMealForDay = view.findViewById(R.id.btnSetMealForDay);
     }
 
     private void setupButtons() {
@@ -94,7 +140,39 @@ public class MealFragment extends Fragment implements MealView {
                 presenter.addToFav(currentMeal);
             }
         });
+        btnSetMealForDay.setOnClickListener(v -> {
+            showDatePickerDialog();
+        });
     }
+
+    private void showDatePickerDialog() {
+        if (!isAdded() || getContext() == null) {
+            return;
+        }
+        if (plannerPresenter == null) {
+            initializePlannerPresenter();
+        }
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(),
+                (view, year, month, dayOfMonth) -> {
+                    String selectedDate = String.format(Locale.getDefault(),
+                            "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+
+                    if (plannerPresenter != null && currentMeal != null) {
+                        plannerPresenter.addMealToPlan(currentMeal, selectedDate);
+                    } else {
+                        CustomSnackbar.showError(requireView(),  "Error: Unable to add meal to plan");
+                    }
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+    }
+
     private void setupRecyclerViews() {
         ingredientAdapter = new IngredientAdapter();
         instructionAdapter = new InstructionAdapter();
@@ -104,8 +182,8 @@ public class MealFragment extends Fragment implements MealView {
 
         rvInstructions.setLayoutManager(new LinearLayoutManager(getContext()));
         rvInstructions.setAdapter(instructionAdapter);
-
     }
+
     @Override
     public void showMeal(Meal meal) {
         mealName.setText(meal.getStrMeal());
@@ -139,12 +217,14 @@ public class MealFragment extends Fragment implements MealView {
 
     @Override
     public void showSuccessMessage(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+        CustomSnackbar.showError(requireView(), message);
     }
+
     @Override
     public void showErrorMessage(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+        CustomSnackbar.showError(requireView(),  message);
     }
+
     @Override
     public void showLoading() {
     }

@@ -11,4 +11,5 @@ public interface HomeView {
     void onGetMealOfDaySuccess(List<Meal> meals);
     void onFailure(String errorMessage);
     void onNoInternet();
+    void updateFavoriteIds(List<String> favoriteIds);
 }

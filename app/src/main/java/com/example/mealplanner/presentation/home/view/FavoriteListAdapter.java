@@ -19,14 +19,16 @@ import com.example.mealplanner.models.Meal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteListAdapter  extends RecyclerView.Adapter<FavoriteListAdapter.FavoriteViewHolder> {
-    private List<Meal> mealList ;
+public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapter.FavoriteViewHolder> {
+    private List<Meal> mealList;
     private OnFavoriteClick listener;
-    public FavoriteListAdapter(OnFavoriteClick listener){
+
+    public FavoriteListAdapter(OnFavoriteClick listener) {
         mealList = new ArrayList<>();
         this.listener = listener;
     }
-    public void setMealList(List<Meal>mealList){
+
+    public void setMealList(List<Meal> mealList) {
         if (mealList != null) {
             this.mealList = mealList;
             notifyDataSetChanged();
@@ -57,6 +59,7 @@ public class FavoriteListAdapter  extends RecyclerView.Adapter<FavoriteListAdapt
         ImageView imgMeal;
         Button btnViewRecipe;
         ImageButton btnFavorite;
+
         public FavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMealName = itemView.findViewById(R.id.tvMealName);
@@ -69,6 +72,7 @@ public class FavoriteListAdapter  extends RecyclerView.Adapter<FavoriteListAdapt
 
         void bind(Meal meal) {
             tvMealName.setText(meal.getStrMeal());
+
             if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
                 String[] tagsArray = meal.getStrTags().split(",");
                 if (tagsArray.length > 0) {
@@ -78,6 +82,7 @@ public class FavoriteListAdapter  extends RecyclerView.Adapter<FavoriteListAdapt
             } else {
                 tvTag.setVisibility(View.GONE);
             }
+
             StringBuilder areaCategory = new StringBuilder();
 
             if (meal.getStrArea() != null) {
@@ -89,20 +94,25 @@ public class FavoriteListAdapter  extends RecyclerView.Adapter<FavoriteListAdapt
                 }
                 areaCategory.append(meal.getStrCategory());
             }
-            if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
-                tvTag.setText(meal.getStrTags());
-                tvTag.setVisibility(View.VISIBLE);
-            } else {
-                tvTag.setVisibility(View.GONE);
-            }
 
             tvAreaCategory.setText(areaCategory.toString());
+
             Glide.with(itemView.getContext())
                     .load(meal.getStrMealThumb())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.img_meal_test)
                     .error(R.drawable.img_meal_test)
                     .into(imgMeal);
+
+            if (btnFavorite != null) {
+                btnFavorite.setImageResource(R.drawable.ic_fulled_heart);
+                btnFavorite.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.onRemoveFromFavorite(meal);
+                    }
+                });
+            }
+
             btnViewRecipe.setOnClickListener(v -> {
                 if (listener != null && meal.getIdMeal() != null) {
                     listener.onClick(meal);

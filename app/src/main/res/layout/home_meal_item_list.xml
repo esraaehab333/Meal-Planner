@@ -81,7 +81,7 @@
                 android:src="@drawable/img_meal_test"/>
 
             <ImageButton
-                android:id="@+id/btnFavorite"
+                android:id="@+id/btn_favorite"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_margin="12dp"

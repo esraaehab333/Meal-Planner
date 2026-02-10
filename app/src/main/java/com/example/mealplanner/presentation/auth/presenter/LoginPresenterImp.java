@@ -94,12 +94,4 @@ public class LoginPresenterImp implements LoginPresenter {
         sharedPrefDao.saveUserId("GUEST");
         authView.onSuccess("Logged in as Guest");
     }
-
-    private boolean isValidEmail(String email) {
-        return email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private boolean isValidPassword(String password) {
-        return password != null && password.length() >= 6;
-    }
 }

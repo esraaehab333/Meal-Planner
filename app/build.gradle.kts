@@ -52,12 +52,14 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    val room_version = "2.8.4"
-    implementation("androidx.room:room-runtime:$room_version")
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-rxjava3:${room_version}")
     annotationProcessor("androidx.room:room-compiler:$room_version")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.facebook.android:facebook-login:latest.release")
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("com.airbnb.android:lottie:6.1.0")
+    implementation("io.reactivex.rxjava3:rxjava:3.1.6")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 }

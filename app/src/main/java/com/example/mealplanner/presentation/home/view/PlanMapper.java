@@ -2,19 +2,21 @@ package com.example.mealplanner.presentation.home.view;
 
 import com.example.mealplanner.models.FavoriteEntity;
 import com.example.mealplanner.models.Meal;
+import com.example.mealplanner.models.PlanEntity;
 
 import java.util.List;
 
-public class FavoriteMapper {
+public class PlanMapper {
 
-    public static FavoriteEntity fromMeal(Meal meal, String userId) {
+    public static PlanEntity fromMeal(Meal meal, String userId,String date) {
         List<String> ingredientsList = meal.getIngredientsList();
         List<String> measuresList = meal.getMeasuresList();
 
         String[] ingredients = ingredientsList.toArray(new String[0]);
         String[] measures = measuresList.toArray(new String[0]);
 
-        return new FavoriteEntity(
+        return new PlanEntity(
+                date,
                 meal.getIdMeal(),
                 userId,
                 meal.getStrMeal(),
@@ -29,7 +31,7 @@ public class FavoriteMapper {
         );
     }
 
-    public static Meal toMeal(FavoriteEntity entity) {
+    public static Meal toMeal(PlanEntity entity) {
         Meal meal = new Meal();
         meal.setIdMeal(entity.idMeal);
         meal.setStrMeal(entity.strMeal);
@@ -39,8 +41,8 @@ public class FavoriteMapper {
         meal.setStrTags(entity.strTags);
         meal.setStrYoutube(entity.strYoutube);
         meal.setStrInstructions(entity.strInstructions);
-        meal.setIngredientsFromEntity(entity);
-        meal.setMeasuresFromEntity(entity);
+        meal.setIngredientsFromPlanEntity(entity);
+        meal.setMeasuresFromPlanEntity(entity);
 
         return meal;
     }

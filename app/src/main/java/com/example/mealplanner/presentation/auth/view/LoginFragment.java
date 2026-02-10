@@ -49,9 +49,7 @@ public class LoginFragment extends Fragment implements AuthView {
                         .requestEmail()
                         .requestIdToken(getString(R.string.default_web_client_id))
                         .build();
-
         googleClient = GoogleSignIn.getClient(requireActivity(), gso);
-
         googleLauncher =
                 registerForActivityResult(
                         new ActivityResultContracts.StartActivityForResult(),
@@ -154,11 +152,4 @@ public class LoginFragment extends Fragment implements AuthView {
         loginBtn.setEnabled(true);
     }
 
-    @Override public void setEmailError(String error) {
-        emailLayout.setError(error);
-    }
-
-    @Override public void setPasswordError(String error) {
-        passwordLayout.setError(error);
-    }
 }

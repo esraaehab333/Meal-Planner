@@ -29,11 +29,6 @@ public class SharedPreferanceLocalDataSource implements SharedPreferanceDao {
     }
 
     @Override
-    public void setOnboardingCompleted(boolean isCompleted) {
-        sharedPreferences.edit().putBoolean("IS_ONBOARDING_COMPLETED", isCompleted).apply();
-    }
-
-    @Override
     public boolean isOnboardingCompleted() {
         return sharedPreferences.getBoolean("IS_ONBOARDING_COMPLETED", false);
     }
