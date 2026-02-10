@@ -69,7 +69,7 @@ public class PlannerFragment extends Fragment implements PlannerView {
         tvTag = view.findViewById(R.id.tvTag);
         imgMeal = view.findViewById(R.id.imgMeal);
         btnViewRecipe = view.findViewById(R.id.btnViewRecipe);
-        btnFavorite = view.findViewById(R.id.btnFavorite);
+        btnFavorite = view.findViewById(R.id.btnDelete);
         mealCard = view.findViewById(R.id.mealCard);
         emptyStateLayout = view.findViewById(R.id.emptyStateLayout);
         ivEmptyState = view.findViewById(R.id.ivEmptyState);
@@ -134,7 +134,6 @@ public class PlannerFragment extends Fragment implements PlannerView {
             PlannerFragmentDirections.ActionPlannerFragmentToMealFragment action =
                     PlannerFragmentDirections.actionPlannerFragmentToMealFragment(meal);
             NavHostFragment.findNavController(this).navigate(action);
-           // CustomSnackbar.showSuccess(requireView(), "View Recipe: " + planEntity.strMeal);
         });
     }
 

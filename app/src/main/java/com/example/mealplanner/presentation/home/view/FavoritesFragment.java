@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,8 +32,7 @@ import java.util.List;
 public class FavoritesFragment extends Fragment implements OnFavoriteClick, FavoriteView {
 
     private RecyclerView rvFavorites;
-    private ProgressBar progressBar;
-    private TextView tvEmptyState;
+    private LinearLayout llEmptyState;
     private FavoriteListAdapter adapter;
     private FavoritePresenter presenter;
     private SharedPreferanceDao sharedPref;
@@ -51,8 +53,7 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
 
     private void initViews(View view) {
         rvFavorites = view.findViewById(R.id.rvFavorites);
-        //progressBar = view.findViewById(R.id.progressBar);
-        //tvEmptyState = view.findViewById(R.id.tvEmptyState);
+        llEmptyState = view.findViewById(R.id.llEmptyState);
     }
 
     private void setupRecyclerView() {
@@ -66,7 +67,8 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
         String currentUserId = sharedPref.getUserId();
 
         if ("GUEST".equals(currentUserId)) {
-            CustomDialog.showGuestDialog(this);
+            showEmptyState();
+            showGuestLimitationDialog();
         } else {
             if (currentUserId != null) {
                 FavoriteLocalDataSource localDataSource =
@@ -78,6 +80,31 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
                 showErrorMessage("Please login first");
             }
         }
+    }
+
+    private void showGuestLimitationDialog() {
+        String message = "This feature is not available for <highlight>Guest</highlight> users. Please sign up to save favorites!";
+        CustomDialog dialog = CustomDialog.newInstance(
+                R.drawable.ic_lock,
+                "Feature Locked",
+                message,
+                "Sign Up",
+                "Cancel",
+                (dialogInterface, which) -> {
+                    navigateToSignUp();
+                },
+                null
+        );
+
+        dialog.show(getParentFragmentManager(), "GuestLimitationDialog");
+    }
+
+    private void navigateToSignUp() {
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav, true)
+                .build();
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_favoritesFragment_to_registerFregment, null, navOptions);
     }
 
     @Override
@@ -119,29 +146,22 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
 
     @Override
     public void showLoading() {
-        if (progressBar != null) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
         if (rvFavorites != null) {
             rvFavorites.setVisibility(View.GONE);
+        }
+        if (llEmptyState != null) {
+            llEmptyState.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void hideLoading() {
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
-        if (rvFavorites != null) {
-            rvFavorites.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
     public void showEmptyState() {
-        if (tvEmptyState != null) {
-            tvEmptyState.setVisibility(View.VISIBLE);
-            tvEmptyState.setText("No favorite meals");
+        if (llEmptyState != null) {
+            llEmptyState.setVisibility(View.VISIBLE);
         }
         if (rvFavorites != null) {
             rvFavorites.setVisibility(View.GONE);
@@ -150,8 +170,8 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
 
     @Override
     public void hideEmptyState() {
-        if (tvEmptyState != null) {
-            tvEmptyState.setVisibility(View.GONE);
+        if (llEmptyState != null) {
+            llEmptyState.setVisibility(View.GONE);
         }
         if (rvFavorites != null) {
             rvFavorites.setVisibility(View.VISIBLE);
