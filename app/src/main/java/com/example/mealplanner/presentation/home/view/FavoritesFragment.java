@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,43 +18,66 @@ import com.example.mealplanner.R;
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
 import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
-import com.example.mealplanner.models.FavoriteEntity;
 import com.example.mealplanner.models.Meal;
+import com.example.mealplanner.presentation.home.presenter.FavoritePresenter;
+import com.example.mealplanner.presentation.home.presenter.FavoritePresenterImp;
+import com.example.mealplanner.utils.CustomDialog;
+import com.example.mealplanner.utils.CustomSnackbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesFragment extends Fragment implements OnFavoriteClick {
+public class FavoritesFragment extends Fragment implements OnFavoriteClick, FavoriteView {
 
     private RecyclerView rvFavorites;
+    private ProgressBar progressBar;
+    private TextView tvEmptyState;
     private FavoriteListAdapter adapter;
-    private FavoriteLocalDataSource favoriteLocalDataSource;
+    private FavoritePresenter presenter;
     private SharedPreferanceDao sharedPref;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
 
-        rvFavorites = view.findViewById(R.id.rvFavorites);
-        adapter = new FavoriteListAdapter(this);
+        initViews(view);
+        setupRecyclerView();
+        checkUserAndLoadFavorites();
 
+        return view;
+    }
+
+    private void initViews(View view) {
+        rvFavorites = view.findViewById(R.id.rvFavorites);
+        //progressBar = view.findViewById(R.id.progressBar);
+        //tvEmptyState = view.findViewById(R.id.tvEmptyState);
+    }
+
+    private void setupRecyclerView() {
+        adapter = new FavoriteListAdapter(this);
         rvFavorites.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvFavorites.setAdapter(adapter);
+    }
 
+    private void checkUserAndLoadFavorites() {
         sharedPref = new SharedPreferanceLocalDataSource(requireContext());
         String currentUserId = sharedPref.getUserId();
-        if (currentUserId != null) {
-            favoriteLocalDataSource = new FavoriteLocalDataSource(requireContext(), currentUserId);
-            favoriteLocalDataSource.getFavoriteMeals()
-                    .observe(getViewLifecycleOwner(), favoriteEntities -> {
-                        adapter.setMealList(mapFavoritesToMeals(favoriteEntities));
-                    });
+
+        if ("GUEST".equals(currentUserId)) {
+            CustomDialog.showGuestDialog(this);
         } else {
-            //navigate to login screen
+            if (currentUserId != null) {
+                FavoriteLocalDataSource localDataSource =
+                        new FavoriteLocalDataSource(requireContext(), currentUserId);
+                presenter = new FavoritePresenterImp(this, localDataSource);
+                presenter.getFavoriteMeals();
+            } else {
+                // Navigate to login screen
+                showErrorMessage("Please login first");
+            }
         }
-        return view;
     }
 
     @Override
@@ -62,24 +87,82 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick {
         NavHostFragment.findNavController(this).navigate(action);
     }
 
-    private List<Meal> mapFavoritesToMeals(List<FavoriteEntity> entities) {
-        List<Meal> meals = new ArrayList<>();
-
-        for (FavoriteEntity entity : entities) {
-            Meal meal = new Meal();
-            meal.setIdMeal(entity.idMeal);
-            meal.setStrMeal(entity.strMeal);
-            meal.setStrMealThumb(entity.strMealThumb);
-            meal.setStrCategory(entity.strCategory);
-            meal.setStrArea(entity.strArea);
-            meal.setStrTags(entity.strTags);
-            meal.setStrYoutube(entity.strYoutube);
-            meal.setStrInstructions(entity.strInstructions);
-            meal.setIngredientsFromEntity(entity);
-            meal.setMeasuresFromEntity(entity);
-
-            meals.add(meal);
+    @Override
+    public void onRemoveFromFavorite(Meal meal) {
+        if (presenter != null) {
+            presenter.deleteFavoriteMeal(FavoriteMapper.fromMeal(meal,sharedPref.getUserId()));
         }
-        return meals;
+    }
+
+    @Override
+    public void showFavoriteMeals(List<Meal> meals) {
+        if (meals != null && !meals.isEmpty()) {
+            adapter.setMealList(meals);
+            hideEmptyState();
+        } else {
+            showEmptyState();
+        }
+    }
+
+    @Override
+    public void showSuccessMessage(String message) {
+        CustomSnackbar.showError(requireView(),  message);
+        if (presenter != null) {
+            presenter.getFavoriteMeals();
+        }
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        CustomSnackbar.showError(requireView(),  message);
+    }
+
+    @Override
+    public void showLoading() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        if (rvFavorites != null) {
+            rvFavorites.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
+        if (rvFavorites != null) {
+            rvFavorites.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void showEmptyState() {
+        if (tvEmptyState != null) {
+            tvEmptyState.setVisibility(View.VISIBLE);
+            tvEmptyState.setText("No favorite meals");
+        }
+        if (rvFavorites != null) {
+            rvFavorites.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void hideEmptyState() {
+        if (tvEmptyState != null) {
+            tvEmptyState.setVisibility(View.GONE);
+        }
+        if (rvFavorites != null) {
+            rvFavorites.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (presenter != null) {
+            presenter.onDestroy();
+        }
     }
 }

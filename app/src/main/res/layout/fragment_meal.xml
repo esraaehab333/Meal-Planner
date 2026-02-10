@@ -202,19 +202,20 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/btnStartCooking"
+            android:id="@+id/btnSetMealForDay"
             android:layout_width="0dp"
-            android:padding="15dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/start_cooking_mode"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/color_primary"
-            app:layout_constraintTop_toBottomOf="@id/cardVideo"
-            app:layout_constraintStart_toStartOf="parent"
+            android:padding="15dp"
+            android:text="set meal to day"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardVideo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

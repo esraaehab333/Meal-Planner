@@ -21,10 +21,13 @@ import java.util.List;
 
 public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.PopularViewHolder> {
 
-    private List<Meal> mealList ;
+    private List<Meal> mealList;
+    private List<String> favoriteIds;
     private OnMealClick listener;
+
     public PopularListAdapter(OnMealClick listener) {
         this.mealList = new ArrayList<>();
+        this.favoriteIds = new ArrayList<>();
         this.listener = listener;
     }
     public void setMealList(List<Meal> mealList) {
@@ -32,6 +35,10 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
             this.mealList = mealList;
             notifyDataSetChanged();
         }
+    }
+    public void setFavoriteIds(List<String> favoriteIds) {
+        this.favoriteIds = favoriteIds != null ? favoriteIds : new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -71,41 +78,40 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
         void bind(Meal meal) {
             tvMealName.setText(meal.getStrMeal());
             if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
-                String[] tagsArray = meal.getStrTags().split(",");
-                if (tagsArray.length > 0) {
-                    tvTag.setText(tagsArray[0].trim().toUpperCase());
-                    tvTag.setVisibility(View.VISIBLE);
-                }
-            } else {
-                tvTag.setVisibility(View.GONE);
-            }
-            StringBuilder areaCategory = new StringBuilder();
-
-            if (meal.getStrArea() != null) {
-                areaCategory.append(meal.getStrArea());
-            }
-            if (meal.getStrCategory() != null) {
-                if (areaCategory.length() > 0) {
-                    areaCategory.append(" • ");
-                }
-                areaCategory.append(meal.getStrCategory());
-            }
-            if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
-                tvTag.setText(meal.getStrTags());
+                String[] tags = meal.getStrTags().split(",");
+                tvTag.setText(tags[0].trim().toUpperCase());
                 tvTag.setVisibility(View.VISIBLE);
             } else {
                 tvTag.setVisibility(View.GONE);
             }
-
-            tvAreaCategory.setText(areaCategory.toString());
+            String text = "";
+            if (meal.getStrArea() != null) text += meal.getStrArea();
+            if (meal.getStrCategory() != null) {
+                if (!text.isEmpty()) text += " • ";
+                text += meal.getStrCategory();
+            }
+            tvAreaCategory.setText(text);
             Glide.with(itemView.getContext())
                     .load(meal.getStrMealThumb())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.img_meal_test)
                     .error(R.drawable.img_meal_test)
                     .into(imgMeal);
+            boolean isFavorite = favoriteIds.contains(meal.getIdMeal());
+            btnFavorite.setImageResource(
+                    isFavorite ? R.drawable.ic_fulled_heart : R.drawable.ic_soild_heart
+            );
+            btnFavorite.setOnClickListener(v -> {
+                if (listener != null) {
+                    if (isFavorite) {
+                        listener.onRemoveFromFavorite(meal);
+                    } else {
+                        listener.onAddToFavorite(meal);
+                    }
+                }
+            });
             btnViewRecipe.setOnClickListener(v -> {
-                if (listener != null && meal.getIdMeal() != null) {
+                if (listener != null) {
                     listener.onMealClick(meal);
                 }
             });

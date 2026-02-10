@@ -11,8 +11,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="60dp"
         app:cardBackgroundColor="@color/color_secondary"
         app:cardCornerRadius="15dp"
@@ -22,8 +22,8 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_restaurant" />
     </com.google.android.material.card.MaterialCardView>
@@ -89,6 +89,7 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:hint="@string/enter_email"
             android:textSize="14sp"
             android:textColorHint="@color/color_secondary" />
@@ -133,6 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:hint="@string/enter_password"
             android:textColorHint="@color/color_secondary" />

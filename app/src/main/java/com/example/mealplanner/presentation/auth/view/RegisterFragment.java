@@ -125,10 +125,4 @@ public class RegisterFragment extends Fragment implements AuthView {
         signUpBtn.setEnabled(true);
     }
 
-    @Override public void setEmailError(String error) {
-        emailLayout.setError(error);
-    }
-    @Override public void setPasswordError(String error) {
-        passwordLayout.setError(error);
-    }
 }

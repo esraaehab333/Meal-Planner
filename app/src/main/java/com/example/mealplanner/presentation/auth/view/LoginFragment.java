@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.example.mealplanner.R;
@@ -30,7 +31,7 @@ public class LoginFragment extends Fragment implements AuthView {
     private TextInputLayout emailLayout, passwordLayout;
     private AppCompatButton loginBtn;
     private MaterialButton signUpBtn, googleBtn;
-
+    private AppCompatButton asGustBtn;
     private LoginPresenterImp presenter;
     private SharedPreferanceDao sharedPref;
     private GoogleSignInClient googleClient;
@@ -48,9 +49,7 @@ public class LoginFragment extends Fragment implements AuthView {
                         .requestEmail()
                         .requestIdToken(getString(R.string.default_web_client_id))
                         .build();
-
         googleClient = GoogleSignIn.getClient(requireActivity(), gso);
-
         googleLauncher =
                 registerForActivityResult(
                         new ActivityResultContracts.StartActivityForResult(),
@@ -94,6 +93,9 @@ public class LoginFragment extends Fragment implements AuthView {
         googleBtn.setOnClickListener(v ->
                 googleLauncher.launch(googleClient.getSignInIntent())
         );
+        asGustBtn.setOnClickListener(v-> {
+            presenter.loginAsGuest();
+        });
 
         return view;
     }
@@ -106,6 +108,7 @@ public class LoginFragment extends Fragment implements AuthView {
         loginBtn = view.findViewById(R.id.loginButton);
         signUpBtn = view.findViewById(R.id.signUpTextView);
         googleBtn = view.findViewById(R.id.googleButton);
+        asGustBtn=view.findViewById(R.id.asGustButton);
     }
 
     private boolean validateInputs() {
@@ -127,8 +130,12 @@ public class LoginFragment extends Fragment implements AuthView {
     @Override
     public void onSuccess(String message) {
         CustomSnackbar.showSuccess(requireView(), message);
+        NavOptions loginNavOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.loginFregment, true)
+                .build();
+
         Navigation.findNavController(requireView())
-                .navigate(R.id.action_loginFregment_to_homeFragment);
+                .navigate(R.id.action_loginFregment_to_homeFragment, null, loginNavOptions);
     }
 
     @Override
@@ -145,11 +152,4 @@ public class LoginFragment extends Fragment implements AuthView {
         loginBtn.setEnabled(true);
     }
 
-    @Override public void setEmailError(String error) {
-        emailLayout.setError(error);
-    }
-
-    @Override public void setPasswordError(String error) {
-        passwordLayout.setError(error);
-    }
 }

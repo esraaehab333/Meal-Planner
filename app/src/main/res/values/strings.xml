@@ -61,6 +61,9 @@
     <string name="instructions">Instructions</string>
     <string name="meal_details_title">Meal Details</string>
     <string name="quantaty">500g</string>
+    <string name="no_meal">Sorry, no meals for this day</string>
+    <string name="weekly_meal_plan">Weekly Meal Plan</string>
+    <string name="meal_of_the_day">"Meal of this Day"</string>
     <string name="facebook_app_id">1443463377184553</string>
     <string name="facebook_client_token">fa20f5125be619c12ca5e3b074abbaee</string>
     <string name="instructin_steps">Instruction text goes here</string>

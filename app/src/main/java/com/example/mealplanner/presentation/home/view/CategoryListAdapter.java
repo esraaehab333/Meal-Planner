@@ -20,9 +20,9 @@ import java.util.List;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
 
     private List<Category> categoryList;
-    private OnCatecoryClick listener;
+    private OnCategoryClick listener;
 
-    public CategoryListAdapter(OnCatecoryClick listener) {
+    public CategoryListAdapter(OnCategoryClick listener) {
         this.categoryList = new ArrayList<>();
         this.listener = listener;
     }

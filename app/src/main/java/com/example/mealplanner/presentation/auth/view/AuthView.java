@@ -1,8 +1,5 @@
 package com.example.mealplanner.presentation.auth.view;
 
-import android.content.Context;
-
-// AuthView.java
 public interface AuthView {
     void showLoading();
 
@@ -11,6 +8,4 @@ public interface AuthView {
     void onSuccess(String message);
 
     void onError(String errorMessage);
-    void setEmailError(String error);
-    void setPasswordError(String error);
 }

@@ -238,5 +238,49 @@ public class Meal implements Parcelable {
         this.strMeasure19 = entity.strMeasure19;
         this.strMeasure20 = entity.strMeasure20;
     }
-
+    public void setIngredientsFromPlanEntity(PlanEntity entity) {
+        this.strIngredient1 = entity.strIngredient1;
+        this.strIngredient2 = entity.strIngredient2;
+        this.strIngredient3 = entity.strIngredient3;
+        this.strIngredient4 = entity.strIngredient4;
+        this.strIngredient5 = entity.strIngredient5;
+        this.strIngredient6 = entity.strIngredient6;
+        this.strIngredient7 = entity.strIngredient7;
+        this.strIngredient8 = entity.strIngredient8;
+        this.strIngredient9 = entity.strIngredient9;
+        this.strIngredient10 = entity.strIngredient10;
+        this.strIngredient11 = entity.strIngredient11;
+        this.strIngredient12 = entity.strIngredient12;
+        this.strIngredient13 = entity.strIngredient13;
+        this.strIngredient14 = entity.strIngredient14;
+        this.strIngredient15 = entity.strIngredient15;
+        this.strIngredient16 = entity.strIngredient16;
+        this.strIngredient17 = entity.strIngredient17;
+        this.strIngredient18 = entity.strIngredient18;
+        this.strIngredient19 = entity.strIngredient19;
+        this.strIngredient20 = entity.strIngredient20;
+    }
+    public void setMeasuresFromPlanEntity(PlanEntity entity) {
+        this.strMeasure1 = entity.strMeasure1;
+        this.strMeasure2 = entity.strMeasure2;
+        this.strMeasure3 = entity.strMeasure3;
+        this.strMeasure4 = entity.strMeasure4;
+        this.strMeasure5 = entity.strMeasure5;
+        this.strMeasure6 = entity.strMeasure6;
+        this.strMeasure7 = entity.strMeasure7;
+        this.strMeasure8 = entity.strMeasure8;
+        this.strMeasure9 = entity.strMeasure9;
+        this.strMeasure10 = entity.strMeasure10;
+        this.strMeasure11 = entity.strMeasure11;
+        this.strMeasure12 = entity.strMeasure12;
+        this.strMeasure13 = entity.strMeasure13;
+        this.strMeasure14 = entity.strMeasure14;
+        this.strMeasure15 = entity.strMeasure15;
+        this.strMeasure16 = entity.strMeasure16;
+        this.strMeasure17 = entity.strMeasure17;
+        this.strMeasure18 = entity.strMeasure18;
+        this.strMeasure19 = entity.strMeasure19;
+        this.strMeasure20 = entity.strMeasure20;
+    }
 }
+
