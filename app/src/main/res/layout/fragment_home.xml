@@ -60,22 +60,6 @@
                         android:textColorHint="@color/gray"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/filterBtn"
-                    style="@style/Widget.MaterialComponents.Button.Icon"
-                    android:layout_width="54dp"
-                    android:layout_height="54dp"
-                    android:layout_marginStart="8dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:padding="0dp"
-                    app:backgroundTint="#FF8A47"
-                    app:cornerRadius="18dp"
-                    app:icon="@drawable/ic_filter"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconSize="24dp" />
             </LinearLayout>
 
             <TextView
@@ -171,7 +155,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center_vertical"
                             android:contentDescription="@string/meal_day_name"
-                            android:src="@drawable/ic_timing"
+                            android:src="@drawable/ic_category"
                             app:tint="@color/white" />
 
                         <TextView
@@ -189,7 +173,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="12dp"
                             android:contentDescription="@string/meal_of_day"
-                            android:src="@drawable/ic_filter"
+                            android:src="@drawable/ic_country"
                             app:tint="@android:color/white" />
 
                         <TextView
@@ -222,7 +206,7 @@
                 android:id="@+id/linearLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
@@ -236,18 +220,9 @@
                     android:layout_weight="1"
                     android:text="@string/categories"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/seeAllBtn"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/see_all"
-                    android:textAllCaps="false"
-                    android:textColor="@color/color_primary"
-                    android:textSize="14sp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -266,7 +241,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:gravity="center_vertical"
                 android:id="@+id/popularLinearLayout"
                 android:orientation="horizontal"
@@ -281,18 +256,9 @@
                     android:layout_weight="1"
                     android:text="@string/popular_meals"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
                     android:textStyle="bold"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/see_all"
-                    android:textAllCaps="false"
-                    android:textColor="@color/color_primary"
-                    android:textSize="14sp"  />
 
             </LinearLayout>
 

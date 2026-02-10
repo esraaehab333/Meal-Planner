@@ -17,6 +17,7 @@ import com.example.mealplanner.R;
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
 import com.example.mealplanner.presentation.auth.presenter.LoginPresenterImp;
+import com.example.mealplanner.utils.CustomDialog;
 import com.example.mealplanner.utils.CustomSnackbar;
 import com.example.mealplanner.utils.AuthValidator;
 import com.google.android.gms.auth.api.signin.*;
@@ -93,10 +94,22 @@ public class LoginFragment extends Fragment implements AuthView {
         googleBtn.setOnClickListener(v ->
                 googleLauncher.launch(googleClient.getSignInIntent())
         );
-        asGustBtn.setOnClickListener(v-> {
-            presenter.loginAsGuest();
-        });
+        asGustBtn.setOnClickListener(v -> {
+            String message = "You are about to continue as a <highlight>Guest</highlight>. Some features may be limited.";
 
+            CustomDialog dialog = CustomDialog.newInstance(
+                    R.drawable.ic_guest,
+                    "Continue as Guest?",
+                    message,
+                    "Continue",
+                    "Cancel",
+                    (dialogInterface, which) -> {
+                        presenter.loginAsGuest();
+                    },
+                    null
+            );
+            dialog.show(getParentFragmentManager(), "GuestDialog");
+        });
         return view;
     }
 
