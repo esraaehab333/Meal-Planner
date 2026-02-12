@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -17,20 +19,21 @@ import com.bumptech.glide.request.target.Target;
 import com.example.mealplanner.R;
 import com.example.mealplanner.data.models.Meal;
 import com.facebook.shimmer.ShimmerFrameLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder> {
 
     private List<Meal> mealList = new ArrayList<>();
-    private OnMealSearchClick listener;
+    private final OnMealSearchClick listener;
 
     public SearchResultAdapter(OnMealSearchClick listener) {
         this.listener = listener;
     }
 
     public void setMealList(List<Meal> mealList) {
-        this.mealList = mealList;
+        this.mealList = (mealList == null) ? new ArrayList<>() : mealList;
         notifyDataSetChanged();
     }
 
@@ -45,23 +48,18 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
         Meal meal = mealList.get(position);
-        holder.areaAndCategory.setText(meal.getStrMeal());
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onMealClick(meal);
-            }
-        });
+        holder.bind(meal);
     }
 
     @Override
     public int getItemCount() {
-        return mealList.size();
+        return mealList == null ? 0 : mealList.size();
     }
 
     class SearchResultViewHolder extends RecyclerView.ViewHolder {
-        private TextView mealName, areaAndCategory;
-        private ImageView mealImage;
-        private ShimmerFrameLayout shimmerContainer;
+        private final TextView mealName, areaAndCategory;
+        private final ImageView mealImage;
+        private final ShimmerFrameLayout shimmerContainer;
 
         public SearchResultViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,34 +70,42 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         }
 
         public void bind(Meal meal) {
+            if (meal == null) return;
+
             mealName.setText(meal.getStrMeal());
 
-            // Shimmer Logic
-            shimmerContainer.startShimmer();
-            shimmerContainer.setShimmer(new com.facebook.shimmer.Shimmer.AlphaHighlightBuilder().build());
+            // shimmer
+            if (shimmerContainer != null) {
+                shimmerContainer.startShimmer();
+                shimmerContainer.setShimmer(new com.facebook.shimmer.Shimmer.AlphaHighlightBuilder().build());
+            }
 
             Glide.with(itemView.getContext())
                     .load(meal.getStrMealThumb())
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            shimmerContainer.stopShimmer();
-                            shimmerContainer.setShimmer(null);
+                            if (shimmerContainer != null) {
+                                shimmerContainer.stopShimmer();
+                                shimmerContainer.setShimmer(null);
+                            }
                             return false;
                         }
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            shimmerContainer.stopShimmer();
-                            shimmerContainer.setShimmer(null);
+                            if (shimmerContainer != null) {
+                                shimmerContainer.stopShimmer();
+                                shimmerContainer.setShimmer(null);
+                            }
                             return false;
                         }
                     })
                     .into(mealImage);
 
             String text = "";
-            if (meal.getStrArea() != null) text += meal.getStrArea();
-            if (meal.getStrCategory() != null) {
+            if (meal.getStrArea() != null && !meal.getStrArea().trim().isEmpty()) text += meal.getStrArea();
+            if (meal.getStrCategory() != null && !meal.getStrCategory().trim().isEmpty()) {
                 if (!text.isEmpty()) text += " • ";
                 text += meal.getStrCategory();
             }

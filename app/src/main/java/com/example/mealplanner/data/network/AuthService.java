@@ -1,5 +1,6 @@
 package com.example.mealplanner.data.network;
 
+import com.example.mealplanner.data.models.UserModel;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -79,28 +80,6 @@ public class AuthService {
         }
     }
 
-    private Completable saveUsernameInFirebaseStore(String uid, String username, String email) {
-        return Completable.create(emitter -> {
-            Map<String, Object> user = new HashMap<>();
-            user.put("username", username);
-            user.put("email", email);
-            user.put("uid", uid);
-
-            firebaseStore.collection("users").document(uid)
-                    .set(user)
-                    .addOnSuccessListener(result -> {
-                        if (!emitter.isDisposed()) {
-                            emitter.onComplete();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        if (!emitter.isDisposed()) {
-                            emitter.onError(new Exception("Firestore Error: " + e.getMessage()));
-                        }
-                    });
-        });
-    }
-
     public Single<String> loginWithGoogle(String idToken) {
         return Single.create(emitter -> {
             AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -137,5 +116,40 @@ public class AuthService {
 
     public void logout() {
         firebaseAuth.signOut();
+    }
+    public Single<UserModel> getUserProfile(String uid) {
+        return Single.create(emitter -> {
+            firebaseStore.collection("users").document(uid)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            UserModel user = documentSnapshot.toObject(UserModel.class);
+                            emitter.onSuccess(user);
+                        } else {
+                            emitter.onError(new Exception("User data not found in Firestore"));
+                        }
+                    })
+                    .addOnFailureListener(e -> emitter.onError(e));
+        });
+    }
+    public Completable saveUsernameInFirebaseStore(String uid, String username, String email) {
+        return Completable.create(emitter -> {
+            Map<String, Object> user = new HashMap<>();
+            user.put("username", username);
+            user.put("email", email);
+            user.put("uid", uid);
+            firebaseStore.collection("users").document(uid)
+                    .set(user)
+                    .addOnSuccessListener(result -> {
+                        if (!emitter.isDisposed()) {
+                            emitter.onComplete();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        if (!emitter.isDisposed()) {
+                            emitter.onError(new Exception("Firestore Error: " + e.getMessage())); // الفشل
+                        }
+                    });
+        });
     }
 }

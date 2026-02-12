@@ -24,25 +24,18 @@ public class LoginPresenterImp implements LoginPresenter {
 
     @Override
     public void login(String email, String password) {
-        if (email.isEmpty()) {
-            authView.onError("VALIDATION_EMAIL_EMPTY");
-            return;
-        }
-        if (password.isEmpty()) {
-            authView.onError("VALIDATION_PASSWORD_EMPTY");
-            return;
-        }
-
         authView.showLoading();
         compositeDisposable.add(
                 remoteDataSource.login(email, password)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                userId -> {
-                                    sharedPrefDao.saveUserId(userId);
+                                userModel -> {
+                                    sharedPrefDao.saveUserId(userModel.getUid());
+                                    sharedPrefDao.saveUserName(userModel.getUsername());
+                                    sharedPrefDao.saveUserEmail(userModel.getEmail());
                                     authView.hideLoading();
-                                    authView.onSuccess("Welcome back!");
+                                    authView.onSuccess("Welcome " + userModel.getUsername());
                                 },
                                 error -> {
                                     authView.hideLoading();
@@ -54,21 +47,18 @@ public class LoginPresenterImp implements LoginPresenter {
 
     @Override
     public void loginWithGoogle(String idToken) {
-        if (idToken == null || idToken.isEmpty()) {
-            authView.onError("Google authentication failed: Missing Token");
-            return;
-        }
-
         authView.showLoading();
         compositeDisposable.add(
                 remoteDataSource.loginWithGoogle(idToken)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                userId -> {
-                                    sharedPrefDao.saveUserId(userId);
+                                userModel -> {
+                                    sharedPrefDao.saveUserId(userModel.getUid());
+                                    sharedPrefDao.saveUserName(userModel.getUsername());
+                                    sharedPrefDao.saveUserEmail(userModel.getEmail());
                                     authView.hideLoading();
-                                    authView.onSuccess("Google Login Successful");
+                                    authView.onSuccess("Google Login Success");
                                 },
                                 error -> {
                                     authView.hideLoading();
@@ -91,8 +81,11 @@ public class LoginPresenterImp implements LoginPresenter {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                userId -> {
-                                    sharedPrefDao.saveUserId(userId);
+                                userModel -> {
+                                    sharedPrefDao.saveUserId(userModel.getUid());
+                                    sharedPrefDao.saveUserName(userModel.getUsername());
+                                    sharedPrefDao.saveUserEmail(userModel.getEmail());
+
                                     authView.hideLoading();
                                     authView.onSuccess("Facebook Login Successful");
                                 },

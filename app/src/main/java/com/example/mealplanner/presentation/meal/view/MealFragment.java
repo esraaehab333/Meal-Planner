@@ -94,32 +94,28 @@ public class MealFragment extends Fragment implements MealView {
             @Override
             public void showSuccessMessage(String message) {
                 if (isAdded() && getContext() != null) {
-                    CustomSnackbar.showError(requireView(),  message);
+                    CustomSnackbar.showSuccess(requireView(), message);
                 }
             }
             @Override
             public void showErrorMessage(String message) {
                 if (isAdded() && getContext() != null) {
                     CustomSnackbar.showError(requireView(), message);
+                    Log.e("PLANNER_DEBUG", "Error: " + message);
                 }
             }
             @Override
-            public void showLoading() {
-            }
+            public void showLoading() {}
             @Override
-            public void hideLoading() {
-            }
+            public void hideLoading() {}
         }, localDataSource, userId);
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (presenter != null) {
-            presenter.onDestroy();
-        }
-        if (plannerPresenter != null) {
-            plannerPresenter.onDestroy();
-        }
+        if (presenter != null) presenter.onDestroy();
+        if (plannerPresenter != null) plannerPresenter.onDestroy();
     }
 
     private void initViews(View view) {
@@ -137,26 +133,20 @@ public class MealFragment extends Fragment implements MealView {
     }
 
     private void setupButtons() {
-        backBtn.setOnClickListener(v -> {
-            requireActivity().onBackPressed();
-        });
+        backBtn.setOnClickListener(v -> requireActivity().onBackPressed());
 
         favoriteBtn.setOnClickListener(v -> {
-            if (isFavorite) {
-                presenter.deleteFromFav(currentMeal);
-            } else {
-                presenter.addToFav(currentMeal);
-            }
+            if (isFavorite) presenter.deleteFromFav(currentMeal);
+            else presenter.addToFav(currentMeal);
         });
-        btnSetMealForDay.setOnClickListener(v -> {
-            showDatePickerDialog();
-        });
+
+        btnSetMealForDay.setOnClickListener(v -> showDatePickerDialog());
+
         playerView.setOnClickListener(v -> {
-            if (myYouTubePlayer != null) {
-                myYouTubePlayer.play();
-            }
+            if (myYouTubePlayer != null) myYouTubePlayer.play();
         });
     }
+
     public void showMealVideo(String videoId) {
         playerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
@@ -166,35 +156,32 @@ public class MealFragment extends Fragment implements MealView {
             }
         });
     }
+
     private String extractYoutubeId(String youtubeUrl) {
         if (youtubeUrl == null || youtubeUrl.isEmpty()) return null;
-        if (youtubeUrl.contains("v=")) {
-            return youtubeUrl.substring(youtubeUrl.indexOf("v=") + 2);
-        } else if (youtubeUrl.contains("youtu.be/")) {
-            return youtubeUrl.substring(youtubeUrl.lastIndexOf("/") + 1);
-        }
+        if (youtubeUrl.contains("v=")) return youtubeUrl.substring(youtubeUrl.indexOf("v=") + 2);
+        else if (youtubeUrl.contains("youtu.be/")) return youtubeUrl.substring(youtubeUrl.lastIndexOf("/") + 1);
         return youtubeUrl;
     }
 
     private void showDatePickerDialog() {
-        if (!isAdded() || getContext() == null) {
-            return;
-        }
-        if (plannerPresenter == null) {
-            initializePlannerPresenter();
-        }
+        if (!isAdded() || getContext() == null) return;
+        if (plannerPresenter == null) initializePlannerPresenter();
+
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 requireContext(),
-                R.style.CustomCalendarTheme,  // Add your theme here
+                R.style.CustomCalendarTheme,
                 (view, year, month, dayOfMonth) -> {
+
                     String selectedDate = String.format(Locale.getDefault(),
                             "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                    Log.d("PLANNER_DEBUG", "Attempting to save: " + currentMeal.getStrMeal() + " on " + selectedDate);
 
                     if (plannerPresenter != null && currentMeal != null) {
                         plannerPresenter.addMealToPlan(currentMeal, selectedDate);
                     } else {
-                        CustomSnackbar.showError(requireView(),  "Error: Unable to add meal to plan");
+                        CustomSnackbar.showError(requireView(), "Error: Unable to add meal to plan");
                     }
                 },
                 calendar.get(Calendar.YEAR),
@@ -208,10 +195,8 @@ public class MealFragment extends Fragment implements MealView {
     private void setupRecyclerViews() {
         ingredientAdapter = new IngredientAdapter();
         instructionAdapter = new InstructionAdapter();
-
         rvIngredients.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         rvIngredients.setAdapter(ingredientAdapter);
-
         rvInstructions.setLayoutManager(new LinearLayoutManager(getContext()));
         rvInstructions.setAdapter(instructionAdapter);
     }
@@ -235,8 +220,11 @@ public class MealFragment extends Fragment implements MealView {
         } else {
             mealTag.setVisibility(View.GONE);
         }
-        Log.d("TAG",extractYoutubeId (meal.getStrYoutube().toString()));
-        showMealVideo(extractYoutubeId (meal.getStrYoutube()));
+
+        if (meal.getStrYoutube() != null) {
+            showMealVideo(extractYoutubeId(meal.getStrYoutube()));
+        }
+
         loadIngredientsFromMeal(meal);
         loadInstructionsFromMeal(meal);
     }
@@ -250,31 +238,33 @@ public class MealFragment extends Fragment implements MealView {
 
     @Override
     public void showSuccessMessage(String message) {
-        CustomSnackbar.showError(requireView(), message);
+        CustomSnackbar.showSuccess(requireView(), message);
     }
 
     @Override
     public void showErrorMessage(String message) {
-        CustomSnackbar.showError(requireView(),  message);
+        CustomSnackbar.showError(requireView(), message);
     }
 
     @Override
-    public void showLoading() {
-    }
+    public void showLoading() {}
 
     @Override
-    public void hideLoading() {
-    }
+    public void hideLoading() {}
 
     private void loadIngredientsFromMeal(Meal meal) {
         List<IngredientMealDetails> ingredientList = new ArrayList<>();
         List<String> names = meal.getIngredientsList();
         List<String> amounts = meal.getMeasuresList();
-        for (int i = 0; i < names.size(); i++) {
-            String name = names.get(i);
-            String amount = i < amounts.size() ? amounts.get(i) : "";
-            String image = "https://www.themealdb.com/images/ingredients/" + name.replace(" ", "%20") + ".png";
-            ingredientList.add(new IngredientMealDetails(name, amount, image));
+        if (names != null) {
+            for (int i = 0; i < names.size(); i++) {
+                String name = names.get(i);
+                if (name != null && !name.isEmpty()) {
+                    String amount = (amounts != null && i < amounts.size()) ? amounts.get(i) : "";
+                    String image = "https://www.themealdb.com/images/ingredients/" + name.replace(" ", "%20") + ".png";
+                    ingredientList.add(new IngredientMealDetails(name, amount, image));
+                }
+            }
         }
         ingredientAdapter.setIngredients(ingredientList);
     }
@@ -282,25 +272,12 @@ public class MealFragment extends Fragment implements MealView {
     private void loadInstructionsFromMeal(Meal meal) {
         List<Instruction> instructionList = new ArrayList<>();
         if (meal.getStrInstructions() != null && !meal.getStrInstructions().isEmpty()) {
-            String normalized = meal.getStrInstructions()
-                    .replace("\r\n", "\n")
-                    .replace("\r", "\n");
-            String[] steps;
-            if (normalized.toLowerCase().contains("step")) {
-                steps = normalized.split("(?i)step \\d+\\s*\\n");
-            } else if (normalized.matches("(?s).*\\d+\\n.*")) {
-                steps = normalized.split("\\d+\\n");
-            } else {
-                steps = normalized.split("\\.\\s+");
-            }
+            String normalized = meal.getStrInstructions().replace("\r\n", "\n").replace("\r", "\n");
+            String[] steps = normalized.split("\\.\\s+");
             int index = 1;
             for (String step : steps) {
-                String trimmed = step.trim();
-                if (!trimmed.isEmpty()) {
-                    if (!trimmed.endsWith(".")) {
-                        trimmed += ".";
-                    }
-                    instructionList.add(new Instruction(index++, trimmed));
+                if (!step.trim().isEmpty()) {
+                    instructionList.add(new Instruction(index++, step.trim() + "."));
                 }
             }
         }

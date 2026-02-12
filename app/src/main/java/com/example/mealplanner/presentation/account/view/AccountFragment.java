@@ -1,14 +1,16 @@
 package com.example.mealplanner.presentation.account.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -22,8 +24,10 @@ import com.example.mealplanner.utils.CustomDialog;
 
 public class AccountFragment extends Fragment implements AccountView {
 
+    private static final String TAG = "AccountFragment";
     private AccountPresenter presenter;
-    private Button btnLogout;
+    private AppCompatButton btnLogout;
+    private TextView tvUserName, tvUserEmail;
     private SharedPreferanceLocalDataSource sharedPref;
 
     @Override
@@ -31,20 +35,26 @@ public class AccountFragment extends Fragment implements AccountView {
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvUserName = view.findViewById(R.id.tvUserName);
+        tvUserEmail = view.findViewById(R.id.tvUserEmail);
+        btnLogout = view.findViewById(R.id.btnLogout);
         sharedPref = new SharedPreferanceLocalDataSource(requireContext());
         presenter = new AccountPresenterImp(this, requireContext());
-        btnLogout = view.findViewById(R.id.btnLogout);
+        String name = sharedPref.getUserName();
+        String email = sharedPref.getUserEmail();
+        android.util.Log.d("DEBUG_DATA", "Name: " + name + " Email: " + email);
+        tvUserName.setText(name);
+        tvUserEmail.setText(email);
+
         if ("GUEST".equals(sharedPref.getUserId())) {
             btnLogout.setText("Exit Guest Mode");
         }
 
         btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
     }
-
     private void showLogoutConfirmationDialog() {
         String currentUserId = sharedPref.getUserId();
         boolean isGuest = "GUEST".equals(currentUserId);
@@ -59,9 +69,7 @@ public class AccountFragment extends Fragment implements AccountView {
                 message,
                 isGuest ? "Exit" : "Logout",
                 "Cancel",
-                (dialogInterface, which) -> {
-                    presenter.onLogoutClicked();
-                },
+                (dialogInterface, which) -> presenter.onLogoutClicked(),
                 (dialogInterface, which) -> dialogInterface.dismiss()
         );
         dialog.show(getParentFragmentManager(), "LogoutDialog");

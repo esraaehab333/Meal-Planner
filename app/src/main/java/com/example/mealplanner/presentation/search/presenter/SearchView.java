@@ -15,7 +15,5 @@ public interface SearchView {
     void onDisplayListIngredients(List<Ingredient> ingredients);
     void onDisplayListCategory(List<Category> categories);
     void onLoading(boolean isLoading);
-
-    // الميثود المسؤولة عن تمرير الوجبة الكاملة بعد الـ Lookup
     void onGetFullMealSuccess(Meal meal);
 }

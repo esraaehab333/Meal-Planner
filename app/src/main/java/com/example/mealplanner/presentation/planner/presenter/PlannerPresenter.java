@@ -7,6 +7,5 @@ public interface PlannerPresenter {
     void loadPlannedMealsForDate(String selectedDate);
     void addMealToPlan(Meal meal, String selectedDate);
     void removeMealFromPlan(PlanEntity planEntity);
-    void getPlannerMeal();
     void onDestroy();
 }

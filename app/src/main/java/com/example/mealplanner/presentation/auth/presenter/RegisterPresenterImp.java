@@ -38,17 +38,18 @@ public class RegisterPresenterImp implements RegisterPresenter {
             authView.onError("VALIDATION_PASSWORD_SHORT");
             return;
         }
-
         authView.showLoading();
         compositeDisposable.add(
                 remoteDataSource.register(email, username, password)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                uid -> {
-                                    sharedPrefDao.saveUserId(uid);
+                                userModel -> {
+                                    sharedPrefDao.saveUserId(userModel.getUid());
+                                    sharedPrefDao.saveUserName(userModel.getUsername());
+                                    sharedPrefDao.saveUserEmail(userModel.getEmail());
                                     authView.hideLoading();
-                                    authView.onSuccess("Registration successful");
+                                    authView.onSuccess("Success!");
                                 },
                                 error -> {
                                     authView.hideLoading();
@@ -66,7 +67,6 @@ public class RegisterPresenterImp implements RegisterPresenter {
         return password != null && password.length() >= 6;
     }
 
-    // Add this method to clean up subscriptions when the presenter is destroyed
     public void onDestroy() {
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             compositeDisposable.clear();

@@ -16,22 +16,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.R;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
-import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
-import com.example.mealplanner.data.models.Meal;
 import com.example.mealplanner.data.enitiy.PlanEntity;
+import com.example.mealplanner.data.models.Meal;
+import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
 import com.example.mealplanner.presentation.planner.presenter.PlannerPresenter;
 import com.example.mealplanner.presentation.planner.presenter.PlannerPresenterImp;
-import com.example.mealplanner.utils.CustomDialog;
-import com.example.mealplanner.utils.mapper.PlanMapper;
+import com.example.mealplanner.presentation.planner.view.PlannerFragmentDirections;
+import com.example.mealplanner.presentation.planner.view.PlannerView;
 import com.example.mealplanner.utils.CustomSnackbar;
+import com.example.mealplanner.utils.mapper.PlanMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,7 +49,6 @@ public class PlannerFragment extends Fragment implements PlannerView {
     private PlannerPresenter presenter;
     private String selectedDate;
     private PlanEntity currentPlanEntity;
-    private SharedPreferanceDao sharedPref;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -63,7 +59,6 @@ public class PlannerFragment extends Fragment implements PlannerView {
         PlanLocalDataSource localDataSource = new PlanLocalDataSource(requireContext(), userId);
         presenter = new PlannerPresenterImp(this, localDataSource, userId);
         initViews(view);
-        checkUserAndLoadPlanner();
         setupCalendar();
         selectedDate = getCurrentDate();
         presenter.loadPlannedMealsForDate(selectedDate);
@@ -83,49 +78,7 @@ public class PlannerFragment extends Fragment implements PlannerView {
         ivEmptyState = view.findViewById(R.id.ivEmptyState);
         tvEmptyMessage = view.findViewById(R.id.tvEmptyMessage);
     }
-    private void showGuestLimitationDialog() {
-        String message = "This feature is not available for <highlight>Guest</highlight> users. Please sign up to save favorites!";
-        CustomDialog dialog = CustomDialog.newInstance(
-                R.drawable.ic_lock,
-                "Feature Locked",
-                message,
-                "Sign Up",
-                "Cancel",
-                (dialogInterface, which) -> {
-                    navigateToSignUp();
-                },
-                null
-        );
 
-        dialog.show(getParentFragmentManager(), "GuestLimitationDialog");
-    }
-
-    private void navigateToSignUp() {
-        NavOptions navOptions = new NavOptions.Builder()
-                .setPopUpTo(R.id.nav, true)
-                .build();
-        Navigation.findNavController(requireView())
-                .navigate(R.id.action_plannerFragment_to_registerFregment, null, navOptions);
-    }
-    private void checkUserAndLoadPlanner() {
-        sharedPref = new SharedPreferanceLocalDataSource(requireContext());
-        String currentUserId = sharedPref.getUserId();
-
-        if ("GUEST".equals(currentUserId)) {
-            showEmptyState();
-            showGuestLimitationDialog();
-        } else {
-            if (currentUserId != null) {
-                PlanLocalDataSource localDataSource =
-                        new PlanLocalDataSource(requireContext(), currentUserId);
-                presenter = new PlannerPresenterImp(this, localDataSource, currentUserId);
-                presenter.getPlannerMeal();
-            } else {
-                // Navigate to login screen
-                showErrorMessage("Please login first");
-            }
-        }
-    }
     private void setupCalendar() {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override

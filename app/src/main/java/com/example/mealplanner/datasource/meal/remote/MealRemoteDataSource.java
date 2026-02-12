@@ -41,4 +41,7 @@ public class MealRemoteDataSource {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(MealResponse::getMeals);
     }
+    public Single<MealResponse> getMealsByCategory(String categoryName) {
+        return new NetworkApi().getMealService().filterByCategory(categoryName);
+    }
 }

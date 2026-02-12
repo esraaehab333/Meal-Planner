@@ -76,7 +76,6 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
                 presenter = new FavoritePresenterImp(this, localDataSource);
                 presenter.getFavoriteMeals();
             } else {
-                // Navigate to login screen
                 showErrorMessage("Please login first");
             }
         }

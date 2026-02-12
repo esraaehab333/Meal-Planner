@@ -1,8 +1,8 @@
 package com.example.mealplanner.presentation.planner.presenter;
 
-import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
-import com.example.mealplanner.data.models.Meal;
 import com.example.mealplanner.data.enitiy.PlanEntity;
+import com.example.mealplanner.data.models.Meal;
+import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
 import com.example.mealplanner.presentation.planner.view.PlannerView;
 
 import java.util.List;
@@ -92,29 +92,6 @@ public class PlannerPresenterImp implements PlannerPresenter {
                                     if (view != null) {
                                         view.hideLoading();
                                         view.showErrorMessage("Failed to remove meal");
-                                    }
-                                }
-                        )
-        );
-    }
-    @Override
-    public void getPlannerMeal() {
-        view.showLoading();
-        compositeDisposable.add(
-                localDataSource.getAllPlannedMeals()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                planEntities -> {
-                                    if (view != null) {
-                                        view.hideLoading();
-                                        view.showPlannedMeals(planEntities);
-                                    }
-                                },
-                                throwable -> {
-                                    if (view != null) {
-                                        view.hideLoading();
-                                        view.showErrorMessage("Failed to load planner");
                                     }
                                 }
                         )
