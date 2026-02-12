@@ -1,9 +1,8 @@
-// PlanLocalDataSource.java
 package com.example.mealplanner.datasource.plan.local;
 
 import android.content.Context;
 import com.example.mealplanner.data.db.PlannerDatabase;
-import com.example.mealplanner.models.PlanEntity;
+import com.example.mealplanner.data.enitiy.PlanEntity;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;

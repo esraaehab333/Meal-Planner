@@ -1,6 +1,7 @@
 package com.example.mealplanner.data.network;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkApi{
@@ -12,11 +13,11 @@ public class NetworkApi{
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
     public MealService getMealService(){
         if(mealService== null){
-            // if it is null use the create from retrofit to create it
             mealService = retrofit.create(MealService.class);
         }
         return mealService;

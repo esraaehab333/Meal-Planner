@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.mealplanner.datasource.favorite.local.FavoriteDao;
-import com.example.mealplanner.models.FavoriteEntity;
+import com.example.mealplanner.data.enitiy.FavoriteEntity;
 
 @Database(entities = {FavoriteEntity.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {

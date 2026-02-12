@@ -4,7 +4,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import com.example.mealplanner.models.PlanEntity;
+import com.example.mealplanner.data.enitiy.PlanEntity;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;

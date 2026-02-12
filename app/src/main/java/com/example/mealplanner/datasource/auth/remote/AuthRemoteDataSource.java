@@ -1,6 +1,7 @@
 package com.example.mealplanner.datasource.auth.remote;
 
 import com.example.mealplanner.data.network.AuthService;
+import io.reactivex.rxjava3.core.Single;
 
 public class AuthRemoteDataSource {
     private AuthService authService;
@@ -9,60 +10,20 @@ public class AuthRemoteDataSource {
         authService = new AuthService();
     }
 
-    public void login(String email, String password, AuthNetworkResponse callback) {
-        authService.login(email, password, new AuthNetworkResponse() {
-            @Override
-            public void onSuccess(String userId) {
-                callback.onSuccess(userId);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                callback.onFailure(errorMessage);
-            }
-        });
+    public Single<String> login(String email, String password) {
+        return authService.login(email, password);
     }
 
-    public void register(String email, String username, String password, AuthNetworkResponse callback) {
-        authService.register(email, username, password, new AuthNetworkResponse() {
-            @Override
-            public void onSuccess(String userId) {
-                callback.onSuccess(userId);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                callback.onFailure(errorMessage);
-            }
-        });
+    public Single<String> register(String email, String username, String password) {
+        return authService.register(email, username, password);
     }
 
-    public void loginWithGoogle(String idToken, AuthNetworkResponse callback) {
-        authService.loginWithGoogle(idToken, new AuthNetworkResponse() {
-            @Override
-            public void onSuccess(String userId) {
-                callback.onSuccess(userId);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                callback.onFailure(errorMessage);
-            }
-        });
+    public Single<String> loginWithGoogle(String idToken) {
+        return authService.loginWithGoogle(idToken);
     }
 
-    public void loginWithFacebook(String accessToken, AuthNetworkResponse callback) {
-        authService.loginWithFacebook(accessToken, new AuthNetworkResponse() {
-            @Override
-            public void onSuccess(String userId) {
-                callback.onSuccess(userId);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                callback.onFailure(errorMessage);
-            }
-        });
+    public Single<String> loginWithFacebook(String accessToken) {
+        return authService.loginWithFacebook(accessToken);
     }
 
     public void logout() {
