@@ -3,7 +3,7 @@ package com.example.mealplanner.datasource.favorite.local;
 import android.content.Context;
 
 import com.example.mealplanner.data.db.AppDatabase;
-import com.example.mealplanner.models.FavoriteEntity;
+import com.example.mealplanner.data.enitiy.FavoriteEntity;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.mealplanner.models.FavoriteEntity;
+import com.example.mealplanner.data.enitiy.FavoriteEntity;
 
 import java.util.List;
 

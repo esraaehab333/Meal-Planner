@@ -62,4 +62,10 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.1.0")
     implementation("io.reactivex.rxjava3:rxjava:3.1.6")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:13.0.0")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }

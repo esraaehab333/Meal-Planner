@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -33,6 +34,8 @@ public class LoginFragment extends Fragment implements AuthView {
     private AppCompatButton loginBtn;
     private MaterialButton signUpBtn, googleBtn;
     private AppCompatButton asGustBtn;
+    private ProgressBar loginProgressBar;
+
     private LoginPresenterImp presenter;
     private SharedPreferanceDao sharedPref;
     private GoogleSignInClient googleClient;
@@ -45,35 +48,34 @@ public class LoginFragment extends Fragment implements AuthView {
     }
 
     private void setupGoogle() {
-        GoogleSignInOptions gso =
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .build();
+
         googleClient = GoogleSignIn.getClient(requireActivity(), gso);
-        googleLauncher =
-                registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        result -> {
-                            if (result.getResultCode() == android.app.Activity.RESULT_OK) {
-                                try {
-                                    GoogleSignInAccount acc =
-                                            GoogleSignIn.getSignedInAccountFromIntent(result.getData())
-                                                    .getResult(ApiException.class);
-                                    presenter.loginWithGoogle(acc.getIdToken());
-                                } catch (ApiException e) {
-                                    CustomSnackbar.showError(requireView(), "Google login failed");
-                                }
-                            }
-                        });
+
+        googleLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == android.app.Activity.RESULT_OK) {
+                        try {
+                            GoogleSignInAccount acc = GoogleSignIn.getSignedInAccountFromIntent(result.getData())
+                                    .getResult(ApiException.class);
+                            presenter.loginWithGoogle(acc.getIdToken());
+                        } catch (ApiException e) {
+                            CustomSnackbar.showError(requireView(), "Google login failed");
+                        }
+                    }
+                });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         initViews(view);
+
         sharedPref = new SharedPreferanceLocalDataSource(getContext());
         presenter = new LoginPresenterImp(this, sharedPref);
 
@@ -94,9 +96,9 @@ public class LoginFragment extends Fragment implements AuthView {
         googleBtn.setOnClickListener(v ->
                 googleLauncher.launch(googleClient.getSignInIntent())
         );
-        asGustBtn.setOnClickListener(v -> {
-            String message = "You are about to continue as a <highlight>Guest</highlight>. Some features may be limited.";
 
+        asGustBtn.setOnClickListener(v -> {
+            String message = "You are about to continue as a Guest. Some features may be limited.";
             CustomDialog dialog = CustomDialog.newInstance(
                     R.drawable.ic_guest,
                     "Continue as Guest?",
@@ -110,6 +112,7 @@ public class LoginFragment extends Fragment implements AuthView {
             );
             dialog.show(getParentFragmentManager(), "GuestDialog");
         });
+
         return view;
     }
 
@@ -121,7 +124,8 @@ public class LoginFragment extends Fragment implements AuthView {
         loginBtn = view.findViewById(R.id.loginButton);
         signUpBtn = view.findViewById(R.id.signUpTextView);
         googleBtn = view.findViewById(R.id.googleButton);
-        asGustBtn=view.findViewById(R.id.asGustButton);
+        asGustBtn = view.findViewById(R.id.asGustButton);
+        loginProgressBar = view.findViewById(R.id.loginProgressBar);
     }
 
     private boolean validateInputs() {
@@ -130,12 +134,16 @@ public class LoginFragment extends Fragment implements AuthView {
         if (!AuthValidator.isEmailValid(emailET.getText().toString().trim())) {
             emailLayout.setError("Invalid email");
             valid = false;
-        } else emailLayout.setError(null);
+        } else {
+            emailLayout.setError(null);
+        }
 
         if (!AuthValidator.isPasswordValid(passwordET.getText().toString().trim())) {
             passwordLayout.setError("Invalid password");
             valid = false;
-        } else passwordLayout.setError(null);
+        } else {
+            passwordLayout.setError(null);
+        }
 
         return valid;
     }
@@ -146,7 +154,6 @@ public class LoginFragment extends Fragment implements AuthView {
         NavOptions loginNavOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.loginFregment, true)
                 .build();
-
         Navigation.findNavController(requireView())
                 .navigate(R.id.action_loginFregment_to_homeFragment, null, loginNavOptions);
     }
@@ -157,12 +164,31 @@ public class LoginFragment extends Fragment implements AuthView {
         CustomSnackbar.showError(requireView(), message);
     }
 
-    @Override public void showLoading() {
+    @Override
+    public void showLoading() {
         loginBtn.setEnabled(false);
+        loginBtn.setText("");  // Hide text
+        loginProgressBar.setVisibility(View.VISIBLE);
+
+        // Disable other interactive elements
+        emailET.setEnabled(false);
+        passwordET.setEnabled(false);
+        googleBtn.setEnabled(false);
+        asGustBtn.setEnabled(false);
+        signUpBtn.setEnabled(false);
     }
 
-    @Override public void hideLoading() {
+    @Override
+    public void hideLoading() {
         loginBtn.setEnabled(true);
-    }
+        loginBtn.setText(R.string.sign_in);  // Restore text
+        loginProgressBar.setVisibility(View.GONE);
 
+        // Re-enable other interactive elements
+        emailET.setEnabled(true);
+        passwordET.setEnabled(true);
+        googleBtn.setEnabled(true);
+        asGustBtn.setEnabled(true);
+        signUpBtn.setEnabled(true);
+    }
 }

@@ -8,11 +8,114 @@
     android:background="@color/color_background"
     tools:context=".presentation.home.view.HomeFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="@color/color_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="gone">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/empty_state"
+            android:contentDescription="@string/no_meals_found"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/no_meals_found"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/no_meals_description"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:textAlignment="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/noInternetLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="gone">
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/imag_no_internet"
+            android:contentDescription="@string/no_internet"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/no_internet"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/no_internet_description"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:textAlignment="center" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/retryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/retry"
+            android:textAllCaps="false"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            app:backgroundTint="@color/color_primary"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +161,9 @@
                         android:paddingTop="0dp"
                         android:paddingBottom="0dp"
                         android:textColorHint="@color/gray"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:focusable="false"
+                        android:clickable="true" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -71,7 +176,7 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -81,8 +186,8 @@
                 android:id="@+id/cardView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:cardCornerRadius="16dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:layout_constraintEnd_toEndOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -95,7 +200,7 @@
                     <ImageView
                         android:id="@+id/mealImage"
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="280dp"
                         android:contentDescription="@string/meal_day_name"
                         android:scaleType="centerCrop"
                         android:src="@drawable/img_meal_test"
@@ -103,7 +208,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="280dp"
                         android:background="@drawable/shape_gradiant_overlay"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -120,7 +225,7 @@
                         android:text="@string/meal_of_day"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -134,7 +239,7 @@
                         android:layout_marginBottom="8dp"
                         android:text="@string/meal_day_name"
                         android:textColor="@color/white"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/timeLayout"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -165,7 +270,7 @@
                             android:layout_marginStart="4dp"
                             android:text="@string/time"
                             android:textColor="@android:color/white"
-                            android:textSize="14sp" />
+                            android:textSize="10sp" />
 
                         <ImageView
                             android:layout_width="16dp"
@@ -183,7 +288,7 @@
                             android:id="@+id/mealArea"
                             android:text="@string/diffecalty"
                             android:textColor="@android:color/white"
-                            android:textSize="14sp" />
+                            android:textSize="10sp" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
@@ -193,7 +298,8 @@
                         android:layout_margin="16dp"
                         android:text="@string/view_recipe"
                         android:textAllCaps="false"
-                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
                         app:backgroundTint="@color/color_primary"
                         app:cornerRadius="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -220,7 +326,7 @@
                     android:layout_weight="1"
                     android:text="@string/categories"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -256,7 +362,7 @@
                     android:layout_weight="1"
                     android:text="@string/popular_meals"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:layout_marginBottom="10dp"
                     android:textStyle="bold"/>
 

@@ -1,6 +1,6 @@
 package com.example.mealplanner.data.network;
 
-import com.example.mealplanner.datasource.auth.remote.AuthNetworkResponse;
+import com.example.mealplanner.data.models.UserModel;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -15,6 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 public class AuthService {
 
     private FirebaseAuth firebaseAuth;
@@ -24,28 +27,41 @@ public class AuthService {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseStore = FirebaseFirestore.getInstance();
     }
-    public void login(String email, String password, AuthNetworkResponse callback) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String uid = firebaseAuth.getCurrentUser().getUid();
-                        callback.onSuccess(uid);
-                    } else {
-                        callback.onFailure(getErrorMessage(task.getException()));
-                    }
-                });
+
+    public Single<String> login(String email, String password) {
+        return Single.create(emitter -> {
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (!emitter.isDisposed()) {
+                            if (task.isSuccessful()) {
+                                String uid = firebaseAuth.getCurrentUser().getUid();
+                                emitter.onSuccess(uid);
+                            } else {
+                                emitter.onError(new Exception(getErrorMessage(task.getException())));
+                            }
+                        }
+                    });
+        });
     }
 
-    public void register(String email, String username, String password, AuthNetworkResponse callback) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String uid = task.getResult().getUser().getUid();
-                        saveUsernameInFirebaseStore(uid, username, email, callback);
-                    } else {
-                        callback.onFailure(getErrorMessage(task.getException()));
-                    }
-                });
+    public Single<String> register(String email, String username, String password) {
+        return Single.create(emitter -> {
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (!emitter.isDisposed()) {
+                            if (task.isSuccessful()) {
+                                String uid = task.getResult().getUser().getUid();
+                                saveUsernameInFirebaseStore(uid, username, email)
+                                        .subscribe(
+                                                () -> emitter.onSuccess(uid),
+                                                error -> emitter.onError(error)
+                                        );
+                            } else {
+                                emitter.onError(new Exception(getErrorMessage(task.getException())));
+                            }
+                        }
+                    });
+        });
     }
 
     private String getErrorMessage(Exception e) {
@@ -64,42 +80,76 @@ public class AuthService {
         }
     }
 
-    public void saveUsernameInFirebaseStore(String uid, String username, String email, AuthNetworkResponse callback) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("username", username);
-        user.put("email", email);
-        user.put("uid", uid);
-        firebaseStore.collection("users").document(uid)
-                .set(user)
-                .addOnSuccessListener(result -> callback.onSuccess(uid))
-                .addOnFailureListener(e -> callback.onFailure("Firestore Error: " + e.getMessage()));
+    public Single<String> loginWithGoogle(String idToken) {
+        return Single.create(emitter -> {
+            AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+            firebaseAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(task -> {
+                        if (!emitter.isDisposed()) {
+                            if (task.isSuccessful()) {
+                                String uid = firebaseAuth.getCurrentUser().getUid();
+                                emitter.onSuccess(uid);
+                            } else {
+                                emitter.onError(new Exception(getErrorMessage(task.getException())));
+                            }
+                        }
+                    });
+        });
     }
 
-    public void loginWithGoogle(String idToken, AuthNetworkResponse callback) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String uid = firebaseAuth.getCurrentUser().getUid();
-                        callback.onSuccess(uid);
-                    }
-                    else callback.onFailure(getErrorMessage(task.getException()));
-                });
-    }
-
-    public void loginWithFacebook(String accessToken, AuthNetworkResponse callback) {
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken);
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String uid = firebaseAuth.getCurrentUser().getUid();
-                        callback.onSuccess(uid);
-                    }
-                    else callback.onFailure(getErrorMessage(task.getException()));
-                });
+    public Single<String> loginWithFacebook(String accessToken) {
+        return Single.create(emitter -> {
+            AuthCredential credential = FacebookAuthProvider.getCredential(accessToken);
+            firebaseAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(task -> {
+                        if (!emitter.isDisposed()) {
+                            if (task.isSuccessful()) {
+                                String uid = firebaseAuth.getCurrentUser().getUid();
+                                emitter.onSuccess(uid);
+                            } else {
+                                emitter.onError(new Exception(getErrorMessage(task.getException())));
+                            }
+                        }
+                    });
+        });
     }
 
     public void logout() {
         firebaseAuth.signOut();
+    }
+    public Single<UserModel> getUserProfile(String uid) {
+        return Single.create(emitter -> {
+            firebaseStore.collection("users").document(uid)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            UserModel user = documentSnapshot.toObject(UserModel.class);
+                            emitter.onSuccess(user);
+                        } else {
+                            emitter.onError(new Exception("User data not found in Firestore"));
+                        }
+                    })
+                    .addOnFailureListener(e -> emitter.onError(e));
+        });
+    }
+    public Completable saveUsernameInFirebaseStore(String uid, String username, String email) {
+        return Completable.create(emitter -> {
+            Map<String, Object> user = new HashMap<>();
+            user.put("username", username);
+            user.put("email", email);
+            user.put("uid", uid);
+            firebaseStore.collection("users").document(uid)
+                    .set(user)
+                    .addOnSuccessListener(result -> {
+                        if (!emitter.isDisposed()) {
+                            emitter.onComplete();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        if (!emitter.isDisposed()) {
+                            emitter.onError(new Exception("Firestore Error: " + e.getMessage())); // الفشل
+                        }
+                    });
+        });
     }
 }

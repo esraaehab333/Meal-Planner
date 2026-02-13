@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
@@ -12,7 +13,6 @@ import androidx.navigation.Navigation;
 import com.example.mealplanner.R;
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
-import com.example.mealplanner.presentation.auth.presenter.LoginPresenterImp;
 import com.example.mealplanner.presentation.auth.presenter.RegisterPresenterImp;
 import com.example.mealplanner.utils.CustomSnackbar;
 import com.example.mealplanner.utils.AuthValidator;
@@ -23,23 +23,21 @@ import com.google.android.material.textfield.TextInputLayout;
 public class RegisterFragment extends Fragment implements AuthView {
 
     private RegisterPresenterImp presenter;
-
     private TextInputEditText usernameET, emailET, passwordET, confirmPasswordET;
     private TextInputLayout usernameLayout, emailLayout, passwordLayout, confirmPasswordLayout;
-
     private AppCompatButton signUpBtn;
     private MaterialButton signInBtn;
+    private ProgressBar signUpProgressBar;
     private SharedPreferanceDao sharedPref;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+
         initViews(view);
+
         sharedPref = new SharedPreferanceLocalDataSource(getContext());
         presenter = new RegisterPresenterImp(this, sharedPref);
-
 
         signInBtn.setOnClickListener(v ->
                 Navigation.findNavController(v)
@@ -72,6 +70,7 @@ public class RegisterFragment extends Fragment implements AuthView {
 
         signUpBtn = view.findViewById(R.id.signUpButton);
         signInBtn = view.findViewById(R.id.signInTextView);
+        signUpProgressBar = view.findViewById(R.id.signUpProgressBar);
     }
 
     private boolean validateInputs() {
@@ -82,24 +81,39 @@ public class RegisterFragment extends Fragment implements AuthView {
         String pass = passwordET.getText().toString().trim();
         String confirm = confirmPasswordET.getText().toString().trim();
 
-        usernameLayout.setError(name.isEmpty() ? "Username required" : null);
+        // Validate username
+        if (name.isEmpty()) {
+            usernameLayout.setError("Username required");
+            valid = false;
+        } else {
+            usernameLayout.setError(null);
+        }
 
+        // Validate email
         if (!AuthValidator.isEmailValid(email)) {
             emailLayout.setError("Invalid email");
             valid = false;
-        } else emailLayout.setError(null);
+        } else {
+            emailLayout.setError(null);
+        }
 
+        // Validate password
         if (!AuthValidator.isPasswordValid(pass)) {
             passwordLayout.setError("Password must be at least 6 chars");
             valid = false;
-        } else passwordLayout.setError(null);
+        } else {
+            passwordLayout.setError(null);
+        }
 
+        // Validate password confirmation
         if (!pass.equals(confirm)) {
             confirmPasswordLayout.setError("Passwords do not match");
             valid = false;
-        } else confirmPasswordLayout.setError(null);
+        } else {
+            confirmPasswordLayout.setError(null);
+        }
 
-        return valid && !name.isEmpty();
+        return valid;
     }
 
     @Override
@@ -118,11 +132,28 @@ public class RegisterFragment extends Fragment implements AuthView {
     @Override
     public void showLoading() {
         signUpBtn.setEnabled(false);
+        signUpBtn.setText("");  // Hide text
+        signUpProgressBar.setVisibility(View.VISIBLE);
+
+        // Disable input fields and navigation
+        usernameET.setEnabled(false);
+        emailET.setEnabled(false);
+        passwordET.setEnabled(false);
+        confirmPasswordET.setEnabled(false);
+        signInBtn.setEnabled(false);
     }
 
     @Override
     public void hideLoading() {
         signUpBtn.setEnabled(true);
-    }
+        signUpBtn.setText(R.string.sign_up);  // Restore text
+        signUpProgressBar.setVisibility(View.GONE);
 
+        // Re-enable input fields and navigation
+        usernameET.setEnabled(true);
+        emailET.setEnabled(true);
+        passwordET.setEnabled(true);
+        confirmPasswordET.setEnabled(true);
+        signInBtn.setEnabled(true);
+    }
 }

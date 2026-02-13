@@ -41,24 +41,17 @@ public class SplashFragment extends Fragment {
 
 
     private void handleNavigation() {
-        // التحقق إننا لسه واقفين في الـ Splash عشان ميحصلش Crash لو الـ Handler اتأخر
         if (isAdded() && Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.splashFragment) {
-
-            // تعريف الـ NavOptions لمسح الـ SplashFragment من الـ Back Stack تماماً
             NavOptions navOptions = new NavOptions.Builder()
                     .setPopUpTo(R.id.splashFragment, true)
                     .build();
-
             if (sharedPref.getUserId() != null) {
-                // مستخدم مسجل أو Guest -> للـ Home ومسح الـ Splash
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_splashFragment_to_homeFragment, null, navOptions);
             } else if (sharedPref.isOnboardingCompleted()) {
-                // خلص الأونبوردينج بس مش مسجل -> للـ Login ومسح الـ Splash
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_splashFragment_to_loginFregment, null, navOptions);
             } else {
-                // مستخدم جديد أول مرة -> للأونبوردينج ومسح الـ Splash
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_splashFragment_to_onboarding1Fregment, null, navOptions);
             }

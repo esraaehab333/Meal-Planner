@@ -7,6 +7,9 @@ public class SharedPreferanceLocalDataSource implements SharedPreferanceDao {
 
     private static final String PREF_NAME = "MealPlannerPrefs";
     private static final String KEY_USER_ID = "USER_ID";
+    private static final String KEY_USER_NAME = "USER_NAME";
+    private static final String KEY_USER_EMAIL = "USER_EMAIL";
+
     private final SharedPreferences sharedPreferences;
 
     public SharedPreferanceLocalDataSource(Context context) {
@@ -19,8 +22,28 @@ public class SharedPreferanceLocalDataSource implements SharedPreferanceDao {
     }
 
     @Override
+    public void saveUserName(String name) {
+        sharedPreferences.edit().putString(KEY_USER_NAME, name).apply();
+    }
+
+    @Override
+    public void saveUserEmail(String email) {
+        sharedPreferences.edit().putString(KEY_USER_EMAIL, email).apply();
+    }
+
+    @Override
     public String getUserId() {
         return sharedPreferences.getString(KEY_USER_ID, null);
+    }
+
+    @Override
+    public String getUserName() {
+        return sharedPreferences.getString(KEY_USER_NAME, "Guest User");
+    }
+
+    @Override
+    public String getUserEmail() {
+        return sharedPreferences.getString(KEY_USER_EMAIL, "No Email Found");
     }
 
     @Override

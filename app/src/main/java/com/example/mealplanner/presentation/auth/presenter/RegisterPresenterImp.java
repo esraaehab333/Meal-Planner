@@ -1,19 +1,25 @@
 package com.example.mealplanner.presentation.auth.presenter;
 
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
-import com.example.mealplanner.datasource.auth.remote.AuthNetworkResponse;
 import com.example.mealplanner.datasource.auth.remote.AuthRemoteDataSource;
 import com.example.mealplanner.presentation.auth.view.AuthView;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RegisterPresenterImp implements RegisterPresenter {
 
     private AuthView authView;
     private AuthRemoteDataSource remoteDataSource;
     private SharedPreferanceDao sharedPrefDao;
+    private CompositeDisposable compositeDisposable;
+
     public RegisterPresenterImp(AuthView authView, SharedPreferanceDao sharedPrefDao) {
         this.authView = authView;
         this.sharedPrefDao = sharedPrefDao;
         this.remoteDataSource = new AuthRemoteDataSource();
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -32,28 +38,38 @@ public class RegisterPresenterImp implements RegisterPresenter {
             authView.onError("VALIDATION_PASSWORD_SHORT");
             return;
         }
-
         authView.showLoading();
-        remoteDataSource.register(email, username, password, new AuthNetworkResponse() {
-            @Override
-            public void onSuccess(String uid) {
-                sharedPrefDao.saveUserId(uid);
-                authView.hideLoading();
-                authView.onSuccess("Registration successful");
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                authView.hideLoading();
-                authView.onError(errorMessage);
-            }
-        });
+        compositeDisposable.add(
+                remoteDataSource.register(email, username, password)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                userModel -> {
+                                    sharedPrefDao.saveUserId(userModel.getUid());
+                                    sharedPrefDao.saveUserName(userModel.getUsername());
+                                    sharedPrefDao.saveUserEmail(userModel.getEmail());
+                                    authView.hideLoading();
+                                    authView.onSuccess("Success!");
+                                },
+                                error -> {
+                                    authView.hideLoading();
+                                    authView.onError(error.getMessage());
+                                }
+                        )
+        );
     }
 
     private boolean isValidEmail(String email) {
         return email != null && !email.isEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
     private boolean isValidPassword(String password) {
         return password != null && password.length() >= 6;
+    }
+
+    public void onDestroy() {
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+            compositeDisposable.clear();
+        }
     }
 }

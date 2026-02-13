@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.R;
-import com.example.mealplanner.models.Category;
+import com.example.mealplanner.data.models.Category;
 
 import java.util.ArrayList;
 import java.util.List;

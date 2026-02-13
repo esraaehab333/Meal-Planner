@@ -115,23 +115,29 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.mealplanner.presentation.home.view.SearchFragment"
+        android:name="com.example.mealplanner.presentation.search.view.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
     </fragment>
     <fragment
         android:id="@+id/plannerFragment"
-        android:name="com.example.mealplanner.presentation.home.view.PlannerFragment"
+        android:name="com.example.mealplanner.presentation.planner.view.PlannerFragment"
         android:label="Planner"
         tools:layout="@layout/fragment_planner" >
         <action
             android:id="@+id/action_plannerFragment_to_mealFragment"
             app:destination="@id/mealFragment" />
+        <action
+            android:id="@+id/action_plannerFragment_to_registerFregment"
+            app:destination="@id/registerFregment" />
     </fragment>
 
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.mealplanner.presentation.home.view.FavoritesFragment"
+        android:name="com.example.mealplanner.presentation.favorite.view.FavoritesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
@@ -144,17 +150,17 @@
 
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.example.mealplanner.presentation.home.view.AccountFragment"
+        android:name="com.example.mealplanner.presentation.account.view.AccountFragment"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/mealFragment"
-        android:name="com.example.mealplanner.presentation.home.view.MealFragment"
+        android:name="com.example.mealplanner.presentation.meal.view.MealFragment"
         android:label="fragment_meal"
         tools:layout="@layout/fragment_meal">
         <argument
             android:name="meal"
-            app:argType="com.example.mealplanner.models.Meal" />
+            app:argType="com.example.mealplanner.data.models.Meal" />
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -163,6 +169,9 @@
         tools:layout="@layout/fragment_category" >
         <argument
             android:name="category"
-            app:argType="com.example.mealplanner.models.Category" />
+            app:argType="com.example.mealplanner.data.models.Category" />
+        <action
+            android:id="@+id/action_categoryFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
     </fragment>
 </navigation>
