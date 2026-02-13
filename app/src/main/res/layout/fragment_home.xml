@@ -176,7 +176,7 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -186,8 +186,8 @@
                 android:id="@+id/cardView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:cardCornerRadius="16dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:layout_constraintEnd_toEndOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -200,7 +200,7 @@
                     <ImageView
                         android:id="@+id/mealImage"
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="280dp"
                         android:contentDescription="@string/meal_day_name"
                         android:scaleType="centerCrop"
                         android:src="@drawable/img_meal_test"
@@ -208,7 +208,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="280dp"
                         android:background="@drawable/shape_gradiant_overlay"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -225,7 +225,7 @@
                         android:text="@string/meal_of_day"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -239,7 +239,7 @@
                         android:layout_marginBottom="8dp"
                         android:text="@string/meal_day_name"
                         android:textColor="@color/white"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/timeLayout"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -270,7 +270,7 @@
                             android:layout_marginStart="4dp"
                             android:text="@string/time"
                             android:textColor="@android:color/white"
-                            android:textSize="14sp" />
+                            android:textSize="10sp" />
 
                         <ImageView
                             android:layout_width="16dp"
@@ -288,7 +288,7 @@
                             android:id="@+id/mealArea"
                             android:text="@string/diffecalty"
                             android:textColor="@android:color/white"
-                            android:textSize="14sp" />
+                            android:textSize="10sp" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
@@ -298,7 +298,8 @@
                         android:layout_margin="16dp"
                         android:text="@string/view_recipe"
                         android:textAllCaps="false"
-                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
                         app:backgroundTint="@color/color_primary"
                         app:cornerRadius="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -325,7 +326,7 @@
                     android:layout_weight="1"
                     android:text="@string/categories"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -361,7 +362,7 @@
                     android:layout_weight="1"
                     android:text="@string/popular_meals"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:layout_marginBottom="10dp"
                     android:textStyle="bold"/>
 

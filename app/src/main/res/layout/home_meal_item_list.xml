@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/meal_name"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="6dp"/>
             <TextView
@@ -54,18 +54,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/area_category"
                 android:textColor="@color/gray"
-                android:textSize="11sp"
+                android:textSize="9sp"
                 android:layout_marginBottom="14dp"/>
 
             <Button
                 android:id="@+id/btnViewRecipe"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:textSize="12sp"
+                android:layout_height="35dp"
+                android:textSize="10sp"
                 android:backgroundTint="@color/color_primary"
                 android:text="@string/view_recipe"
                 android:textColor="@color/white"
-                app:cornerRadius="20dp" />
+                app:cornerRadius="15dp" />
         </LinearLayout>
         <FrameLayout
             android:layout_width="0dp"

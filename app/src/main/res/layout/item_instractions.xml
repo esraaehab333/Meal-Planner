@@ -8,11 +8,12 @@
 
     <TextView
         android:id="@+id/txtStepNumber"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/shape_instructions_background"
         android:gravity="center"
         android:text="1"
+        android:textSize="10sp"
         android:layout_marginTop="8dp"
         android:textColor="@color/color_primary"
         android:textStyle="bold"/>
@@ -25,5 +26,5 @@
         android:layout_marginStart="12dp"
         android:layout_weight="1"
         android:text="@string/instructin_steps"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 </LinearLayout>

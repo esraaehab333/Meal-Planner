@@ -68,6 +68,14 @@
     <string name="retry">Retry</string>
     <string name="no_meal">Sorry, no meals for this day</string>
     <string name="weekly_meal_plan">Weekly Meal Plan</string>
+    <string name="filter">Filters</string>
+    <string name="clear_all">Clear All</string>
+    <string name="catagory">Category</string>Category List
+    <string name="category_list">Category List</string>
+    <string name="watch_cook">Watch Cook</string>
+    <string name="set_meal_to_day">Set Meal To Day</string>
+    <string name="area">Area</string>
+    <string name="ingredient">Ingredient</string>
     <string name="meal_of_the_day">"Meal of this Day"</string>
     <string name="facebook_app_id">1443463377184553</string>
     <string name="facebook_client_token">fa20f5125be619c12ca5e3b074abbaee</string>

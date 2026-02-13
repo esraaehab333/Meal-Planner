@@ -76,7 +76,6 @@ public class PlannerPresenterImp implements PlannerPresenter {
 
     @Override
     public void removeMealFromPlan(PlanEntity planEntity) {
-        view.showLoading();
         compositeDisposable.add(
                 localDataSource.deleteMealFromPlan(planEntity)
                         .subscribeOn(Schedulers.io())
@@ -84,14 +83,12 @@ public class PlannerPresenterImp implements PlannerPresenter {
                         .subscribe(
                                 () -> {
                                     if (view != null) {
-                                        view.hideLoading();
-                                        view.showSuccessMessage("Meal removed from plan successfully");
+                                        view.showSuccessMessage("Meal deleted from your plan");
                                     }
                                 },
                                 throwable -> {
                                     if (view != null) {
-                                        view.hideLoading();
-                                        view.showErrorMessage("Failed to remove meal");
+                                        view.showErrorMessage("Error deleting meal: " + throwable.getMessage());
                                     }
                                 }
                         )

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.R;
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
 import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
 import com.example.mealplanner.data.models.IngredientMealDetails;
 import com.example.mealplanner.data.models.Instruction;
@@ -84,12 +85,17 @@ public class MealFragment extends Fragment implements MealView {
     }
 
     private void initializePlannerPresenter() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MealPlannerPrefs", Context.MODE_PRIVATE);
-        String userId = sharedPreferences.getString("userId", "");
+        SharedPreferanceLocalDataSource sharedPref = new SharedPreferanceLocalDataSource(requireContext());
+        String userId = sharedPref.getUserId();
+
+        Log.d("PLANNER_DEBUG", "Initialized Planner for UserID: " + userId);
+
         PlanLocalDataSource localDataSource = new PlanLocalDataSource(requireContext(), userId);
+
         plannerPresenter = new PlannerPresenterImp(new PlannerView() {
             @Override
             public void showPlannedMeals(List<PlanEntity> meals) {
+                // مش محتاجين نعرض حاجة هنا حالياً
             }
             @Override
             public void showSuccessMessage(String message) {
@@ -101,13 +107,11 @@ public class MealFragment extends Fragment implements MealView {
             public void showErrorMessage(String message) {
                 if (isAdded() && getContext() != null) {
                     CustomSnackbar.showError(requireView(), message);
-                    Log.e("PLANNER_DEBUG", "Error: " + message);
+                    Log.e("PLANNER_DEBUG", "Error from Presenter: " + message);
                 }
             }
-            @Override
-            public void showLoading() {}
-            @Override
-            public void hideLoading() {}
+            @Override public void showLoading() {}
+            @Override public void hideLoading() {}
         }, localDataSource, userId);
     }
 
@@ -166,22 +170,19 @@ public class MealFragment extends Fragment implements MealView {
 
     private void showDatePickerDialog() {
         if (!isAdded() || getContext() == null) return;
-        if (plannerPresenter == null) initializePlannerPresenter();
-
+        initializePlannerPresenter();
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 requireContext(),
                 R.style.CustomCalendarTheme,
                 (view, year, month, dayOfMonth) -> {
-
                     String selectedDate = String.format(Locale.getDefault(),
                             "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-                    Log.d("PLANNER_DEBUG", "Attempting to save: " + currentMeal.getStrMeal() + " on " + selectedDate);
-
+                    Log.d("PLANNER_DEBUG", "Adding Meal: " + currentMeal.getStrMeal() + " on Date: " + selectedDate);
                     if (plannerPresenter != null && currentMeal != null) {
                         plannerPresenter.addMealToPlan(currentMeal, selectedDate);
                     } else {
-                        CustomSnackbar.showError(requireView(), "Error: Unable to add meal to plan");
+                        showErrorMessage("Error: Unable to add meal");
                     }
                 },
                 calendar.get(Calendar.YEAR),

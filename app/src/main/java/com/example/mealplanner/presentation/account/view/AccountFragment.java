@@ -21,6 +21,7 @@ import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSo
 import com.example.mealplanner.presentation.account.presenter.AccountPresenter;
 import com.example.mealplanner.presentation.account.presenter.AccountPresenterImp;
 import com.example.mealplanner.utils.CustomDialog;
+import com.example.mealplanner.utils.CustomSnackbar;
 
 public class AccountFragment extends Fragment implements AccountView {
 
@@ -28,6 +29,7 @@ public class AccountFragment extends Fragment implements AccountView {
     private AccountPresenter presenter;
     private AppCompatButton btnLogout;
     private TextView tvUserName, tvUserEmail;
+    AppCompatButton btnSync ;
     private SharedPreferanceLocalDataSource sharedPref;
 
     @Override
@@ -41,6 +43,7 @@ public class AccountFragment extends Fragment implements AccountView {
         tvUserName = view.findViewById(R.id.tvUserName);
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         btnLogout = view.findViewById(R.id.btnLogout);
+        btnSync=view.findViewById(R.id.btnSync);
         sharedPref = new SharedPreferanceLocalDataSource(requireContext());
         presenter = new AccountPresenterImp(this, requireContext());
         String name = sharedPref.getUserName();
@@ -52,7 +55,9 @@ public class AccountFragment extends Fragment implements AccountView {
         if ("GUEST".equals(sharedPref.getUserId())) {
             btnLogout.setText("Exit Guest Mode");
         }
-
+        btnSync.setOnClickListener(v -> {
+            presenter.onSyncClicked();
+        });
         btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
     }
     private void showLogoutConfirmationDialog() {
@@ -88,6 +93,15 @@ public class AccountFragment extends Fragment implements AccountView {
 
     @Override
     public void showLogoutError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        CustomSnackbar.showError(getView(),message);
+    }
+    @Override
+    public void showSyncSuccess() {
+        CustomSnackbar.showError(getView(),"Data synced successfully to cloud!");
+    }
+
+    @Override
+    public void showSyncError(String error) {
+        CustomSnackbar.showError(getView(),"Sync Failed");
     }
 }

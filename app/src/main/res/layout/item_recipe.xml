@@ -11,13 +11,13 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="134dp"
         app:shimmer_auto_start="true">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivMealImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="132dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/RoundedImageStyle"
             tools:src="@drawable/img_meal_test" />
@@ -31,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/meal_name"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="@string/area_category"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:ellipsize="end"
         android:gravity="start" />
     </LinearLayout>

@@ -39,7 +39,7 @@
             android:layout_marginTop="12dp"
             android:text="@string/join_us"
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
             android:text="@string/signup_subtitle"
             android:textAlignment="center"
             android:textColor="@color/color_secondary_darker"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/joinUsTextView" />
@@ -65,7 +65,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/username"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
             app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
@@ -106,7 +106,7 @@
             android:layout_marginTop="12dp"
             android:text="@string/email"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
             app:layout_constraintTop_toBottomOf="@id/usernameTextInputLayout" />
@@ -148,7 +148,7 @@
             android:layout_marginTop="12dp"
             android:text="@string/password"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
             app:layout_constraintTop_toBottomOf="@id/emailTextInputLayout" />
@@ -193,7 +193,7 @@
             android:layout_marginTop="12dp"
             android:text="@string/confirm_password"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
             app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout" />
@@ -267,8 +267,7 @@
             android:id="@+id/signInPromptLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="70dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

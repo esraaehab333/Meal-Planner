@@ -16,7 +16,7 @@ public class PlanLocalDataSource {
         this.currentUserId = userId;
     }
     public Flowable<List<PlanEntity>> getAllPlannedMeals() {
-        return planDao.getAllPlannedMeals(currentUserId);
+        return planDao.getAllPlannedMeals();
     }
     public Flowable<List<PlanEntity>> getMealsByDate(String selectedDate) {
         return planDao.getMealsByDate(selectedDate, currentUserId);
@@ -28,5 +28,8 @@ public class PlanLocalDataSource {
     public Completable deleteMealFromPlan(PlanEntity plan) {
         return Completable.fromAction(() ->
                 planDao.deleteMealFromPlan(plan));
+    }
+    public Completable deleteAllPlans() {
+        return planDao.deleteAllPlansForUser(currentUserId);
     }
 }

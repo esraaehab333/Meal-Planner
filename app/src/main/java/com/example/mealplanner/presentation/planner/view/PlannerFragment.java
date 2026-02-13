@@ -1,7 +1,5 @@
 package com.example.mealplanner.presentation.planner.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.mealplanner.R;
 import com.example.mealplanner.data.enitiy.PlanEntity;
 import com.example.mealplanner.data.models.Meal;
+import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
 import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
 import com.example.mealplanner.presentation.planner.presenter.PlannerPresenter;
 import com.example.mealplanner.presentation.planner.presenter.PlannerPresenterImp;
@@ -34,17 +33,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 public class PlannerFragment extends Fragment implements PlannerView {
 
     private CalendarView calendarView;
     private TextView tvMealName, tvAreaCategory, tvTag;
-    private ImageView imgMeal, ivEmptyState;
+    private ImageView imgMeal;
     private Button btnViewRecipe;
-    private ImageButton btnFavorite;
+    private ImageButton btnDelete;
     private CardView mealCard;
     private LinearLayout emptyStateLayout;
-    private TextView tvEmptyMessage;
 
     private PlannerPresenter presenter;
     private String selectedDate;
@@ -54,14 +51,17 @@ public class PlannerFragment extends Fragment implements PlannerView {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_planner, container, false);
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MealPlannerPrefs", Context.MODE_PRIVATE);
-        String userId = sharedPreferences.getString("userId", "");
+        SharedPreferanceLocalDataSource sharedPref = new SharedPreferanceLocalDataSource(requireContext());
+        String userId = sharedPref.getUserId();
         PlanLocalDataSource localDataSource = new PlanLocalDataSource(requireContext(), userId);
         presenter = new PlannerPresenterImp(this, localDataSource, userId);
+
         initViews(view);
         setupCalendar();
+
         selectedDate = getCurrentDate();
         presenter.loadPlannedMealsForDate(selectedDate);
+
         return view;
     }
 
@@ -72,26 +72,20 @@ public class PlannerFragment extends Fragment implements PlannerView {
         tvTag = view.findViewById(R.id.tvTag);
         imgMeal = view.findViewById(R.id.imgMeal);
         btnViewRecipe = view.findViewById(R.id.btnViewRecipe);
-        btnFavorite = view.findViewById(R.id.btnDelete);
+        btnDelete = view.findViewById(R.id.btnDelete);
         mealCard = view.findViewById(R.id.mealCard);
         emptyStateLayout = view.findViewById(R.id.emptyStateLayout);
-        ivEmptyState = view.findViewById(R.id.ivEmptyState);
-        tvEmptyMessage = view.findViewById(R.id.tvEmptyMessage);
     }
 
     private void setupCalendar() {
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-                presenter.loadPlannedMealsForDate(selectedDate);
-            }
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+            presenter.loadPlannedMealsForDate(selectedDate);
         });
     }
 
     private String getCurrentDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        return sdf.format(new Date());
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
     @Override
@@ -99,77 +93,46 @@ public class PlannerFragment extends Fragment implements PlannerView {
         if (meals != null && !meals.isEmpty()) {
             currentPlanEntity = meals.get(0);
             displayMeal(currentPlanEntity);
-            showMealCard();
-            hideEmptyState();
+            mealCard.setVisibility(View.VISIBLE);
+            emptyStateLayout.setVisibility(View.GONE);
         } else {
             currentPlanEntity = null;
-            hideMealCard();
-            showEmptyState();
+            mealCard.setVisibility(View.GONE);
+            emptyStateLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private void displayMeal(PlanEntity planEntity) {
         tvMealName.setText(planEntity.strMeal);
         tvAreaCategory.setText(planEntity.strArea + " • " + planEntity.strCategory);
-
         if (planEntity.strTags != null && !planEntity.strTags.isEmpty()) {
-            String[] tags = planEntity.strTags.split(",");
-            tvTag.setText(tags[0].trim().toUpperCase());
+            tvTag.setText(planEntity.strTags.split(",")[0].trim().toUpperCase());
             tvTag.setVisibility(View.VISIBLE);
         } else {
             tvTag.setVisibility(View.GONE);
         }
-
-        Glide.with(this)
-                .load(planEntity.strMealThumb)
-                .placeholder(R.drawable.img_meal_test)
-                .error(R.drawable.img_meal_test)
-                .into(imgMeal);
-
-        btnFavorite.setOnClickListener(v -> {
+        Glide.with(this).load(planEntity.strMealThumb).into(imgMeal);
+        btnDelete.setOnClickListener(v -> {
             if (currentPlanEntity != null) {
                 presenter.removeMealFromPlan(currentPlanEntity);
+                mealCard.setVisibility(View.GONE);
+                emptyStateLayout.setVisibility(View.VISIBLE);
+                currentPlanEntity = null;
             }
         });
 
         btnViewRecipe.setOnClickListener(v -> {
-            Meal meal = PlanMapper.toMeal(currentPlanEntity);
+            Meal meal = PlanMapper.toMeal(planEntity);
             PlannerFragmentDirections.ActionPlannerFragmentToMealFragment action =
                     PlannerFragmentDirections.actionPlannerFragmentToMealFragment(meal);
             NavHostFragment.findNavController(this).navigate(action);
         });
     }
 
-    private void showMealCard() {
-        if (mealCard != null) {
-            mealCard.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void hideMealCard() {
-        if (mealCard != null) {
-            mealCard.setVisibility(View.GONE);
-        }
-    }
-
-    private void showEmptyState() {
-        if (emptyStateLayout != null) {
-            emptyStateLayout.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void hideEmptyState() {
-        if (emptyStateLayout != null) {
-            emptyStateLayout.setVisibility(View.GONE);
-        }
-    }
-
     @Override
     public void showSuccessMessage(String message) {
         CustomSnackbar.showSuccess(requireView(), message);
-        if (selectedDate != null) {
-            presenter.loadPlannedMealsForDate(selectedDate);
-        }
+        presenter.loadPlannedMealsForDate(selectedDate);
     }
 
     @Override
@@ -177,17 +140,12 @@ public class PlannerFragment extends Fragment implements PlannerView {
         CustomSnackbar.showError(requireView(), message);
     }
 
-    @Override
-    public void showLoading() {}
-
-    @Override
-    public void hideLoading() {}
+    @Override public void showLoading() {}
+    @Override public void hideLoading() {}
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (presenter != null) {
-            presenter.onDestroy();
-        }
+        if (presenter != null) presenter.onDestroy();
     }
 }
