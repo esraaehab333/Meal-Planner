@@ -6,7 +6,7 @@ import com.example.mealplanner.data.enitiy.PlanEntity;
 import java.util.List;
 
 public class PlanMapper {
-
+/*
     public static PlanEntity fromMeal(Meal meal, String userId,String date) {
         List<String> ingredientsList = meal.getIngredientsList();
         List<String> measuresList = meal.getMeasuresList();
@@ -28,7 +28,7 @@ public class PlanMapper {
                 ingredients,
                 measures
         );
-    }
+    }*/
 
     public static Meal toMeal(PlanEntity entity) {
         Meal meal = new Meal();

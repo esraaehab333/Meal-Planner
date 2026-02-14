@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +35,7 @@ import com.example.mealplanner.data.models.Category;
 import com.example.mealplanner.data.models.Meal;
 import com.example.mealplanner.presentation.home.presenter.HomePresenter;
 import com.example.mealplanner.presentation.home.presenter.HomePresenterImp;
+import com.example.mealplanner.utils.CustomDialog;
 import com.example.mealplanner.utils.CustomSnackbar;
 import com.google.android.material.button.MaterialButton;
 
@@ -118,6 +121,7 @@ public class HomeFragment extends Fragment
         searchEditText.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_homeFragment_to_searchFragment));
+
         viewRecipeBtn.setOnClickListener(v -> {
             if (mealOfTheDay != null) {
                 NavHostFragment.findNavController(this)
@@ -125,6 +129,7 @@ public class HomeFragment extends Fragment
                                 .actionHomeFragmentToMealFragment(mealOfTheDay));
             }
         });
+
         mealOfDayImage.setOnClickListener(v -> {
             if (mealOfTheDay != null) {
                 NavHostFragment.findNavController(this)
@@ -132,6 +137,7 @@ public class HomeFragment extends Fragment
                                 .actionHomeFragmentToMealFragment(mealOfTheDay));
             }
         });
+
         retryButton.setOnClickListener(v -> loadData());
     }
 
@@ -201,7 +207,6 @@ public class HomeFragment extends Fragment
 
     private void checkAllDataLoaded() {
         successCount++;
-
         if (successCount >= TOTAL_REQUESTS) {
             successCount = 0;
             boolean hasCategories = categoryAdapter.getItemCount() > 0;
@@ -213,6 +218,34 @@ public class HomeFragment extends Fragment
                 showContent();
             }
         }
+    }
+
+    private boolean isGuestUser() {
+        return sharedPreferanceLocalDataSource.getUserId().equals("GUEST");
+    }
+
+    private void showGuestLimitationDialog() {
+        String message = "This feature is not available for <highlight>Guest</highlight> users. Please sign up to save favorites!";
+        CustomDialog dialog = CustomDialog.newInstance(
+                R.drawable.ic_lock,
+                "Feature Locked",
+                message,
+                "Sign Up",
+                "Cancel",
+                (dialogInterface, which) -> {
+                    navigateToSignUp();
+                },
+                null
+        );
+
+        dialog.show(getParentFragmentManager(), "GuestLimitationDialog");
+    }
+    private void navigateToSignUp() {
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav, true)
+                .build();
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_homeFragment_to_loginFregment, null, navOptions);
     }
 
     @Override
@@ -251,7 +284,6 @@ public class HomeFragment extends Fragment
     @Override
     public void onFailure(String errorMessage) {
         successCount = 0;
-
         if (!isNetworkAvailable()) {
             showNoInternet();
         } else {
@@ -277,6 +309,10 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onAddToFavorite(Meal meal) {
+        if (isGuestUser()) {
+            showGuestLimitationDialog();
+            return;
+        }
         if (presenter != null) {
             presenter.addToFavorite(meal);
         }
@@ -284,6 +320,10 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onRemoveFromFavorite(Meal meal) {
+        if (isGuestUser()) {
+            showGuestLimitationDialog();
+            return;
+        }
         if (presenter != null) {
             presenter.removeFromFavorite(meal);
         }
@@ -304,8 +344,6 @@ public class HomeFragment extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (presenter != null) {
-            presenter = null;
-        }
+        presenter = null;
     }
 }

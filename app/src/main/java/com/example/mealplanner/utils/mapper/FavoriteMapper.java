@@ -28,7 +28,7 @@ public class FavoriteMapper {
                 measures
         );
     }
-
+/*
     public static Meal toMeal(FavoriteEntity entity) {
         Meal meal = new Meal();
         meal.setIdMeal(entity.idMeal);
@@ -43,5 +43,5 @@ public class FavoriteMapper {
         meal.setMeasuresFromEntity(entity);
 
         return meal;
-    }
+    }*/
 }

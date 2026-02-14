@@ -115,7 +115,6 @@ public class SearchFragment extends Fragment implements SearchView, OnMealSearch
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Dialog Triggers
         btnCategoryFilter.setOnClickListener(v -> showFilterDialog("Select Category", categoryList, selection -> {
             selectedCategory = selection;
             updateFilterButtonState(btnCategoryFilter, "Category", selectedCategory);
@@ -134,7 +133,7 @@ public class SearchFragment extends Fragment implements SearchView, OnMealSearch
             renderFiltered();
         }));
 
-        // Clear All
+
         if (btnClearFilters != null) {
             btnClearFilters.setOnClickListener(v -> clearAllFilters());
         }
@@ -266,8 +265,6 @@ public class SearchFragment extends Fragment implements SearchView, OnMealSearch
         renderFiltered();
     }
 
-    @Override public void onGetFullMealSuccess(Meal meal) {}
-    @Override public void onSearchSuccess(List<Meal> meals) {}
 
     @Override
     public void onDisplayListCategory(List<Category> categories) {

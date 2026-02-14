@@ -1,8 +1,6 @@
 package com.example.mealplanner.presentation.meal.view;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.R;
@@ -31,6 +32,7 @@ import com.example.mealplanner.presentation.meal.presenter.MealPresenterImp;
 import com.example.mealplanner.presentation.planner.presenter.PlannerPresenter;
 import com.example.mealplanner.presentation.planner.presenter.PlannerPresenterImp;
 import com.example.mealplanner.presentation.planner.view.PlannerView;
+import com.example.mealplanner.utils.CustomDialog;
 import com.example.mealplanner.utils.CustomSnackbar;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
@@ -94,9 +96,7 @@ public class MealFragment extends Fragment implements MealView {
 
         plannerPresenter = new PlannerPresenterImp(new PlannerView() {
             @Override
-            public void showPlannedMeals(List<PlanEntity> meals) {
-                // مش محتاجين نعرض حاجة هنا حالياً
-            }
+            public void showPlannedMeals(List<PlanEntity> meals) {}
             @Override
             public void showSuccessMessage(String message) {
                 if (isAdded() && getContext() != null) {
@@ -140,15 +140,56 @@ public class MealFragment extends Fragment implements MealView {
         backBtn.setOnClickListener(v -> requireActivity().onBackPressed());
 
         favoriteBtn.setOnClickListener(v -> {
+            SharedPreferanceLocalDataSource sharedPref = new SharedPreferanceLocalDataSource(requireContext());
+            String userId = sharedPref.getUserId();
+
+            if ("GUEST".equals(userId)) {
+                showGuestLimitationDialog();
+                return;
+            }
+
             if (isFavorite) presenter.deleteFromFav(currentMeal);
             else presenter.addToFav(currentMeal);
         });
 
-        btnSetMealForDay.setOnClickListener(v -> showDatePickerDialog());
+        btnSetMealForDay.setOnClickListener(v -> {
+            SharedPreferanceLocalDataSource sharedPref = new SharedPreferanceLocalDataSource(requireContext());
+            String userId = sharedPref.getUserId();
+
+            if ("GUEST".equals(userId)) {
+                showGuestLimitationDialog();
+                return;
+            }
+            showDatePickerDialog();
+        });
 
         playerView.setOnClickListener(v -> {
             if (myYouTubePlayer != null) myYouTubePlayer.play();
         });
+    }
+
+    private void showGuestLimitationDialog() {
+        String message = "This feature is not available for <highlight>Guest</highlight> users. Please sign up to save favorites!";
+        CustomDialog dialog = CustomDialog.newInstance(
+                R.drawable.ic_lock,
+                "Feature Locked",
+                message,
+                "Sign Up",
+                "Cancel",
+                (dialogInterface, which) -> {
+                    navigateToSignUp();
+                },
+                null
+        );
+
+        dialog.show(getParentFragmentManager(), "GuestLimitationDialog");
+    }
+    private void navigateToSignUp() {
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav, true)
+                .build();
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_mealFragment_to_loginFregment, null, navOptions);
     }
 
     public void showMealVideo(String videoId) {
@@ -178,7 +219,6 @@ public class MealFragment extends Fragment implements MealView {
                 (view, year, month, dayOfMonth) -> {
                     String selectedDate = String.format(Locale.getDefault(),
                             "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-                    Log.d("PLANNER_DEBUG", "Adding Meal: " + currentMeal.getStrMeal() + " on Date: " + selectedDate);
                     if (plannerPresenter != null && currentMeal != null) {
                         plannerPresenter.addMealToPlan(currentMeal, selectedDate);
                     } else {
@@ -247,11 +287,8 @@ public class MealFragment extends Fragment implements MealView {
         CustomSnackbar.showError(requireView(), message);
     }
 
-    @Override
-    public void showLoading() {}
-
-    @Override
-    public void hideLoading() {}
+    @Override public void showLoading() {}
+    @Override public void hideLoading() {}
 
     private void loadIngredientsFromMeal(Meal meal) {
         List<IngredientMealDetails> ingredientList = new ArrayList<>();

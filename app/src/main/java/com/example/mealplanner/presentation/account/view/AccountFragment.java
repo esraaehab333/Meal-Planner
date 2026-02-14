@@ -25,7 +25,6 @@ import com.example.mealplanner.utils.CustomSnackbar;
 
 public class AccountFragment extends Fragment implements AccountView {
 
-    private static final String TAG = "AccountFragment";
     private AccountPresenter presenter;
     private AppCompatButton btnLogout;
     private TextView tvUserName, tvUserEmail;

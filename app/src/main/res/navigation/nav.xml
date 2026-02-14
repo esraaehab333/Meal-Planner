@@ -112,6 +112,9 @@
         <action
             android:id="@+id/action_homeFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFregment"
+            app:destination="@id/loginFregment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -161,6 +164,9 @@
         <argument
             android:name="meal"
             app:argType="com.example.mealplanner.data.models.Meal" />
+        <action
+            android:id="@+id/action_mealFragment_to_loginFregment"
+            app:destination="@id/loginFregment" />
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
