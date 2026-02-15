@@ -6,11 +6,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "plan_meals")
+@Entity(tableName = "plan_meals",
+        primaryKeys = {"date","userId"})
 public class PlanEntity {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "idPlan")
-    public int planId;
     @NonNull
     @ColumnInfo(name = "date")
     public String date;
