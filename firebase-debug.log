@@ -1,0 +1,21 @@
+[debug] [2026-01-31T19:07:35.572Z] ----------------------------------------------------------------------
+[debug] [2026-01-31T19:07:35.575Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ANTER\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2026-01-31T19:07:35.575Z] CLI Version:   13.22.1
+[debug] [2026-01-31T19:07:35.576Z] Platform:      win32
+[debug] [2026-01-31T19:07:35.576Z] Node Version:  v20.16.0
+[debug] [2026-01-31T19:07:35.576Z] Time:          Sat Jan 31 2026 21:07:35 GMT+0200 (Eastern European Standard Time)
+[debug] [2026-01-31T19:07:35.576Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-31T19:07:35.580Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-31T19:07:35.581Z] > authorizing via signed-in user (esraaehabb333@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  E:\Projects\MealPlanner
+

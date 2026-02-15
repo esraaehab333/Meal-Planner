@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background"
+    android:padding="16dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        app:boxBackgroundColor="@color/white"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="28dp"
+        app:boxCornerRadiusBottomStart="28dp"
+        app:boxCornerRadiusTopEnd="28dp"
+        app:boxCornerRadiusTopStart="28dp"
+        app:boxStrokeColor="@color/color_secondary_darker"
+        app:boxStrokeWidth="1dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_search"
+        app:startIconTint="@color/gray">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/search_bar_home"
+            android:inputType="text"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="12sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_filter_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/filter"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/color_primary"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/searchInputLayout"/>
+
+    <TextView
+        android:id="@+id/btn_clear_filters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:text="@string/clear_all"
+        android:textSize="11sp"
+        android:textColor="@color/color_error"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_filter_label"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+    <LinearLayout
+        android:id="@+id/layout_filters"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:weightSum="3"
+        app:layout_constraintTop_toBottomOf="@id/tv_filter_label"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_category"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/catagory"
+            android:textSize="11sp"
+            android:textColor="@color/color_secondary_darker"
+            android:textAllCaps="false"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeColor="@color/color_secondary_darker"
+            app:rippleColor="@color/color_secondary"
+            android:insetTop="0dp"
+            app:cornerRadius="20dp"
+            android:insetBottom="0dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_area"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/area"
+            android:textSize="11sp"
+            android:textColor="@color/color_secondary_darker"
+            android:textAllCaps="false"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/color_secondary_darker"
+            app:rippleColor="@color/color_secondary"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_ingredient"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:text="@string/ingredient"
+            android:textSize="11sp"
+            android:textColor="@color/color_secondary_darker"
+            android:textAllCaps="false"
+            android:maxLines="1"
+            app:cornerRadius="20dp"
+            android:ellipsize="end"
+            app:strokeColor="@color/color_secondary_darker"
+            app:rippleColor="@color/color_secondary"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResultsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="14dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintTop_toBottomOf="@id/layout_filters"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="@color/color_primary"
+        app:layout_constraintTop_toTopOf="@id/searchResultsRecyclerView"
+        app:layout_constraintBottom_toBottomOf="@id/searchResultsRecyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/layout_empty_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/searchResultsRecyclerView"
+        app:layout_constraintBottom_toBottomOf="@id/searchResultsRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd">
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_search"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Start searching or select a filter"
+            android:textColor="@color/gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_error_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/searchResultsRecyclerView"
+        app:layout_constraintBottom_toBottomOf="@id/searchResultsRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd">
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Error"
+            android:textStyle="bold"
+            android:textColor="@color/color_error" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="15dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="15dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

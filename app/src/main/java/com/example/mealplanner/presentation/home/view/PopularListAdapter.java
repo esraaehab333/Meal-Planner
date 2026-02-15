@@ -1,0 +1,120 @@
+package com.example.mealplanner.presentation.home.view;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.mealplanner.R;
+import com.example.mealplanner.data.models.Meal;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.PopularViewHolder> {
+
+    private List<Meal> mealList;
+    private List<String> favoriteIds;
+    private OnMealClick listener;
+
+    public PopularListAdapter(OnMealClick listener) {
+        this.mealList = new ArrayList<>();
+        this.favoriteIds = new ArrayList<>();
+        this.listener = listener;
+    }
+    public void setMealList(List<Meal> mealList) {
+        if (mealList != null) {
+            this.mealList = mealList;
+            notifyDataSetChanged();
+        }
+    }
+    public void setFavoriteIds(List<String> favoriteIds) {
+        this.favoriteIds = favoriteIds != null ? favoriteIds : new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public PopularViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.home_meal_item_list, parent, false);
+        return new PopularViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull PopularViewHolder holder, int position) {
+        holder.bind(mealList.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return mealList == null ? 0 : mealList.size();
+    }
+
+    class PopularViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvMealName, tvTag, tvAreaCategory;
+        ImageView imgMeal;
+        Button btnViewRecipe;
+        ImageButton btnFavorite;
+        public PopularViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvMealName = itemView.findViewById(R.id.tvMealName);
+            tvTag = itemView.findViewById(R.id.tvTag);
+            tvAreaCategory = itemView.findViewById(R.id.tvAreaCategory);
+            imgMeal = itemView.findViewById(R.id.imgMeal);
+            btnViewRecipe = itemView.findViewById(R.id.btnViewRecipe);
+            btnFavorite = itemView.findViewById(R.id.btn_favorite);
+        }
+
+        void bind(Meal meal) {
+            tvMealName.setText(meal.getStrMeal());
+            if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
+                String[] tags = meal.getStrTags().split(",");
+                tvTag.setText(tags[0].trim().toUpperCase());
+                tvTag.setVisibility(View.VISIBLE);
+            } else {
+                tvTag.setVisibility(View.GONE);
+            }
+            String text = "";
+            if (meal.getStrArea() != null) text += meal.getStrArea();
+            if (meal.getStrCategory() != null) {
+                if (!text.isEmpty()) text += " • ";
+                text += meal.getStrCategory();
+            }
+            tvAreaCategory.setText(text);
+            Glide.with(itemView.getContext())
+                    .load(meal.getStrMealThumb())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.img_meal_test)
+                    .error(R.drawable.img_meal_test)
+                    .into(imgMeal);
+            boolean isFavorite = favoriteIds.contains(meal.getIdMeal());
+            btnFavorite.setImageResource(
+                    isFavorite ? R.drawable.ic_fulled_heart : R.drawable.ic_soild_heart
+            );
+            btnFavorite.setOnClickListener(v -> {
+                if (listener != null) {
+                    if (isFavorite) {
+                        listener.onRemoveFromFavorite(meal);
+                    } else {
+                        listener.onAddToFavorite(meal);
+                    }
+                }
+            });
+            btnViewRecipe.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onMealClick(meal);
+                }
+            });
+        }
+    }
+}

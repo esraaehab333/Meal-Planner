@@ -7,25 +7,36 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.mealplanner.SplashFragment"
+        android:name="com.example.mealplanner.presentation.splash.view.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_onboarding1Fregment"
-            app:destination="@id/onboarding1Fregment" />
+            app:destination="@id/onboarding1Fregment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFregment"
-        android:name="com.example.mealplanner.LoginFragment"
+        android:name="com.example.mealplanner.presentation.auth.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFregment_to_registerFregment"
             app:destination="@id/registerFregment" />
+        <action
+            android:id="@+id/action_loginFregment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFregment"
-        android:name="com.example.mealplanner.RegisterFragment"
+        android:name="com.example.mealplanner.presentation.auth.view.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -34,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding1Fregment"
-        android:name="com.example.mealplanner.onboarding.Onboarding1Fragment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding1Fragment"
         android:label="fragment_onboarding1"
         tools:layout="@layout/fragment_onboarding1">
         <action
@@ -50,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding2Fregment"
-        android:name="com.example.mealplanner.onboarding.Onboarding2Fragment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding2Fragment"
         android:label="fragment_onboarding2"
         tools:layout="@layout/fragment_onboarding2">
         <action
@@ -73,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding3Fregment"
-        android:name="com.example.mealplanner.onboarding.Onboarding3Fragment"
+        android:name="com.example.mealplanner.presentation.onboarding.view.Onboarding3Fragment"
         android:label="fragment_onboarding3"
         tools:layout="@layout/fragment_onboarding3">
         <action
@@ -87,5 +98,86 @@
             android:id="@+id/action_onboarding3Fregment_to_loginFregment"
             app:destination="@id/loginFregment" />
     </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mealplanner.presentation.home.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.mealplanner.presentation.search.view.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/plannerFragment"
+        android:name="com.example.mealplanner.presentation.planner.view.PlannerFragment"
+        android:label="Planner"
+        tools:layout="@layout/fragment_planner" >
+        <action
+            android:id="@+id/action_plannerFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+        <action
+            android:id="@+id/action_plannerFragment_to_registerFregment"
+            app:destination="@id/registerFregment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.mealplanner.presentation.favorite.view.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_registerFregment"
+            app:destination="@id/registerFregment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.mealplanner.presentation.account.view.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/mealFragment"
+        android:name="com.example.mealplanner.presentation.meal.view.MealFragment"
+        android:label="fragment_meal"
+        tools:layout="@layout/fragment_meal">
+        <argument
+            android:name="meal"
+            app:argType="com.example.mealplanner.data.models.Meal" />
+        <action
+            android:id="@+id/action_mealFragment_to_loginFregment"
+            app:destination="@id/loginFregment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.mealplanner.presentation.home.view.CategoryFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_category" >
+        <argument
+            android:name="category"
+            app:argType="com.example.mealplanner.data.models.Category" />
+        <action
+            android:id="@+id/action_categoryFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+    </fragment>
 </navigation>
