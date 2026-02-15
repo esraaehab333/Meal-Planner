@@ -20,10 +20,6 @@ public class FavoriteLocalDataSource {
         this.currentUserId = userId;
     }
 
-    public List<String> getFavoriteMealIds() {
-        return favoriteDao.getFavoriteMealIds();
-    }
-
     public Flowable<List<FavoriteEntity>> getFavoriteMeals() {
         return favoriteDao.getFavoritesByUser(currentUserId);
     }
@@ -45,9 +41,5 @@ public class FavoriteLocalDataSource {
     public Completable deleteAllFavorites() {
         return Completable.fromAction(() ->
                 favoriteDao.deleteAllFavoritesForUser(currentUserId));
-    }
-
-    public void setCurrentUserId(String userId) {
-        this.currentUserId = userId;
     }
 }

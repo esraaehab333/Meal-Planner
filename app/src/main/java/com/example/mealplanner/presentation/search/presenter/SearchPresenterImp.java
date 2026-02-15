@@ -24,13 +24,6 @@ public class SearchPresenterImp implements SearchPresenter {
         this.remoteDataSource = remoteDataSource;
     }
 
-    public List<Meal> getLastResults() {
-        return lastResults == null ? new ArrayList<>() : lastResults;
-    }
-
-    public String getLastQuery() {
-        return lastQuery == null ? "" : lastQuery;
-    }
 
     public void clear() {
         disposables.clear();
@@ -103,7 +96,4 @@ public class SearchPresenterImp implements SearchPresenter {
         );
     }
 
-    @Override public void searchByIngredient(String ingredient) {}
-    @Override public void searchByCategory(String category) {}
-    @Override public void searchByArea(String area) {}
 }

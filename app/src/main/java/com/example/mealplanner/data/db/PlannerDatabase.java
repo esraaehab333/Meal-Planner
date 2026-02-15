@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import com.example.mealplanner.datasource.plan.local.PlanDao;
 import com.example.mealplanner.data.enitiy.PlanEntity;
 
-@Database(entities = {PlanEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {PlanEntity.class}, version = 3, exportSchema = false)
 public abstract class PlannerDatabase extends RoomDatabase {
 
     public abstract PlanDao planDao();

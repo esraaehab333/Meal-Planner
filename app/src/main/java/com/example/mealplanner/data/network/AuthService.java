@@ -117,21 +117,6 @@ public class AuthService {
     public void logout() {
         firebaseAuth.signOut();
     }
-    public Single<UserModel> getUserProfile(String uid) {
-        return Single.create(emitter -> {
-            firebaseStore.collection("users").document(uid)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            UserModel user = documentSnapshot.toObject(UserModel.class);
-                            emitter.onSuccess(user);
-                        } else {
-                            emitter.onError(new Exception("User data not found in Firestore"));
-                        }
-                    })
-                    .addOnFailureListener(e -> emitter.onError(e));
-        });
-    }
     public Completable saveUsernameInFirebaseStore(String uid, String username, String email) {
         return Completable.create(emitter -> {
             Map<String, Object> user = new HashMap<>();

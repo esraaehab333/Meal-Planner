@@ -22,27 +22,6 @@ public class SearchRemoteDataSource {
     public SearchRemoteDataSource() {
         this.mealService = new NetworkApi().getMealService();
     }
-
-    public Single<List<Meal>> filterByIngredient(String ingredient) {
-        return mealService.filterByIngredient(ingredient)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(MealResponse::getMeals);
-    }
-
-    public Single<List<Meal>> filterByCategory(String category) {
-        return mealService.filterByCategory(category)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(MealResponse::getMeals);
-    }
-
-    public Single<List<Meal>> filterByArea(String area) {
-        return mealService.filterByArea(area)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(MealResponse::getMeals);
-    }
     public Single<List<Meal>> searchByName(String name) {
         return mealService.getMealByName(name)
                 .subscribeOn(Schedulers.io())

@@ -7,7 +7,6 @@ import com.example.mealplanner.data.models.Meal;
 import java.util.List;
 
 public interface SearchView {
-    void onSearchSuccess(List<Meal> meals);
     void onSearchByNameSuccess(List<Meal> meals);
     void onSearchFailure(String errorMessage);
     void onNoInternet();
@@ -15,5 +14,4 @@ public interface SearchView {
     void onDisplayListIngredients(List<Ingredient> ingredients);
     void onDisplayListCategory(List<Category> categories);
     void onLoading(boolean isLoading);
-    void onGetFullMealSuccess(Meal meal);
 }
