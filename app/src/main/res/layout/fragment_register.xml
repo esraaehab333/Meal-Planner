@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/createAccountLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context=".presentation.auth.view.RegisterFragment">
 
         <com.google.android.material.card.MaterialCardView
@@ -23,7 +23,9 @@
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/joinUsTextView"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <ImageView
                 android:layout_width="35dp"
@@ -43,7 +45,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iconCardView" />
+            app:layout_constraintTop_toBottomOf="@id/iconCardView"
+            app:layout_constraintBottom_toTopOf="@id/subtitleTextView" />
 
         <TextView
             android:id="@+id/subtitleTextView"
@@ -56,7 +59,8 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/joinUsTextView" />
+            app:layout_constraintTop_toBottomOf="@id/joinUsTextView"
+            app:layout_constraintBottom_toTopOf="@id/usernameLabel" />
 
         <TextView
             android:id="@+id/usernameLabel"
@@ -68,7 +72,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
+            app:layout_constraintTop_toBottomOf="@id/subtitleTextView"
+            app:layout_constraintBottom_toTopOf="@id/usernameTextInputLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/usernameTextInputLayout"
@@ -87,7 +92,8 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/usernameLabel">
+            app:layout_constraintTop_toBottomOf="@id/usernameLabel"
+            app:layout_constraintBottom_toTopOf="@id/emailLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/usernameEditText"
@@ -109,7 +115,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/usernameTextInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/usernameTextInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/emailTextInputLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailTextInputLayout"
@@ -128,7 +135,8 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/emailLabel">
+            app:layout_constraintTop_toBottomOf="@id/emailLabel"
+            app:layout_constraintBottom_toTopOf="@id/passwordLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailEditText"
@@ -151,7 +159,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/emailTextInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/emailTextInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/passwordTextInputLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordTextInputLayout"
@@ -173,7 +182,8 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/passwordLabel">
+            app:layout_constraintTop_toBottomOf="@id/passwordLabel"
+            app:layout_constraintBottom_toTopOf="@id/confirmPasswordLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"
@@ -196,7 +206,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/confirmPasswordTextInputLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/confirmPasswordTextInputLayout"
@@ -218,7 +229,8 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/confirmPasswordLabel">
+            app:layout_constraintTop_toBottomOf="@id/confirmPasswordLabel"
+            app:layout_constraintBottom_toTopOf="@id/signUpButtonContainer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/confirmPasswordEditText"
@@ -238,7 +250,8 @@
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/confirmPasswordTextInputLayout">
+            app:layout_constraintTop_toBottomOf="@id/confirmPasswordTextInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/signInPromptLayout">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signUpButton"
@@ -267,12 +280,13 @@
             android:id="@+id/signInPromptLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="70dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUpButtonContainer">
+            app:layout_constraintTop_toBottomOf="@id/signUpButtonContainer"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"

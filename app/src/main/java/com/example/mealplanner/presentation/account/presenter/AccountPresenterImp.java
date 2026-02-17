@@ -1,44 +1,64 @@
 package com.example.mealplanner.presentation.account.presenter;
 
-import android.content.Context;
+import android.app.Application;
 import android.util.Log;
 
 import com.example.mealplanner.data.enitiy.FavoriteEntity;
 import com.example.mealplanner.data.enitiy.PlanEntity;
-import com.example.mealplanner.data.network.AuthService;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
-import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
-import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.AuthRepositoryImpl;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
+import com.example.mealplanner.datasource.reposatory.MealRepositoryImpl;
 import com.example.mealplanner.presentation.account.view.AccountView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AccountPresenterImp implements AccountPresenter {
-    private AccountView view;
-    private AuthService authService;
-    private SharedPreferanceLocalDataSource sharedPref;
-    private FavoriteLocalDataSource favLocal;
-    private PlanLocalDataSource planLocal;
-    private FirebaseFirestore db;
-    private Context context;
+    private final CompositeDisposable disposables = new CompositeDisposable();
+    private final AccountView view;
+    private final AuthRepository authRepository;
+    private final MealRepository mealRepository;
+    private final FirebaseFirestore db;
 
-    public AccountPresenterImp(AccountView view, Context context) {
+    public AccountPresenterImp(AccountView view, Application application) {
         this.view = view;
-        this.context = context;
-        this.authService = new AuthService();
-        this.sharedPref = new SharedPreferanceLocalDataSource(context);
-
-        String userId = sharedPref.getUserId();
-        this.favLocal = new FavoriteLocalDataSource(context, userId);
-        this.planLocal = new PlanLocalDataSource(context, userId);
+        this.authRepository = new AuthRepositoryImpl(application);
+        String userId = authRepository.getUserId();
+        this.mealRepository = new MealRepositoryImpl(application, userId);
         this.db = FirebaseFirestore.getInstance();
     }
 
     @Override
+    public void loadCounts() {
+        disposables.add(
+                mealRepository.getFavoriteMeals()
+                        .take(1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                list -> view.showFavoriteCount(list != null ? list.size() : 0),
+                                throwable -> view.showFavoriteCount(0)
+                        )
+        );
+        disposables.add(
+                mealRepository.getAllPlannedMeals()
+                        .take(1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                list -> view.showPlannedCount(list != null ? list.size() : 0),
+                                throwable -> view.showPlannedCount(0)
+                        )
+        );
+    }
+
+    @Override
     public void onSyncClicked() {
-        String userId = sharedPref.getUserId();
+        String userId = authRepository.getUserId();
 
         if ("GUEST".equals(userId)) {
             view.showSyncError("Please login to sync your data!");
@@ -63,7 +83,7 @@ public class AccountPresenterImp implements AccountPresenter {
     }
 
     private void uploadFavoritesFromLocal(String userId) {
-        favLocal.getFavoriteMeals()
+        mealRepository.getFavoriteMeals()
                 .take(1)
                 .subscribe(favorites -> {
                     for (FavoriteEntity fav : favorites) {
@@ -74,7 +94,7 @@ public class AccountPresenterImp implements AccountPresenter {
     }
 
     private void uploadPlanFromLocal(String userId) {
-        planLocal.getAllPlannedMeals()
+        mealRepository.getAllPlannedMeals()
                 .take(1)
                 .subscribe(plans -> {
                     for (PlanEntity plan : plans) {
@@ -82,27 +102,29 @@ public class AccountPresenterImp implements AccountPresenter {
                                 .collection("plan")
                                 .document(plan.idMeal + "_" + plan.date).set(plan);
                     }
-                    view.showSyncSuccess(); // نطلع رسالة النجاح في الآخر
+                    view.showSyncSuccess();
                 }, throwable -> view.showSyncError(throwable.getMessage()));
     }
+
     @Override
     public void onLogoutClicked() {
-        String currentId = sharedPref.getUserId();
-        favLocal.deleteAllFavorites()
+        String currentId = authRepository.getUserId();
+        mealRepository.deleteAllFavorites()
                 .subscribeOn(Schedulers.io())
                 .subscribe(() -> Log.d("LOGOUT", "Favorites deleted"),
                         throwable -> Log.e("LOGOUT", "Error deleting favorites"));
 
-        planLocal.deleteAllPlans()
+        mealRepository.deleteAllPlans()
                 .subscribeOn(Schedulers.io())
                 .subscribe(() -> Log.d("LOGOUT", "Plans deleted"),
                         throwable -> Log.e("LOGOUT", "Error deleting plans"));
+
         if ("GUEST".equals(currentId)) {
-            sharedPref.clearUserData();
+            authRepository.clearUserData();
             view.navigateToLogin();
         } else {
-            authService.logout();
-            sharedPref.clearUserData();
+            authRepository.logout();
+            authRepository.clearUserData();
             view.navigateToLogin();
         }
     }

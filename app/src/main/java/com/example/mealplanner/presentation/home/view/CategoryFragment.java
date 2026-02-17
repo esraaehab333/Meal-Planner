@@ -71,7 +71,11 @@ public class CategoryFragment extends Fragment implements CategoryView, OnMealCl
 
     @Override
     public void onMealClick(Meal meal) {
-
+        if (meal != null && meal.getIdMeal() != null) {
+            CategoryFragmentDirections.ActionCategoryFragmentToMealFragment action =
+                    CategoryFragmentDirections.actionCategoryFragmentToMealFragment(null, meal.getIdMeal());
+            Navigation.findNavController(requireView()).navigate(action);
+        }
     }
 
     @Override

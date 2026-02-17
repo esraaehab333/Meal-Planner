@@ -163,7 +163,12 @@
         tools:layout="@layout/fragment_meal">
         <argument
             android:name="meal"
-            app:argType="com.example.mealplanner.data.models.Meal" />
+            app:argType="com.example.mealplanner.data.models.Meal"
+            app:nullable="true" />
+        <argument
+            android:name="mealId"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_mealFragment_to_loginFregment"
             app:destination="@id/loginFregment" />

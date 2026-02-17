@@ -28,16 +28,14 @@ public class RegisterFragment extends Fragment implements AuthView {
     private AppCompatButton signUpBtn;
     private MaterialButton signInBtn;
     private ProgressBar signUpProgressBar;
-    private SharedPreferanceDao sharedPref;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         initViews(view);
-
-        sharedPref = new SharedPreferanceLocalDataSource(getContext());
-        presenter = new RegisterPresenterImp(this, sharedPref);
+        presenter = new RegisterPresenterImp(this, requireActivity().getApplication());
 
         signInBtn.setOnClickListener(v ->
                 Navigation.findNavController(v)

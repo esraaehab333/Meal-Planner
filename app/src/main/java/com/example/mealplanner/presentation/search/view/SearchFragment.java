@@ -307,7 +307,7 @@ public class SearchFragment extends Fragment implements SearchView, OnMealSearch
         if (meal == null) return;
         try {
             SearchFragmentDirections.ActionSearchFragmentToMealFragment action =
-                    SearchFragmentDirections.actionSearchFragmentToMealFragment(meal);
+                    SearchFragmentDirections.actionSearchFragmentToMealFragment(null, meal.getIdMeal());
             NavHostFragment.findNavController(this).navigate(action);
         } catch (Exception e) {
             CustomSnackbar.showError( getView(),"Navigation action not found.");

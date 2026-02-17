@@ -15,12 +15,12 @@ import androidx.navigation.Navigation;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.mealplanner.R;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.AuthRepositoryImpl;
 
 public class SplashFragment extends Fragment {
     LottieAnimationView lottieSplash;
-    private SharedPreferanceDao sharedPref;
+    private AuthRepository authRepository;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class SplashFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lottieSplash = view.findViewById(R.id.lottieSplash);
-        sharedPref = new SharedPreferanceLocalDataSource(requireContext());
+        authRepository = new AuthRepositoryImpl(requireActivity().getApplication());
         lottieSplash.playAnimation();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (isAdded() && getView() != null) {
@@ -45,10 +45,10 @@ public class SplashFragment extends Fragment {
             NavOptions navOptions = new NavOptions.Builder()
                     .setPopUpTo(R.id.splashFragment, true)
                     .build();
-            if (sharedPref.getUserId() != null) {
+            if (authRepository.getUserId() != null) {
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_splashFragment_to_homeFragment, null, navOptions);
-            } else if (sharedPref.isOnboardingCompleted()) {
+            } else if (authRepository.isOnboardingCompleted()) {
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_splashFragment_to_loginFregment, null, navOptions);
             } else {

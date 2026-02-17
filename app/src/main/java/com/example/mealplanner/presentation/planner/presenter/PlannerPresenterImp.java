@@ -2,7 +2,7 @@ package com.example.mealplanner.presentation.planner.presenter;
 
 import com.example.mealplanner.data.enitiy.PlanEntity;
 import com.example.mealplanner.data.models.Meal;
-import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
 import com.example.mealplanner.presentation.planner.view.PlannerView;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class PlannerPresenterImp implements PlannerPresenter {
 
     private PlannerView view;
-    private PlanLocalDataSource localDataSource;
+    private MealRepository mealRepository;
     private CompositeDisposable compositeDisposable;
     private String currentUserId;
 
-    public PlannerPresenterImp (PlannerView view, PlanLocalDataSource localDataSource, String userId) {
+    public PlannerPresenterImp (PlannerView view, MealRepository mealRepository, String userId) {
         this.view = view;
-        this.localDataSource = localDataSource;
+        this.mealRepository = mealRepository;
         this.currentUserId = userId;
         this.compositeDisposable = new CompositeDisposable();
     }
@@ -29,7 +29,7 @@ public class PlannerPresenterImp implements PlannerPresenter {
     public void loadPlannedMealsForDate(String selectedDate) {
         view.showLoading();
         compositeDisposable.add(
-                localDataSource.getMealsByDate(selectedDate)
+                mealRepository.getMealsByDate(selectedDate)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -54,7 +54,7 @@ public class PlannerPresenterImp implements PlannerPresenter {
         PlanEntity planEntity = convertMealToPlanEntity(meal, selectedDate);
         view.showLoading();
         compositeDisposable.add(
-                localDataSource.insertMealToPlan(planEntity)
+                mealRepository.insertMealToPlan(planEntity)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -77,7 +77,7 @@ public class PlannerPresenterImp implements PlannerPresenter {
     @Override
     public void removeMealFromPlan(PlanEntity planEntity) {
         compositeDisposable.add(
-                localDataSource.deleteMealFromPlan(planEntity)
+                mealRepository.deleteMealFromPlan(planEntity)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(

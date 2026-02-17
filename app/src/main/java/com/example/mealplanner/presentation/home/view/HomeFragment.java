@@ -28,9 +28,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.R;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
-import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
-import com.example.mealplanner.datasource.meal.remote.MealRemoteDataSource;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.AuthRepositoryImpl;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
+import com.example.mealplanner.datasource.reposatory.MealRepositoryImpl;
 import com.example.mealplanner.data.models.Category;
 import com.example.mealplanner.data.models.Meal;
 import com.example.mealplanner.presentation.home.presenter.HomePresenter;
@@ -57,8 +58,8 @@ public class HomeFragment extends Fragment
     private PopularListAdapter popularAdapter;
     private HomePresenter presenter;
     private Meal mealOfTheDay;
-    private FavoriteLocalDataSource favoriteDataSource;
-    private SharedPreferanceLocalDataSource sharedPreferanceLocalDataSource;
+    private AuthRepository authRepository;
+    private MealRepository mealRepository;
     private int successCount = 0;
     private static final int TOTAL_REQUESTS = 3;
 
@@ -78,14 +79,13 @@ public class HomeFragment extends Fragment
         setupRecyclerViews();
         setupListeners();
 
-        sharedPreferanceLocalDataSource = new SharedPreferanceLocalDataSource(requireContext());
-        favoriteDataSource = new FavoriteLocalDataSource(requireContext(),
-                sharedPreferanceLocalDataSource.getUserId());
+        authRepository = new AuthRepositoryImpl(requireActivity().getApplication());
+        mealRepository = new MealRepositoryImpl(requireActivity().getApplication(),
+                authRepository.getUserId());
 
         presenter = new HomePresenterImp(this,
-                new MealRemoteDataSource(),
-                favoriteDataSource,
-                sharedPreferanceLocalDataSource);
+                mealRepository,
+                authRepository);
 
         loadData();
     }
@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment
             if (mealOfTheDay != null) {
                 NavHostFragment.findNavController(this)
                         .navigate(HomeFragmentDirections
-                                .actionHomeFragmentToMealFragment(mealOfTheDay));
+                                .actionHomeFragmentToMealFragment(null, mealOfTheDay.getIdMeal()));
             }
         });
 
@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment
             if (mealOfTheDay != null) {
                 NavHostFragment.findNavController(this)
                         .navigate(HomeFragmentDirections
-                                .actionHomeFragmentToMealFragment(mealOfTheDay));
+                                .actionHomeFragmentToMealFragment(null, mealOfTheDay.getIdMeal()));
             }
         });
 
@@ -221,7 +221,7 @@ public class HomeFragment extends Fragment
     }
 
     private boolean isGuestUser() {
-        return sharedPreferanceLocalDataSource.getUserId().equals("GUEST");
+        return "GUEST".equals(authRepository.getUserId());
     }
 
     private void showGuestLimitationDialog() {
@@ -332,7 +332,7 @@ public class HomeFragment extends Fragment
     @Override
     public void onMealClick(Meal meal) {
         NavHostFragment.findNavController(this)
-                .navigate(HomeFragmentDirections.actionHomeFragmentToMealFragment(meal));
+                .navigate(HomeFragmentDirections.actionHomeFragmentToMealFragment(null, meal.getIdMeal()));
     }
 
     @Override

@@ -5,4 +5,6 @@ public interface AccountView {
     void showLogoutError(String message);
     void showSyncSuccess();
     void showSyncError(String error);
+    void showFavoriteCount(int count);
+    void showPlannedCount(int count);
 }

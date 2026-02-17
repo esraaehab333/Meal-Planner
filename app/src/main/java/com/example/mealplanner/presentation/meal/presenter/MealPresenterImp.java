@@ -1,13 +1,15 @@
 package com.example.mealplanner.presentation.meal.presenter;
 
-import android.content.Context;
+import android.app.Application;
 
-import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
 import com.example.mealplanner.data.enitiy.FavoriteEntity;
 import com.example.mealplanner.data.models.Meal;
-import com.example.mealplanner.utils.mapper.FavoriteMapper;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.AuthRepositoryImpl;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
+import com.example.mealplanner.datasource.reposatory.MealRepositoryImpl;
 import com.example.mealplanner.presentation.meal.view.MealView;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.mealplanner.utils.mapper.FavoriteMapper;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -16,14 +18,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MealPresenterImp implements MealPresenter {
 
     private MealView view;
-    private FavoriteLocalDataSource localDataSource;
+    private MealRepository mealRepository;
+    private AuthRepository authRepository;
     private String currentUserId;
     private CompositeDisposable compositeDisposable;
 
-    public MealPresenterImp(MealView view, Context context) {
+    public MealPresenterImp(MealView view, Application application) {
         this.view = view;
-        this.currentUserId = getCurrentUserId();
-        this.localDataSource = new FavoriteLocalDataSource(context, currentUserId);
+        this.authRepository = new AuthRepositoryImpl(application);
+        this.currentUserId = authRepository.getUserId();
+        this.mealRepository = new MealRepositoryImpl(application, currentUserId);
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -36,11 +40,44 @@ public class MealPresenterImp implements MealPresenter {
     }
 
     @Override
+    public void loadMealById(String mealId) {
+        if (view != null) {
+            view.showLoading();
+        }
+        compositeDisposable.add(
+                mealRepository.getMealById(mealId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                meals -> {
+                                    if (view != null && meals != null && !meals.isEmpty()) {
+                                        view.hideLoading();
+                                        Meal meal = meals.get(0);
+                                        view.showMeal(meal);
+                                        isFavorite(meal.getIdMeal());
+                                    } else {
+                                        if (view != null) {
+                                            view.hideLoading();
+                                            view.showErrorMessage("Meal not found");
+                                        }
+                                    }
+                                },
+                                throwable -> {
+                                    if (view != null) {
+                                        view.hideLoading();
+                                        view.showErrorMessage("Failed to load meal: " + throwable.getMessage());
+                                    }
+                                }
+                        )
+        );
+    }
+
+    @Override
     public void addToFav(Meal meal) {
         FavoriteEntity entity = FavoriteMapper.fromMeal(meal, currentUserId);
 
         compositeDisposable.add(
-                localDataSource.insertFavoriteMeal(entity)
+                mealRepository.insertFavoriteMeal(entity)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -64,7 +101,7 @@ public class MealPresenterImp implements MealPresenter {
         FavoriteEntity entity = FavoriteMapper.fromMeal(meal, currentUserId);
 
         compositeDisposable.add(
-                localDataSource.deleteFavoriteMeal(entity)
+                mealRepository.deleteFavoriteMeal(entity)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -86,7 +123,7 @@ public class MealPresenterImp implements MealPresenter {
     @Override
     public void isFavorite(String mealId) {
         compositeDisposable.add(
-                localDataSource.isFavorite(mealId)
+                mealRepository.isFavorite(mealId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -110,12 +147,5 @@ public class MealPresenterImp implements MealPresenter {
             compositeDisposable.dispose();
         }
         view = null;
-    }
-
-    private String getCurrentUserId() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            return FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }
-        return "GUEST";
     }
 }

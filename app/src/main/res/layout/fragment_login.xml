@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/loginFregment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         tools:context=".presentation.auth.view.LoginFragment">
 
         <com.google.android.material.card.MaterialCardView
@@ -23,7 +24,9 @@
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/welcomeBackTextView"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <ImageView
                 android:layout_width="35dp"
@@ -43,7 +46,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/materialCardView" />
+            app:layout_constraintTop_toBottomOf="@id/materialCardView"
+            app:layout_constraintBottom_toTopOf="@id/subtitleTextView" />
 
         <TextView
             android:id="@+id/subtitleTextView"
@@ -56,7 +60,8 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/welcomeBackTextView" />
+            app:layout_constraintTop_toBottomOf="@id/welcomeBackTextView"
+            app:layout_constraintBottom_toTopOf="@id/textEmailTextView" />
 
         <TextView
             android:id="@+id/textEmailTextView"
@@ -68,7 +73,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
+            app:layout_constraintTop_toBottomOf="@id/subtitleTextView"
+            app:layout_constraintBottom_toTopOf="@id/emailTextInputLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailTextInputLayout"
@@ -87,7 +93,8 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/textEmailTextView">
+            app:layout_constraintTop_toBottomOf="@id/textEmailTextView"
+            app:layout_constraintBottom_toTopOf="@id/textPasswordTextView">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailEditText"
@@ -109,7 +116,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/emailTextInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/emailTextInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/passwordTextInputLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordTextInputLayout"
@@ -131,7 +139,8 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/textPasswordTextView">
+            app:layout_constraintTop_toBottomOf="@id/textPasswordTextView"
+            app:layout_constraintBottom_toTopOf="@id/loginButtonContainer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"
@@ -151,7 +160,8 @@
             android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout">
+            app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/linearLayout">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/loginButton"
@@ -185,7 +195,8 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/loginButtonContainer">
+            app:layout_constraintTop_toBottomOf="@id/loginButtonContainer"
+            app:layout_constraintBottom_toTopOf="@id/linearLayout3">
 
             <View
                 android:layout_width="0dp"
@@ -217,7 +228,8 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@id/linearLayout"
+            app:layout_constraintBottom_toTopOf="@id/signUpLayout">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/googleButton"
@@ -273,7 +285,8 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+            app:layout_constraintTop_toBottomOf="@id/linearLayout3"
+            app:layout_constraintBottom_toTopOf="@id/asGustButton">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -306,7 +319,7 @@
             android:id="@+id/asGustButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="40dp"
             android:background="@drawable/shape_continue_as_guest_button"
             android:elevation="8dp"
             android:paddingStart="20dp"
@@ -318,10 +331,8 @@
             android:textColor="@color/color_secondary_darker"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
-            app:layout_constraintHorizontal_bias="0.512"
             app:layout_constraintStart_toStartOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/signUpLayout"
-            app:layout_constraintVertical_bias="0.299" />
+            app:layout_constraintTop_toBottomOf="@id/signUpLayout" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"

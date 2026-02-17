@@ -1,224 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mealFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="@color/color_background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/color_primary"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/mealFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/meal_content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:elevation="8dp"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingBottom="40dp"
+            android:visibility="visible">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
-                app:contentInsetStartWithNavigation="0dp">
+                app:elevation="2dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <ImageButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="start"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_back" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white">
 
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/meal_details_title"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    <ImageButton
+                        android:id="@+id/btn_back"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_back"
+                        app:tint="@color/black" />
 
-                <ImageButton
-                    android:id="@+id/btn_favorite"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="end"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_fulled_heart" />
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="380dp"
-            android:id="@+id/flimgMeal"
-            app:layout_constraintTop_toBottomOf="@id/appBar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+                    <TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/meal_details_title"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/black" />
 
-            <ImageView
-                android:id="@+id/imgMeal"
+                    <ImageButton
+                        android:id="@+id/btn_favorite"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="12dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_fulled_heart" />
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout
+                android:id="@+id/flimgMeal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_meal_test" />
+                android:layout_height="320dp"
+                app:layout_constraintTop_toBottomOf="@id/appBar">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_gradiant_white_bottom_overlay" />
+                <ImageView
+                    android:id="@+id/imgMeal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_meal_test" />
 
-        </FrameLayout>
-        <TextView
-            android:id="@+id/txtMealName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/meal_name_details"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/flimgMeal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/shape_gradiant_white_bottom_overlay" />
+            </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutMealMeta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="16dp"
-            app:layout_constraintTop_toBottomOf="@id/txtMealName"
-            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/txtMealName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/meal_name_details"
+                android:textSize="28sp"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                app:layout_constraintTop_toBottomOf="@id/flimgMeal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnSetMealForDay" />
+
+            <ImageButton
+                android:id="@+id/btnSetMealForDay"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/shape_button_negative"
+                android:elevation="4dp"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_calender"
+                app:layout_constraintBottom_toBottomOf="@id/txtMealName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtMealName"
+                app:tint="@color/color_primary" />
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/layoutMealMeta"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_height="wrap_content">
+                app:layout_constraintTop_toBottomOf="@id/txtMealName"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/mealCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/gray"
+                        tools:text="Seafood" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" • "
+                        android:textSize="18sp"
+                        android:textColor="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/mealCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/gray"
+                        tools:text="Italian" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/mealCategory"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/mealTag"
+                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
-                    android:text="@string/category_name"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray" />
-
-                <TextView
-
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="  •  "
-                    android:textColor="@color/gray" />
-
-                <TextView
-                    android:id="@+id/mealCountry"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/area"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray" />
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_primary"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="6dp"
+                    android:background="@drawable/shape_tag_color"
+                    tools:text="HEALTHY" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/mealTag"
-                android:layout_marginTop="6dp"
-                android:text="@string/tag_string"
-                android:layout_height="wrap_content"
+                android:id="@+id/txtIngredients"
                 android:layout_width="wrap_content"
-                android:textSize="13sp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/ingredients"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/layoutMealMeta"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/txtIngredients" />
+
+            <TextView
+                android:id="@+id/txtInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/instructions"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/rvIngredients"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInstructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingHorizontal="20dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/txtInstructions" />
+
+            <Button
+                android:id="@+id/btnSeeMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:text="Read More"
+                android:textAllCaps="false"
                 android:textColor="@color/color_primary"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:background="@drawable/shape_tag_color" />
-        </LinearLayout>
+                android:background="?attr/selectableItemBackground"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/rvInstructions"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/txtIngredients"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/ingredients"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/layoutMealMeta"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/txtWatchCook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/watch_cook"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/btnSeeMore"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvIngredients"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            app:layout_constraintTop_toBottomOf="@id/txtIngredients"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvYoutube"
+                android:layout_width="0dp"
+                android:layout_height="220dp"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintTop_toBottomOf="@id/txtWatchCook"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/txtInstructions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/instructions"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/rvIngredients"
-            app:layout_constraintStart_toStartOf="parent" />
+                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                    android:id="@+id/youtube_player_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.google.android.material.card.MaterialCardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvInstructions"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            app:layout_constraintTop_toBottomOf="@id/txtInstructions"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/txtWatchCook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/watch_cook"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_margin="16dp"
-            app:layout_constraintTop_toBottomOf="@id/rvInstructions"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-            android:id="@+id/youtube_player_view"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_margin="16dp"
-            app:layout_constraintTop_toBottomOf="@id/txtWatchCook"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <Button
-            android:id="@+id/btnSetMealForDay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/color_primary"
-            android:padding="15dp"
-            android:text="@string/set_meal_to_day"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/youtube_player_view" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</FrameLayout>

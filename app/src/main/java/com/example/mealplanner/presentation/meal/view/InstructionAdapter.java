@@ -17,10 +17,24 @@ import java.util.List;
 public class InstructionAdapter extends RecyclerView.Adapter<InstructionAdapter.ViewHolder> {
 
     private List<Instruction> instructions = new ArrayList<>();
+    private List<Instruction> visibleInstructions = new ArrayList<>();
+    private static final int MAX_VISIBLE = 4;
 
     public void setInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
+        visibleInstructions = new ArrayList<>(
+                instructions.subList(0, Math.min(MAX_VISIBLE, instructions.size()))
+        );
         notifyDataSetChanged();
+    }
+
+    public void showAll() {
+        visibleInstructions = new ArrayList<>(instructions);
+        notifyDataSetChanged();
+    }
+
+    public boolean hasMore() {
+        return instructions.size() > MAX_VISIBLE;
     }
 
     @NonNull
@@ -33,14 +47,14 @@ public class InstructionAdapter extends RecyclerView.Adapter<InstructionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Instruction instruction = instructions.get(position);
+        Instruction instruction = visibleInstructions.get(position);
         holder.txtStepNumber.setText(String.valueOf(instruction.getStepNumber()));
         holder.txtStepText.setText(instruction.getStepText());
     }
 
     @Override
     public int getItemCount() {
-        return instructions.size();
+        return visibleInstructions.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -16,9 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mealplanner.R;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
-import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.AuthRepositoryImpl;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
+import com.example.mealplanner.datasource.reposatory.MealRepositoryImpl;
 import com.example.mealplanner.data.models.Meal;
 import com.example.mealplanner.presentation.favorite.presenter.FavoritePresenter;
 import com.example.mealplanner.presentation.favorite.presenter.FavoritePresenterImp;
@@ -35,7 +36,8 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
     private LinearLayout llEmptyState;
     private FavoriteListAdapter adapter;
     private FavoritePresenter presenter;
-    private SharedPreferanceDao sharedPref;
+    private AuthRepository authRepository;
+    private MealRepository mealRepository;
 
     @Nullable
     @Override
@@ -63,17 +65,16 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
     }
 
     private void checkUserAndLoadFavorites() {
-        sharedPref = new SharedPreferanceLocalDataSource(requireContext());
-        String currentUserId = sharedPref.getUserId();
+        authRepository = new AuthRepositoryImpl(requireActivity().getApplication());
+        String currentUserId = authRepository.getUserId();
 
         if ("GUEST".equals(currentUserId)) {
             showEmptyState();
             showGuestLimitationDialog();
         } else {
             if (currentUserId != null) {
-                FavoriteLocalDataSource localDataSource =
-                        new FavoriteLocalDataSource(requireContext(), currentUserId);
-                presenter = new FavoritePresenterImp(this, localDataSource);
+                mealRepository = new MealRepositoryImpl(requireActivity().getApplication(), currentUserId);
+                presenter = new FavoritePresenterImp(this, mealRepository);
                 presenter.getFavoriteMeals();
             } else {
                 showErrorMessage("Please login first");
@@ -108,15 +109,18 @@ public class FavoritesFragment extends Fragment implements OnFavoriteClick, Favo
 
     @Override
     public void onClick(Meal meal) {
-        FavoritesFragmentDirections.ActionFavoritesFragmentToMealFragment action =
-                FavoritesFragmentDirections.actionFavoritesFragmentToMealFragment(meal);
-        NavHostFragment.findNavController(this).navigate(action);
+        if (meal != null && meal.getIdMeal() != null) {
+            FavoritesFragmentDirections.ActionFavoritesFragmentToMealFragment action =
+                    FavoritesFragmentDirections.actionFavoritesFragmentToMealFragment(null, meal.getIdMeal());
+            NavHostFragment.findNavController(this).navigate(action);
+        }
     }
 
     @Override
     public void onRemoveFromFavorite(Meal meal) {
         if (presenter != null) {
-            presenter.deleteFavoriteMeal(FavoriteMapper.fromMeal(meal,sharedPref.getUserId()));
+            String userId = authRepository.getUserId();
+            presenter.deleteFavoriteMeal(FavoriteMapper.fromMeal(meal, userId));
         }
     }
 

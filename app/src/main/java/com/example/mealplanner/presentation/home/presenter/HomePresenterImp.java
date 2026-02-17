@@ -1,10 +1,9 @@
 package com.example.mealplanner.presentation.home.presenter;
 
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
-import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
-import com.example.mealplanner.datasource.meal.remote.MealRemoteDataSource;
-import com.example.mealplanner.data.models.Meal;
 import com.example.mealplanner.data.enitiy.FavoriteEntity;
+import com.example.mealplanner.data.models.Meal;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
 import com.example.mealplanner.presentation.home.view.HomeView;
 
 import java.util.ArrayList;
@@ -16,25 +15,22 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class HomePresenterImp implements HomePresenter {
 
     private HomeView view;
-    private MealRemoteDataSource remoteDataSource;
-    private FavoriteLocalDataSource favoriteLocalDataSource;
-    private SharedPreferanceLocalDataSource sharedPreferences;
+    private MealRepository mealRepository;
+    private AuthRepository authRepository;
 
     private List<String> favoriteMealIds = new ArrayList<>();
 
     public HomePresenterImp(HomeView view,
-                            MealRemoteDataSource remoteDataSource,
-                            FavoriteLocalDataSource favoriteLocalDataSource,
-                            SharedPreferanceLocalDataSource sharedPreferences) {
+                            MealRepository mealRepository,
+                            AuthRepository authRepository) {
         this.view = view;
-        this.remoteDataSource = remoteDataSource;
-        this.favoriteLocalDataSource = favoriteLocalDataSource;
-        this.sharedPreferences = sharedPreferences;
+        this.mealRepository = mealRepository;
+        this.authRepository = authRepository;
         loadFavoriteIds();
     }
 
     private void loadFavoriteIds() {
-        favoriteLocalDataSource.getFavoriteMeals()
+        mealRepository.getFavoriteMeals()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(favorites -> {
@@ -52,7 +48,7 @@ public class HomePresenterImp implements HomePresenter {
 
     @Override
     public void getCategoryList() {
-        remoteDataSource.getCategoryList()
+        mealRepository.getCategoriesList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(categories -> {
@@ -64,7 +60,7 @@ public class HomePresenterImp implements HomePresenter {
 
     @Override
     public void getPopularList() {
-        remoteDataSource.getPopularList()
+        mealRepository.getPopularList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(meals -> {
@@ -79,7 +75,7 @@ public class HomePresenterImp implements HomePresenter {
 
     @Override
     public void getMealOfDay() {
-        remoteDataSource.getMealOfDay()
+        mealRepository.getMealOfDay()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(meals -> {
@@ -95,7 +91,7 @@ public class HomePresenterImp implements HomePresenter {
 
         FavoriteEntity favorite = new FavoriteEntity(
                 meal.getIdMeal(),
-                sharedPreferences.getUserId(),
+                authRepository.getUserId(),
                 meal.getStrMeal(),
                 meal.getStrMealThumb(),
                 meal.getStrCategory(),
@@ -107,7 +103,7 @@ public class HomePresenterImp implements HomePresenter {
                 meal.getMeasuresList().toArray(new String[0])
         );
 
-        favoriteLocalDataSource.insertFavoriteMeal(favorite)
+        mealRepository.insertFavoriteMeal(favorite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
@@ -124,8 +120,21 @@ public class HomePresenterImp implements HomePresenter {
     public void removeFromFavorite(Meal meal) {
         if (meal == null) return;
 
-        FavoriteEntity favorite = new FavoriteEntity();
-        favoriteLocalDataSource.deleteFavoriteMeal(favorite)
+        FavoriteEntity favorite = new FavoriteEntity(
+                meal.getIdMeal(),
+                authRepository.getUserId(),
+                meal.getStrMeal(),
+                meal.getStrMealThumb(),
+                meal.getStrCategory(),
+                meal.getStrArea(),
+                meal.getStrTags(),
+                meal.getStrYoutube(),
+                meal.getStrInstructions(),
+                meal.getIngredientsList().toArray(new String[0]),
+                meal.getMeasuresList().toArray(new String[0])
+        );
+
+        mealRepository.deleteFavoriteMeal(favorite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {

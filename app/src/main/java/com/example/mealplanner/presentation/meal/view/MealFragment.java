@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,12 +18,13 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.R;
-import com.example.mealplanner.datasource.auth.local.SharedPreferanceLocalDataSource;
-import com.example.mealplanner.datasource.plan.local.PlanLocalDataSource;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.AuthRepositoryImpl;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
+import com.example.mealplanner.datasource.reposatory.MealRepositoryImpl;
 import com.example.mealplanner.data.models.IngredientMealDetails;
 import com.example.mealplanner.data.models.Instruction;
 import com.example.mealplanner.data.models.Meal;
@@ -51,49 +53,61 @@ public class MealFragment extends Fragment implements MealView {
     IngredientAdapter ingredientAdapter;
     InstructionAdapter instructionAdapter;
 
+    private Button btnSeeMore;
     private ImageButton favoriteBtn, backBtn;
-    private Button btnSetMealForDay;
+    private ImageButton btnSetMealForDay;
     private MealPresenter presenter;
     private PlannerPresenter plannerPresenter;
     private boolean isFavorite = false;
     private Meal currentMeal;
     private YouTubePlayerView playerView;
     private YouTubePlayer myYouTubePlayer = null;
+    private AuthRepository authRepository;
+    private MealRepository mealRepository;
+
+    // Loading Views
+    private ProgressBar progressBar;
+    private View contentContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meal, container, false);
+        String mealId = null;
+
         if (getArguments() != null) {
             try {
                 MealFragmentArgs args = MealFragmentArgs.fromBundle(getArguments());
                 currentMeal = args.getMeal();
+                mealId = args.getMealId();
             } catch (Exception e) {
                 currentMeal = (Meal) getArguments().getSerializable("meal");
             }
         }
-        if (currentMeal == null) {
-            CustomSnackbar.showError(requireView(), "Meal data not found");
-            requireActivity().onBackPressed();
-            return view;
-        }
-        presenter = new MealPresenterImp(this, requireContext());
-        initializePlannerPresenter();
+
+        authRepository = new AuthRepositoryImpl(requireActivity().getApplication());
+        String userId = authRepository.getUserId();
+        mealRepository = new MealRepositoryImpl(requireActivity().getApplication(), userId);
+
+        presenter = new MealPresenterImp(this, requireActivity().getApplication());
+        initializePlannerPresenter(userId);
         initViews(view);
         setupRecyclerViews();
         setupButtons();
-        presenter.loadMeal(currentMeal);
-        presenter.isFavorite(currentMeal.getIdMeal());
+
+        if (mealId != null && !mealId.isEmpty()) {
+            presenter.loadMealById(mealId);
+        } else if (currentMeal != null) {
+            presenter.loadMeal(currentMeal);
+            presenter.isFavorite(currentMeal.getIdMeal());
+        } else {
+            CustomSnackbar.showError(requireView(), "Meal data not found");
+            requireActivity().onBackPressed();
+        }
+
         return view;
     }
 
-    private void initializePlannerPresenter() {
-        SharedPreferanceLocalDataSource sharedPref = new SharedPreferanceLocalDataSource(requireContext());
-        String userId = sharedPref.getUserId();
-
-        Log.d("PLANNER_DEBUG", "Initialized Planner for UserID: " + userId);
-
-        PlanLocalDataSource localDataSource = new PlanLocalDataSource(requireContext(), userId);
-
+    private void initializePlannerPresenter(String userId) {
         plannerPresenter = new PlannerPresenterImp(new PlannerView() {
             @Override
             public void showPlannedMeals(List<PlanEntity> meals) {}
@@ -107,12 +121,11 @@ public class MealFragment extends Fragment implements MealView {
             public void showErrorMessage(String message) {
                 if (isAdded() && getContext() != null) {
                     CustomSnackbar.showError(requireView(), message);
-                    Log.e("PLANNER_DEBUG", "Error from Presenter: " + message);
                 }
             }
             @Override public void showLoading() {}
             @Override public void hideLoading() {}
-        }, localDataSource, userId);
+        }, mealRepository, userId);
     }
 
     @Override
@@ -123,6 +136,11 @@ public class MealFragment extends Fragment implements MealView {
     }
 
     private void initViews(View view) {
+        // Loading components
+        progressBar = view.findViewById(R.id.progressBar);
+        contentContainer = view.findViewById(R.id.meal_content_container);
+
+        // Content components
         rvIngredients = view.findViewById(R.id.rvIngredients);
         rvInstructions = view.findViewById(R.id.rvInstructions);
         mealImage = view.findViewById(R.id.imgMeal);
@@ -133,38 +151,46 @@ public class MealFragment extends Fragment implements MealView {
         favoriteBtn = view.findViewById(R.id.btn_favorite);
         backBtn = view.findViewById(R.id.btn_back);
         btnSetMealForDay = view.findViewById(R.id.btnSetMealForDay);
+        btnSeeMore = view.findViewById(R.id.btnSeeMore);
         playerView = view.findViewById(R.id.youtube_player_view);
+    }
+
+    @Override
+    public void showLoading() {
+        if (progressBar != null && contentContainer != null) {
+            progressBar.setVisibility(View.VISIBLE);
+            contentContainer.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        if (progressBar != null && contentContainer != null) {
+            progressBar.setVisibility(View.GONE);
+            contentContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setupButtons() {
         backBtn.setOnClickListener(v -> requireActivity().onBackPressed());
 
         favoriteBtn.setOnClickListener(v -> {
-            SharedPreferanceLocalDataSource sharedPref = new SharedPreferanceLocalDataSource(requireContext());
-            String userId = sharedPref.getUserId();
-
+            String userId = authRepository.getUserId();
             if ("GUEST".equals(userId)) {
                 showGuestLimitationDialog();
                 return;
             }
-
             if (isFavorite) presenter.deleteFromFav(currentMeal);
             else presenter.addToFav(currentMeal);
         });
 
         btnSetMealForDay.setOnClickListener(v -> {
-            SharedPreferanceLocalDataSource sharedPref = new SharedPreferanceLocalDataSource(requireContext());
-            String userId = sharedPref.getUserId();
-
+            String userId = authRepository.getUserId();
             if ("GUEST".equals(userId)) {
                 showGuestLimitationDialog();
                 return;
             }
             showDatePickerDialog();
-        });
-
-        playerView.setOnClickListener(v -> {
-            if (myYouTubePlayer != null) myYouTubePlayer.play();
         });
     }
 
@@ -176,14 +202,12 @@ public class MealFragment extends Fragment implements MealView {
                 message,
                 "Sign Up",
                 "Cancel",
-                (dialogInterface, which) -> {
-                    navigateToSignUp();
-                },
+                (dialogInterface, which) -> navigateToSignUp(),
                 null
         );
-
         dialog.show(getParentFragmentManager(), "GuestLimitationDialog");
     }
+
     private void navigateToSignUp() {
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.nav, true)
@@ -211,7 +235,6 @@ public class MealFragment extends Fragment implements MealView {
 
     private void showDatePickerDialog() {
         if (!isAdded() || getContext() == null) return;
-        initializePlannerPresenter();
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 requireContext(),
@@ -221,8 +244,6 @@ public class MealFragment extends Fragment implements MealView {
                             "%04d-%02d-%02d", year, month + 1, dayOfMonth);
                     if (plannerPresenter != null && currentMeal != null) {
                         plannerPresenter.addMealToPlan(currentMeal, selectedDate);
-                    } else {
-                        showErrorMessage("Error: Unable to add meal");
                     }
                 },
                 calendar.get(Calendar.YEAR),
@@ -240,10 +261,17 @@ public class MealFragment extends Fragment implements MealView {
         rvIngredients.setAdapter(ingredientAdapter);
         rvInstructions.setLayoutManager(new LinearLayoutManager(getContext()));
         rvInstructions.setAdapter(instructionAdapter);
+
+        btnSeeMore.setOnClickListener(v -> {
+            instructionAdapter.showAll();
+            btnSeeMore.setVisibility(View.GONE);
+        });
     }
 
     @Override
     public void showMeal(Meal meal) {
+        hideLoading(); // Ensure UI is visible
+        currentMeal = meal;
         mealName.setText(meal.getStrMeal());
         mealCategory.setText(meal.getStrCategory());
         mealCountry.setText(meal.getStrArea());
@@ -251,7 +279,6 @@ public class MealFragment extends Fragment implements MealView {
         Glide.with(this)
                 .load(meal.getStrMealThumb())
                 .placeholder(R.drawable.img_meal_test)
-                .error(R.drawable.img_meal_test)
                 .into(mealImage);
 
         if (meal.getStrTags() != null && !meal.getStrTags().isEmpty()) {
@@ -284,11 +311,9 @@ public class MealFragment extends Fragment implements MealView {
 
     @Override
     public void showErrorMessage(String message) {
+        hideLoading(); // Stop loading on error
         CustomSnackbar.showError(requireView(), message);
     }
-
-    @Override public void showLoading() {}
-    @Override public void hideLoading() {}
 
     private void loadIngredientsFromMeal(Meal meal) {
         List<IngredientMealDetails> ingredientList = new ArrayList<>();
@@ -311,14 +336,17 @@ public class MealFragment extends Fragment implements MealView {
         List<Instruction> instructionList = new ArrayList<>();
         if (meal.getStrInstructions() != null && !meal.getStrInstructions().isEmpty()) {
             String normalized = meal.getStrInstructions().replace("\r\n", "\n").replace("\r", "\n");
-            String[] steps = normalized.split("\\.\\s+");
+            String[] steps = normalized.split("\\. +");
             int index = 1;
             for (String step : steps) {
-                if (!step.trim().isEmpty()) {
-                    instructionList.add(new Instruction(index++, step.trim() + "."));
+                String trimmed = step.trim();
+                if (!trimmed.isEmpty()) {
+                    if (!trimmed.endsWith(".")) trimmed += ".";
+                    instructionList.add(new Instruction(index++, trimmed));
                 }
             }
         }
         instructionAdapter.setInstructions(instructionList);
+        btnSeeMore.setVisibility(instructionAdapter.hasMore() ? View.VISIBLE : View.GONE);
     }
 }

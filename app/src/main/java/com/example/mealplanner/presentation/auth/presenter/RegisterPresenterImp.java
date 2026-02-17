@@ -1,7 +1,11 @@
 package com.example.mealplanner.presentation.auth.presenter;
 
+import android.app.Application;
+
 import com.example.mealplanner.datasource.auth.local.SharedPreferanceDao;
 import com.example.mealplanner.datasource.auth.remote.AuthRemoteDataSource;
+import com.example.mealplanner.datasource.reposatory.AuthRepository;
+import com.example.mealplanner.datasource.reposatory.AuthRepositoryImpl;
 import com.example.mealplanner.presentation.auth.view.AuthView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -11,14 +15,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class RegisterPresenterImp implements RegisterPresenter {
 
     private AuthView authView;
-    private AuthRemoteDataSource remoteDataSource;
-    private SharedPreferanceDao sharedPrefDao;
+    //private AuthRemoteDataSource remoteDataSource;
+   //private SharedPreferanceDao sharedPrefDao;
     private CompositeDisposable compositeDisposable;
+    private AuthRepository authRepository;
 
-    public RegisterPresenterImp(AuthView authView, SharedPreferanceDao sharedPrefDao) {
+    public RegisterPresenterImp(AuthView authView, Application application) {
         this.authView = authView;
-        this.sharedPrefDao = sharedPrefDao;
-        this.remoteDataSource = new AuthRemoteDataSource();
+        this.authRepository = new AuthRepositoryImpl(application);
+       // this.sharedPrefDao = sharedPrefDao;
+       // this.remoteDataSource = new AuthRemoteDataSource();
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -40,14 +46,14 @@ public class RegisterPresenterImp implements RegisterPresenter {
         }
         authView.showLoading();
         compositeDisposable.add(
-                remoteDataSource.register(email, username, password)
+                authRepository.register(email, username, password)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 userModel -> {
-                                    sharedPrefDao.saveUserId(userModel.getUid());
-                                    sharedPrefDao.saveUserName(userModel.getUsername());
-                                    sharedPrefDao.saveUserEmail(userModel.getEmail());
+                                    authRepository.saveUserId(userModel.getUid());
+                                    authRepository.saveUserName(userModel.getUsername());
+                                    authRepository.saveUserEmail(userModel.getEmail());
                                     authView.hideLoading();
                                     authView.onSuccess("Success!");
                                 },

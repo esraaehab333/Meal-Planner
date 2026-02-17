@@ -1,5 +1,8 @@
 package com.example.mealplanner.presentation.auth.view;
 
+import static androidx.lifecycle.AndroidViewModel_androidKt.getApplication;
+
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -77,7 +80,7 @@ public class LoginFragment extends Fragment implements AuthView {
         initViews(view);
 
         sharedPref = new SharedPreferanceLocalDataSource(getContext());
-        presenter = new LoginPresenterImp(this, sharedPref);
+        presenter = new LoginPresenterImp(requireActivity().getApplication(),this);
 
         loginBtn.setOnClickListener(v -> {
             if (validateInputs()) {

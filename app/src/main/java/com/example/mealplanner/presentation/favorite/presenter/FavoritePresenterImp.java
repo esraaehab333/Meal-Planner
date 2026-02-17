@@ -1,8 +1,8 @@
 package com.example.mealplanner.presentation.favorite.presenter;
 
-import com.example.mealplanner.datasource.favorite.local.FavoriteLocalDataSource;
 import com.example.mealplanner.data.enitiy.FavoriteEntity;
 import com.example.mealplanner.data.models.Meal;
+import com.example.mealplanner.datasource.reposatory.MealRepository;
 import com.example.mealplanner.presentation.favorite.view.FavoriteView;
 
 import java.util.ArrayList;
@@ -15,12 +15,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FavoritePresenterImp implements FavoritePresenter {
 
     private FavoriteView view;
-    private FavoriteLocalDataSource localDataSource;
+    private MealRepository mealRepository;
     private CompositeDisposable compositeDisposable;
 
-    public FavoritePresenterImp(FavoriteView view, FavoriteLocalDataSource localDataSource) {
+    public FavoritePresenterImp(FavoriteView view, MealRepository mealRepository) {
         this.view = view;
-        this.localDataSource = localDataSource;
+        this.mealRepository = mealRepository;
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -28,7 +28,7 @@ public class FavoritePresenterImp implements FavoritePresenter {
     public void getFavoriteMeals() {
         view.showLoading();
         compositeDisposable.add(
-                localDataSource.getFavoriteMeals()
+                mealRepository.getFavoriteMeals()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -54,7 +54,7 @@ public class FavoritePresenterImp implements FavoritePresenter {
     public void deleteFavoriteMeal(FavoriteEntity favorite) {
         view.showLoading();
         compositeDisposable.add(
-                localDataSource.deleteFavoriteMeal(favorite)
+                mealRepository.deleteFavoriteMeal(favorite)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
